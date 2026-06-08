@@ -772,3 +772,72 @@
                         <div class="talk-label">🎙️ 导演对讲机 (你的话会被两人听到，影响气氛)</div>
                         <div class="talk-input-area">
                             <input type="text" class="talk-input" id="directorTalkInput" placeholder="比如: 申惟你别躲了 / 韩振再主动一点 / 你们两个快点..." autocomplete="off">
+                            <button class="send-btn" id="sendTalkBtn">喊话</button>
+                        </div>
+                    </div>
+                    <div class="progress-row">
+                        <div class="escape-bar"><div class="escape-fill" id="escapeFill"></div></div>
+                        <button class="reset-btn" id="resetGameBtn">🎞️ 重新开拍</button>
+                    </div>
+                `;
+            }
+            
+            const actions = [
+                { id: "kiss_deep", label: "深吻" }, { id: "neck_bite", label: "喉结轻咬" },
+                { id: "lap_grind", label: "腿上磨蹭" }, { id: "shirt_off", label: "脱上衣" },
+                { id: "wall_press", label: "壁咚" }, { id: "ear_whisper_ch", label: "中文耳语" },
+                { id: "blindfold", label: "蒙眼描摹" }, { id: "thigh_rub", label: "大腿蹭" },
+                { id: "back_hug_chest", label: "背后抱胸" }, { id: "floor_press", label: "地板压制" },
+                { id: "belt_remove", label: "解皮带" }, { id: "hand_down", label: "手探裤腰" },
+                { id: "missionary", label: "传教士" }, { id: "spoon", label: "汤匙抱" },
+                { id: "teasing_deny", label: "逗弄不许碰" }, { id: "praise_kink", label: "边亲边夸" },
+                { id: "hair_pull", label: "揪头发吻" }, { id: "table_edge", label: "书桌边缘" },
+                { id: "knee_ride", label: "跪姿仰视" }, { id: "aftercare", label: "事后安抚" }
+            ];
+            
+            const grid = document.getElementById('commandGrid');
+            if(grid) {
+                actions.forEach(act => {
+                    let btn = document.createElement('button');
+                    btn.className = "cmd-btn";
+                    btn.innerText = act.label;
+                    btn.onclick = (function(cmd) { return function() { executeCommand(cmd); }; })(act.id);
+                    grid.appendChild(btn);
+                });
+            }
+            
+            const sendBtn = document.getElementById('sendTalkBtn');
+            const talkInput = document.getElementById('directorTalkInput');
+            if(sendBtn && talkInput) {
+                sendBtn.onclick = () => {
+                    let msg = talkInput.value.trim();
+                    if(msg) {
+                        directorSay(msg);
+                        talkInput.value = "";
+                    } else {
+                        directorSay("导演清了清嗓子，没说话。");
+                    }
+                };
+                talkInput.addEventListener('keypress', (e) => {
+                    if(e.key === 'Enter') {
+                        let msg = talkInput.value.trim();
+                        if(msg) {
+                            directorSay(msg);
+                            talkInput.value = "";
+                        }
+                    }
+                });
+            }
+            
+            const resetBtn = document.getElementById('resetGameBtn');
+            if(resetBtn) resetBtn.addEventListener('click', resetGame);
+            
+            addLog("🎬 小雨披导演上线。九号房规则: 完成亲密任务才能逃脱。每个指令都会推进进度，申惟容易红温，韩振推拉但会害羞。用指令导戏，也可以用对讲机喊话。");
+            updateUI();
+        }
+        
+        init();
+    })();
+</script>
+</body>
+</html>
