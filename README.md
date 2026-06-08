@@ -23,7 +23,6 @@
             padding: 16px;
         }
 
-        /* 主控制台 */
         .control-room {
             max-width: 1400px;
             width: 100%;
@@ -33,7 +32,6 @@
             overflow: hidden;
         }
 
-        /* 监控墙 */
         .camera-wall {
             background: #050403;
             padding: 20px 24px 16px;
@@ -145,7 +143,6 @@
             min-height: 100px;
         }
 
-        /* 导演区 */
         .director-console {
             background: #1a1511;
             padding: 20px 24px 28px;
@@ -240,7 +237,7 @@
     </style>
 </head>
 <body>
-<div class="control-room">
+<div class="control-room" id="appRoot">
     <div class="camera-wall">
         <div class="cam-header">
             <span><span class="live-dot"></span> 九号房 · 封闭监控</span>
@@ -267,39 +264,33 @@
             📼 系统: 房间规则——身体接触指数达标才能开门。导演请下达指令。
         </div>
     </div>
-    <div class="director-console" id="directorConsole">
-        <div class="section-title">
-            🎙️ 指令台 · 让锐因完成任务
-        </div>
-        <div class="command-grid" id="commandGrid"></div>
-        <div class="progress-row">
-            <div class="escape-bar"><div class="escape-fill" id="escapeFill"></div></div>
-            <button class="reset-btn" id="resetGameBtn">🎞️ 重新开拍</button>
-        </div>
-    </div>
+    <div class="director-console" id="directorConsole"></div>
 </div>
 
 <script>
-    // 九号房规则：必须完成亲密指令来推进“逃脱值”
-    // 基于真实人设: 申惟害羞躲避但关心韩振，韩振表面大胆其实容易害羞，会逗哥
-    let tensionS = 68;   // 申惟紧张/忍耐 (越高越绷)
-    let tensionH = 65;   // 韩振羞耻/心跳
-    let escape = 0;      // 逃脱进度 满100解锁
-    let round = 0;
+    // 游戏状态
+    let tensionS = 68;
+    let tensionH = 65;
+    let escape = 0;
     let gameActive = true;
     let ended = false;
     let logs = [];
 
-    // DOM 更新函数
-    function getEl(id) { return document.getElementById(id); }
+    // 获取DOM元素
+    function getTensionS() { return document.getElementById('tensionS'); }
+    function getTensionH() { return document.getElementById('tensionH'); }
+    function getEscapeVal() { return document.getElementById('escapeVal'); }
+    function getEscapeFill() { return document.getElementById('escapeFill'); }
+    function getActionLog() { return document.getElementById('actionLog'); }
+
     function updateUI() {
-        const ts = getEl('tensionS');
-        const th = getEl('tensionH');
-        const ev = getEl('escapeVal');
-        const fill = getEl('escapeFill');
+        const ts = getTensionS();
+        const th = getTensionH();
+        const ev = getEscapeVal();
+        const fill = getEscapeFill();
         if(ts) ts.innerText = Math.min(99, Math.max(0, Math.floor(tensionS)));
         if(th) th.innerText = Math.min(99, Math.max(0, Math.floor(tensionH)));
-        let escPercent = Math.min(100, Math.max(0, Math.floor(escape)));
+        const escPercent = Math.min(100, Math.max(0, Math.floor(escape)));
         if(ev) ev.innerText = escPercent;
         if(fill) fill.style.width = escPercent + '%';
     }
@@ -307,128 +298,95 @@
     function addLog(msg) {
         logs.unshift(msg);
         if(logs.length > 9) logs.pop();
-        const logDiv = getEl('actionLog');
+        const logDiv = getActionLog();
         if(logDiv) {
             logDiv.innerHTML = `🎬 ${msg}<br>` + logs.slice(1).map(l => `&nbsp;&nbsp;${l}`).join('<br>');
         }
     }
 
-    // 核心指令函数 —— 香艳但符合躲闪/年上/年下人设
+    // 执行指令
     function executeCommand(cmdId) {
-        if(!gameActive) return;
+        if(!gameActive) {
+            addLog("游戏已结束，请按重新开拍。");
+            return;
+        }
         if(escape >= 100) {
             addLog("房间已解锁，不用再指令。按重新开拍继续导演。");
             return;
         }
 
-        // 记录变动
         let deltaS = 0, deltaH = 0, deltaEsc = 0;
         let flavorText = "";
 
         switch(cmdId) {
             case "kiss_cmd":
-                addLog("🎥 导演指令:“韩振，去亲一下申惟的嘴角。不许躲。”");
-                if(tensionS > 55) {
-                    deltaS = -12;
-                    flavorText = "申惟僵住没敢动，耳尖烧红，被轻轻啄了一下。紧张值骤降。";
-                } else {
-                    deltaS = -6;
-                    flavorText = "申惟闭了一下眼，韩振飞快碰了一下，两人都懵了。";
-                }
-                deltaH = -8;
-                deltaEsc = 9 + Math.floor(Math.random() * 7);
+                addLog("🎥 导演指令:“韩振，去亲一下申惟的嘴角。”");
+                if(tensionS > 55) { deltaS = -12; flavorText = "申惟僵住没敢动，耳尖烧红，被轻轻啄了一下。"; }
+                else { deltaS = -6; flavorText = "申惟闭了一下眼，韩振飞快碰了一下，两人都懵了。"; }
+                deltaH = -8; deltaEsc = 9 + Math.floor(Math.random() * 7);
                 break;
             case "lap_cmd":
-                addLog("🎥 导演指令:“申惟，让韩振坐你腿上，保持三分钟。”");
-                if(tensionS > 60) {
-                    deltaS = -14;
-                    flavorText = "申惟耳朵滴血，韩振小心翼翼坐上去，两个人都不知道该看哪。";
-                } else {
-                    deltaS = -7;
-                    flavorText = "韩振笑着坐下，申惟的手犹豫半天才放到腰侧。";
-                }
-                deltaH = -10;
-                deltaEsc = 10 + Math.floor(Math.random() * 8);
+                addLog("🎥 导演指令:“申惟，让韩振坐你腿上。”");
+                if(tensionS > 60) { deltaS = -14; flavorText = "申惟耳朵滴血，韩振小心翼翼坐上去，两个人都不敢看对方。"; }
+                else { deltaS = -7; flavorText = "韩振笑着坐下，申惟的手犹豫半天才放到腰侧。"; }
+                deltaH = -10; deltaEsc = 10 + Math.floor(Math.random() * 8);
                 break;
             case "neck_cmd":
-                addLog("🎥 导演指令:“韩振在申惟脖子旁边说话，气息靠近。”");
-                deltaS = -9;
-                deltaH = -5;
+                addLog("🎥 导演指令:“韩振在申惟脖子旁边说话。”");
+                deltaS = -9; deltaH = -5; deltaEsc = 7 + Math.floor(Math.random() * 6);
                 flavorText = "韩振凑近耳边用中文说了句“哥好香”，申惟差点跳起来。";
-                deltaEsc = 7 + Math.floor(Math.random() * 6);
                 break;
             case "hand_cmd":
-                addLog("🎥 导演指令:“申惟牵住韩振的手，十指相扣直到心跳平复。”");
-                deltaS = -8;
-                deltaH = -7;
+                addLog("🎥 导演指令:“申惟牵住韩振的手，十指相扣。”");
+                deltaS = -8; deltaH = -7; deltaEsc = 6 + Math.floor(Math.random() * 6);
                 flavorText = "申惟慢慢扣住韩振的手指，韩振回握，掌心出汗也没松开。";
-                deltaEsc = 6 + Math.floor(Math.random() * 6);
                 break;
             case "undress_cmd":
-                addLog("🎥 导演指令:“韩振帮申惟解开最上面的两颗扣子。”");
-                if(tensionS > 70) {
-                    deltaS = -16;
-                    flavorText = "申惟喉结滚动，韩振手指发抖解了两颗，锁骨露出来。";
-                } else {
-                    deltaS = -8;
-                    flavorText = "韩振动作轻缓，申惟屏住呼吸。";
-                }
-                deltaH = -9;
-                deltaEsc = 12 + Math.floor(Math.random() * 7);
+                addLog("🎥 导演指令:“韩振帮申惟解开最上面两颗扣子。”");
+                if(tensionS > 70) { deltaS = -16; flavorText = "申惟喉结滚动，韩振手指发抖解了两颗，锁骨露出来。"; }
+                else { deltaS = -8; flavorText = "韩振动作轻缓，申惟屏住呼吸。"; }
+                deltaH = -9; deltaEsc = 12 + Math.floor(Math.random() * 7);
                 break;
             case "whisper_cmd":
-                addLog("🎥 导演指令:“申惟对韩振耳边说韩语情话，随便说。”");
-                deltaS = -6;
-                deltaH = -11;
+                addLog("🎥 导演指令:“申惟对韩振耳边说韩语情话。”");
+                deltaS = -6; deltaH = -11; deltaEsc = 8 + Math.floor(Math.random() * 6);
                 flavorText = "申惟磕磕巴巴说“예뻐요”，韩振瞬间脸红到脖子。";
-                deltaEsc = 8 + Math.floor(Math.random() * 6);
                 break;
             case "cuddle_cmd":
                 addLog("🎥 导演指令:“从背后抱住韩振，下巴抵肩膀。”");
-                deltaS = -10;
-                deltaH = -6;
+                deltaS = -10; deltaH = -6; deltaEsc = 7 + Math.floor(Math.random() * 7);
                 flavorText = "申惟犹豫后轻轻环住，韩振靠进他怀里。两人安静了几秒。";
-                deltaEsc = 7 + Math.floor(Math.random() * 7);
                 break;
             case "tease_cmd":
-                addLog("🎥 导演指令:“韩振用手指戳申惟的腰，申惟不准躲。”");
-                deltaS = -5;
-                deltaH = -4;
-                flavorText = "韩振坏笑着戳了两下，申惟闷哼一声抓住他手腕，气氛微妙。";
-                deltaEsc = 5 + Math.floor(Math.random() * 5);
+                addLog("🎥 导演指令:“韩振用手指戳申惟的腰。”");
+                deltaS = -5; deltaH = -4; deltaEsc = 5 + Math.floor(Math.random() * 5);
+                flavorText = "韩振坏笑着戳了两下，申惟闷哼一声抓住他手腕。";
                 break;
             case "pillow_cmd":
-                addLog("🎥 导演指令:“两个人躺床上对视三十秒，谁先眨眼算输。”");
-                deltaS = -9;
-                deltaH = -9;
+                addLog("🎥 导演指令:“两人躺床上对视三十秒。”");
+                deltaS = -9; deltaH = -9; deltaEsc = 9 + Math.floor(Math.random() * 6);
                 flavorText = "鼻尖快碰到一起，申惟先移开眼睛，耳朵彻底红透。";
-                deltaEsc = 9 + Math.floor(Math.random() * 6);
                 break;
             case "confess_cmd":
-                addLog("🎥 导演指令:“韩振用中文说‘哥我喜欢你’，申惟用韩语回同样的话。”");
-                deltaS = -11;
-                deltaH = -12;
+                addLog("🎥 导演指令:“韩振用中文说‘哥我喜欢你’，申惟用韩语回。”");
+                deltaS = -11; deltaH = -12; deltaEsc = 11 + Math.floor(Math.random() * 9);
                 flavorText = "韩振说完垂下眼睛，申惟憋了半天小声重复，两个人都笑了。";
-                deltaEsc = 11 + Math.floor(Math.random() * 9);
                 break;
             case "belt_cmd":
-                addLog("🎥 导演指令:“申惟帮韩振整理皮带，手指故意停留久一点。”");
-                deltaS = -13;
-                deltaH = -14;
+                addLog("🎥 导演指令:“申惟帮韩振整理皮带。”");
+                deltaS = -13; deltaH = -14; deltaEsc = 10 + Math.floor(Math.random() * 8);
                 flavorText = "申惟半跪着调整皮带扣，韩振咬住嘴唇不敢低头看。";
-                deltaEsc = 10 + Math.floor(Math.random() * 8);
                 break;
             default: return;
         }
 
-        // 应用变化，保持边界
         tensionS = Math.min(98, Math.max(8, tensionS + deltaS));
         tensionH = Math.min(98, Math.max(8, tensionH + deltaH));
         escape = Math.min(100, escape + deltaEsc);
         
-        addLog(`${flavorText} (紧张值${deltaS>=0?'+':''}${deltaS}, 羞耻${deltaH>=0?'+':''}${deltaH} | 逃脱+${deltaEsc}%)`);
+        addLog(`${flavorText} (申惟${deltaS>=0?'+':''}${deltaS}, 韩振${deltaH>=0?'+':''}${deltaH} | 逃脱+${deltaEsc}%)`);
         
-        // 额外小剧情：根据数值触发特殊反应
+        // 特殊彩蛋
         if(tensionS < 30 && tensionH < 35 && escape < 90 && !ended) {
             let extra = 6;
             escape = Math.min(100, escape + extra);
@@ -442,7 +400,6 @@
         }
 
         updateUI();
-        round++;
         
         if(escape >= 100 && !ended) {
             escape = 100;
@@ -454,8 +411,8 @@
     function showEnding() {
         ended = true;
         gameActive = false;
+        
         let endingMsg = "";
-        // 基于最终数值定制结局
         if(tensionS <= 35 && tensionH <= 38) {
             endingMsg = "房门自动打开。申惟牵着韩振的手走出来，韩振眼角有点红。申惟转头看他，忽然笑了。那天之后，锐因对视不再躲闪。导演你促成了真正的亲密。";
         } else if(tensionS > 65 || tensionH > 68) {
@@ -464,7 +421,7 @@
             endingMsg = "九号房终于解锁。两人沉默着走出，申惟外套披在韩振肩上。没有多说话，但回去直播时韩振说“申惟哥很温柔”。一切都变了又好像没变。";
         }
         
-        const consoleDiv = getEl('directorConsole');
+        const consoleDiv = document.getElementById('directorConsole');
         if(consoleDiv) {
             consoleDiv.innerHTML = `
                 <div class="ending-box">
@@ -478,8 +435,8 @@
                     <button class="reset-btn" id="resetEndBtn2">重置</button>
                 </div>
             `;
-            const reset1 = getEl('resetEndBtn');
-            const reset2 = getEl('resetEndBtn2');
+            const reset1 = document.getElementById('resetEndBtn');
+            const reset2 = document.getElementById('resetEndBtn2');
             const resetFunc = () => resetGame();
             if(reset1) reset1.addEventListener('click', resetFunc);
             if(reset2) reset2.addEventListener('click', resetFunc);
@@ -491,12 +448,11 @@
         tensionS = 68;
         tensionH = 65;
         escape = 0;
-        round = 0;
         gameActive = true;
         ended = false;
         logs = [];
         
-        const consoleDiv = getEl('directorConsole');
+        const consoleDiv = document.getElementById('directorConsole');
         if(consoleDiv) {
             consoleDiv.innerHTML = `
                 <div class="section-title">
@@ -509,20 +465,8 @@
                 </div>
             `;
         }
-        initCommands();
-        const newReset = getEl('resetGameBtn');
-        if(newReset) newReset.addEventListener('click', resetGame);
-        const logDiv = getEl('actionLog');
-        if(logDiv) logDiv.innerHTML = "📼 系统: 房间规则——身体接触指数达标才能开门。导演请下达指令。";
-        logs = [];
-        addLog("🎞️ 导演重置九号房，申惟和韩振又被关进来了。新的一轮。");
-        updateUI();
-    }
-
-    function initCommands() {
-        const container = getEl('commandGrid');
-        if(!container) return;
-        // 香艳指令库 共11种 契合人设不崩
+        
+        // 重新绑定按钮
         const actions = [
             { id: "kiss_cmd", label: "💋 嘴角亲吻" },
             { id: "lap_cmd", label: "💺 膝上拥抱" },
@@ -536,30 +480,78 @@
             { id: "confess_cmd", label: "💌 双语告白" },
             { id: "belt_cmd", label: "🎀 整理皮带" }
         ];
-        container.innerHTML = "";
-        actions.forEach(act => {
-            let btn = document.createElement('button');
-            btn.className = "cmd-btn";
-            btn.innerText = act.label;
-            btn.onclick = (e) => {
-                e.stopPropagation();
-                if(gameActive && escape < 100) executeCommand(act.id);
-                else if(escape >= 100) addLog("门已经开了，不能继续指令。点重置吧。");
-                else addLog("游戏已结束, 请重置");
-            };
-            container.appendChild(btn);
-        });
+        
+        const grid = document.getElementById('commandGrid');
+        if(grid) {
+            grid.innerHTML = "";
+            actions.forEach(act => {
+                let btn = document.createElement('button');
+                btn.className = "cmd-btn";
+                btn.innerText = act.label;
+                btn.onclick = () => executeCommand(act.id);
+                grid.appendChild(btn);
+            });
+        }
+        
+        const newReset = document.getElementById('resetGameBtn');
+        if(newReset) newReset.addEventListener('click', resetGame);
+        
+        const logDiv = getActionLog();
+        if(logDiv) logDiv.innerHTML = "📼 系统: 房间规则——身体接触指数达标才能开门。导演请下达指令。";
+        logs = [];
+        addLog("🎞️ 导演重置九号房，申惟和韩振又被关进来了。新的一轮。");
+        updateUI();
     }
 
-    // 启动游戏
-    function startGame() {
-        initCommands();
-        const resetBtn = getEl('resetGameBtn');
+    // 初始化
+    function init() {
+        const consoleDiv = document.getElementById('directorConsole');
+        if(consoleDiv) {
+            consoleDiv.innerHTML = `
+                <div class="section-title">
+                    🎙️ 指令台 · 让锐因完成任务
+                </div>
+                <div class="command-grid" id="commandGrid"></div>
+                <div class="progress-row">
+                    <div class="escape-bar"><div class="escape-fill" id="escapeFill"></div></div>
+                    <button class="reset-btn" id="resetGameBtn">🎞️ 重新开拍</button>
+                </div>
+            `;
+        }
+        
+        const actions = [
+            { id: "kiss_cmd", label: "💋 嘴角亲吻" },
+            { id: "lap_cmd", label: "💺 膝上拥抱" },
+            { id: "neck_cmd", label: "🌬️ 颈侧气息" },
+            { id: "hand_cmd", label: "🤝 十指相扣" },
+            { id: "undress_cmd", label: "👕 解衣扣" },
+            { id: "whisper_cmd", label: "👂 耳畔情话" },
+            { id: "cuddle_cmd", label: "🫂 背后环抱" },
+            { id: "tease_cmd", label: "👉 戳腰逗弄" },
+            { id: "pillow_cmd", label: "🛏️ 枕边对视" },
+            { id: "confess_cmd", label: "💌 双语告白" },
+            { id: "belt_cmd", label: "🎀 整理皮带" }
+        ];
+        
+        const grid = document.getElementById('commandGrid');
+        if(grid) {
+            actions.forEach(act => {
+                let btn = document.createElement('button');
+                btn.className = "cmd-btn";
+                btn.innerText = act.label;
+                btn.onclick = () => executeCommand(act.id);
+                grid.appendChild(btn);
+            });
+        }
+        
+        const resetBtn = document.getElementById('resetGameBtn');
         if(resetBtn) resetBtn.addEventListener('click', resetGame);
+        
         addLog("🎬 小雨披导演上线。九号房规则: 必须完成亲密任务才能逃脱。申惟容易红温，韩振推拉但会害羞。请开始导戏。");
         updateUI();
     }
-    startGame();
+    
+    init();
 </script>
 </body>
 </html>
