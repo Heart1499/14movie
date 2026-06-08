@@ -23,7 +23,7 @@
         }
 
         .control-room {
-            max-width: 500px;
+            max-width: 550px;
             width: 100%;
             margin: 0 auto;
             background: #11100e;
@@ -74,7 +74,7 @@
         .characters-area {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 20px;
             flex-wrap: wrap;
             margin-bottom: 16px;
         }
@@ -82,33 +82,33 @@
         .char-card {
             background: #201a14;
             border-radius: 50px;
-            padding: 8px 18px;
+            padding: 6px 16px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             box-shadow: 0 4px 0 #0b0805;
             border-bottom: 2px solid #d6955a;
         }
 
         .char-icon {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             background: #3f2c1d;
             border-radius: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
+            font-size: 24px;
         }
 
         .char-name {
             color: #f3cf9a;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px;
         }
 
         .char-tag {
-            font-size: 10px;
+            font-size: 9px;
             color: #b49470;
         }
 
@@ -172,7 +172,7 @@
             font-family: monospace;
             border-left: 4px solid #d78c45;
             min-height: 130px;
-            max-height: 160px;
+            max-height: 150px;
             overflow-y: auto;
         }
 
@@ -182,10 +182,10 @@
         }
 
         .section-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             color: #e7bc82;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -197,8 +197,8 @@
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 20px;
-            max-height: 260px;
+            margin-bottom: 18px;
+            max-height: 240px;
             overflow-y: auto;
             padding-bottom: 6px;
         }
@@ -207,14 +207,14 @@
             background: #2c221b;
             border: 1px solid #745d45;
             color: #ffefdb;
-            padding: 8px 12px;
+            padding: 8px 10px;
             border-radius: 40px;
             font-family: monospace;
             font-weight: bold;
             font-size: 11px;
             cursor: pointer;
             flex: 1 0 auto;
-            min-width: 70px;
+            min-width: 68px;
             text-align: center;
             transition: 0.05s linear;
         }
@@ -227,8 +227,8 @@
         .director-interact {
             background: #2a221c;
             border-radius: 24px;
-            padding: 14px;
-            margin-bottom: 18px;
+            padding: 12px;
+            margin-bottom: 16px;
             border: 1px solid #594f43;
         }
 
@@ -245,7 +245,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .interact-btn {
@@ -273,7 +273,7 @@
             background: #1a1511;
             border: 1px solid #6a5642;
             border-radius: 40px;
-            padding: 8px 14px;
+            padding: 8px 12px;
             color: #f0e2d0;
             font-family: monospace;
             font-size: 12px;
@@ -283,7 +283,7 @@
         .send-btn {
             background: #4f3824;
             border: none;
-            padding: 6px 16px;
+            padding: 6px 14px;
             border-radius: 40px;
             color: white;
             cursor: pointer;
@@ -297,13 +297,13 @@
             gap: 8px;
             margin-bottom: 16px;
             background: #1f1914;
-            padding: 10px 12px;
+            padding: 8px 12px;
             border-radius: 40px;
             align-items: center;
             flex-wrap: wrap;
         }
         .name-label {
-            font-size: 12px;
+            font-size: 11px;
             color: #e2bc89;
         }
         .name-input {
@@ -311,22 +311,22 @@
             background: #0f0d0b;
             border: 1px solid #6a5642;
             border-radius: 40px;
-            padding: 8px 14px;
+            padding: 7px 12px;
             color: #f0e2d0;
-            font-size: 13px;
+            font-size: 12px;
             outline: none;
         }
         .name-confirm {
             background: #5a3f2a;
             border: none;
-            padding: 6px 16px;
+            padding: 6px 14px;
             border-radius: 40px;
             color: white;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
         }
         .director-name-display {
-            font-size: 13px;
+            font-size: 12px;
             color: #f3cf9a;
             font-weight: bold;
             margin-bottom: 12px;
@@ -339,7 +339,7 @@
         .progress-row {
             display: flex;
             justify-content: center;
-            margin-top: 6px;
+            margin-top: 8px;
         }
 
         .reset-btn {
@@ -357,7 +357,7 @@
             background: #221c16e0;
             backdrop-filter: blur(12px);
             border-radius: 32px;
-            padding: 22px;
+            padding: 20px;
             text-align: center;
             margin: 16px 0;
             border: 1px solid #e5a362;
@@ -366,8 +366,8 @@
         .share-hint {
             background: #2e241d;
             border-radius: 28px;
-            padding: 8px 14px;
-            margin-top: 14px;
+            padding: 8px 12px;
+            margin-top: 12px;
             font-size: 10px;
             color: #b9a78e;
             text-align: center;
@@ -400,17 +400,17 @@
     <div class="camera-wall">
         <div class="cam-header">
             <span><span class="live-dot"></span> 九号房 · 监控中</span>
-            <span>雨披导演</span>
+            <span>小雨披导演</span>
         </div>
         <div class="room-preview">
             <div class="characters-area">
                 <div class="char-card">
-                    <div class="char-icon">🦒</div>
-                    <div><div class="char-name">申惟</div><div class="char-tag">Shinyu</div></div>
+                    <div class="char-icon">🐺</div>
+                    <div><div class="char-name">申惟</div><div class="char-tag">队长 · 容易红温</div></div>
                 </div>
                 <div class="char-card">
                     <div class="char-icon">🐰</div>
-                    <div><div class="char-name">韩振</div><div class="char-tag">Hanjin</div></div>
+                    <div><div class="char-name">韩振</div><div class="char-tag">中国弟 · 爱逗哥哥</div></div>
                 </div>
             </div>
             
@@ -418,10 +418,6 @@
                 <div class="stat-row">
                     <div class="stat-label"><span>🔥 申惟忍耐值</span><span id="tensionS_val" class="stat-value">68</span><span>%</span></div>
                     <div class="stat-bar-bg"><div class="stat-bar-fill fill-s" id="tensionS_bar" style="width:68%"></div></div>
-                </div>
-                <div class="stat-row">
-                    <div class="stat-label"><span>💗 韩振羞耻值</span><span id="tensionH_val" class="stat-value">65</span><span>%</span></div>
-                    <div class="stat-bar-bg"><div class="stat-bar-fill fill-h" id="tensionH_bar" style="width:65%"></div></div>
                 </div>
                 <div class="stat-row">
                     <div class="stat-label"><span>💗 韩振羞耻值</span><span id="tensionH_val" class="stat-value">65</span><span>%</span></div>
@@ -443,17 +439,11 @@
 
 <script>
     (function() {
-        // 捕获错误，避免白屏
-        window.onerror = function(msg, url, line) {
-            console.log("Error: " + msg);
-            return false;
-        };
-        
         // 状态变量
         let tensionS = 68;
         let tensionH = 65;
         let escape = 0;
-        let gameActive = true
+        let gameActive = true;
         let ended = false;
         let logs = [];
         let lastCommandDesc = "";
@@ -461,11 +451,10 @@
         let accidentCount = 0;
         let finalEndingType = null;
         
-        let directorName = "小雨披";
+        let directorName = "雨披";
         let directorStyle = "未定义风格";
         let styleStats = { soft: 0, spicy: 0, chaotic: 0 };
         
-        // 辅助函数
         function getEl(id) { return document.getElementById(id); }
         
         function updateUI() {
@@ -635,15 +624,15 @@
         function getEndingMessage() {
             let baseMsg = "";
             switch(finalEndingType) {
-                case "perfect": baseMsg = "房门自动打开。申惟牵着韩振的手走出来，韩振眼角有点红但嘴角是笑着的。之后团综里两人对视不再躲闪。"; break;
+                case "perfect": baseMsg = "房门自动打开。申惟牵着韩振的手走出来，韩振眼角有点红但嘴角是笑着的。之后团综里两人对视不再躲闪。导演你促成了真正的亲密。"; break;
                 case "sweet": baseMsg = "门开了。申惟帮韩振整理衣服，韩振小声说谢谢哥。两人一前一后走出去，但申惟的手一直往后伸，直到韩振握住。"; break;
-                case "awkward": baseMsg = "门终于开了。申惟快步走在前面，韩振跟在后面低着头。但粉丝拍到机场申惟帮韩振拉了拉口罩，韩振偷偷笑了。"; break;
-                case "long": baseMsg = "经过漫长的拉扯，房门在一声轻响后打开。两人都愣住了。申惟先回过神来，把外套递给韩振。"; break;
-                case "cold": baseMsg = "门开了。两人沉默着走出去，没有牵手也没有对话。但晚上直播时韩振说“申惟哥今天帮我拿了行李”，申惟耳朵红了。"; break;
+                case "awkward": baseMsg = "门终于开了。申惟快步走在前面，韩振跟在后面低着头。但粉丝拍到机场申惟帮韩振拉了拉口罩，韩振偷偷笑了。暧昧持久战。"; break;
+                case "long": baseMsg = "经过漫长的拉扯，房门在一声轻响后打开。两人都愣住了。申惟先回过神来，把外套递给韩振。那天之后他们的互动多了些心照不宣的默契。"; break;
+                case "cold": baseMsg = "门开了。两人沉默着走出去，没有牵手也没有对话。但晚上直播时韩振说“申惟哥今天帮我拿了行李”，申惟耳朵红了。有些东西不说破但都在。"; break;
                 case "stuck": baseMsg = "折腾了半天，房门纹丝不动。两人瘫坐在地上，申惟叹了口气说“我们是不是太不熟了”。韩振笑了，说“那哥要不要试着多了解我一点”。门突然响了一下——也许还需要一点时间。"; break;
                 default: baseMsg = "房间解锁。申惟把外套披在韩振身上，两人并排走出去，肩膀偶尔碰到也没有躲。";
             }
-            return baseMsg + `\n\n(导演${directorName} · ${directorStyle})`;
+            return baseMsg;
         }
 
         function getEndingTitle() {
@@ -658,7 +647,6 @@
             }
         }
 
-        // 指令库
         const actionsList = [
             { id: "kiss_deep", label: "深吻" }, { id: "neck_bite", label: "喉结咬" },
             { id: "lap_grind", label: "腿上磨蹭" }, { id: "shirt_off", label: "脱衣" },
@@ -690,19 +678,19 @@
                 wall_press: () => { deltaS = -8; deltaH = -10; deltaEsc = 6+Math.floor(Math.random()*5); return "申惟把韩振按在墙上，韩振拽住他的衣领拉近，呼吸全落在耳侧。"; },
                 ear_whisper_ch: () => { deltaS = -11; deltaH = -8; deltaEsc = 6+Math.floor(Math.random()*6); return "韩振凑过去轻声说“哥想不想更过分一点”，申惟耳朵瞬间血红。"; },
                 blindfold: () => { deltaS = -15; deltaH = -6; deltaEsc = 9+Math.floor(Math.random()*6); return "蒙住申惟眼睛，韩振用手指描摹他的脸，指尖划过嘴唇时他轻颤。"; },
-                thigh_rub: () => { deltaS = -16; deltaH = -14; deltaEsc = 10+Math.floor(Math.random()*7); return "韩振用大腿蹭申惟腿间，申惟抓住他的腿想阻止又没用力。"; },
+                thigh_rub: () => { deltaS = -16; deltaH = -14; deltaEsc = 10+Math.floor(Math.random()*7); return "韩振用大腿蹭申惟腿间，申惟抓住他的腿想阻止又没用力，呼吸彻底乱了。"; },
                 back_hug_chest: () => { deltaS = -10; deltaH = -11; deltaEsc = 7+Math.floor(Math.random()*5); return "申惟从背后抱住韩振，手放在他胸口，韩振按住他的手不让拿开。"; },
                 floor_press: () => { deltaS = -11; deltaH = -10; deltaEsc = 8+Math.floor(Math.random()*6); return "两人滚到地板上，申惟在上方俯视韩振，韩振抬手摸了摸申惟的脸。"; },
                 belt_remove: () => { deltaS = -17; deltaH = -12; deltaEsc = 11+Math.floor(Math.random()*7); return "韩振解开申惟的皮带，金属扣碰撞的声音格外响，申惟呼吸一滞。"; },
-                hand_down: () => { deltaS = -15; deltaH = -17; deltaEsc = 10+Math.floor(Math.random()*7); return "申惟的手从韩振腰侧滑进裤腰，韩振轻哼了一声。"; },
-                missionary: () => { deltaS = -18; deltaH = -16; deltaEsc = 12+Math.floor(Math.random()*7); return "申惟把韩振压在床上，膝盖顶开他双腿，韩振勾住他的脖子。"; },
-                spoon: () => { deltaS = -9; deltaH = -8; deltaEsc = 5+Math.floor(Math.random()*5); return "申惟从背后环住韩振的腰，下巴抵着他后脑勺，安静地抱了很久。"; },
-                teasing_deny: () => { deltaS = -6; deltaH = -5; deltaEsc = 4+Math.floor(Math.random()*4); return "韩振逗申惟但不让他碰，申惟急了，一把拽回来小声说“别闹了”。"; },
-                praise_kink: () => { deltaS = -8; deltaH = -10; deltaEsc = 7+Math.floor(Math.random()*5); return "申惟边亲韩振边夸他“做得真好”，韩振把脸埋进他胸口。"; },
-                hair_pull: () => { deltaS = -10; deltaH = -7; deltaEsc = 7+Math.floor(Math.random()*5); return "韩振揪着申惟后脑头发接吻，申惟吃痛反而吻得更用力。"; },
-                table_edge: () => { deltaS = -12; deltaH = -11; deltaEsc = 9+Math.floor(Math.random()*6); return "申惟把韩振抱上书桌边缘，韩振双腿夹住他的腰。"; },
-                knee_ride: () => { deltaS = -10; deltaH = -13; deltaEsc = 8+Math.floor(Math.random()*6); return "韩振跪在床上仰头看申惟，申惟伸手把他拉起来，两人一起摔进枕头里。"; },
-                aftercare: () => { deltaS = -6; deltaH = -7; deltaEsc = 4+Math.floor(Math.random()*4); return "申惟帮韩振擦汗，轻声问他疼不疼。韩振摇头又点头，申惟亲了亲他额头。"; }
+                hand_down: () => { deltaS = -15; deltaH = -17; deltaEsc = 10+Math.floor(Math.random()*7); return "申惟的手从韩振腰侧滑进裤腰，韩振轻哼了一声，申惟立刻停住，韩振却按着他的手不放。"; },
+                missionary: () => { deltaS = -18; deltaH = -16; deltaEsc = 12+Math.floor(Math.random()*7); return "申惟把韩振压在床上，膝盖顶开他双腿，韩振勾住他的脖子，把最后一点距离也吞没了。"; },
+                spoon: () => { deltaS = -9; deltaH = -8; deltaEsc = 5+Math.floor(Math.random()*5); return "申惟从背后环住韩振的腰，下巴抵着他后脑勺，安静地抱了很久，心跳却越来越快。"; },
+                teasing_deny: () => { deltaS = -6; deltaH = -5; deltaEsc = 4+Math.floor(Math.random()*4); return "韩振逗申惟但不让他碰，申惟急了，一把拽回来小声说“别闹了”，韩振愣了一下发现申惟眼眶有点红。"; },
+                praise_kink: () => { deltaS = -8; deltaH = -10; deltaEsc = 7+Math.floor(Math.random()*5); return "申惟边亲韩振边夸他“做得真好”，韩振把脸埋进他胸口，闷闷地说“哥别说了”。"; },
+                hair_pull: () => { deltaS = -10; deltaH = -7; deltaEsc = 7+Math.floor(Math.random()*5); return "韩振揪着申惟后脑头发接吻，申惟吃痛反而吻得更用力。分开时申惟嘴唇红红的。"; },
+                table_edge: () => { deltaS = -12; deltaH = -11; deltaEsc = 9+Math.floor(Math.random()*6); return "申惟把韩振抱上书桌边缘，韩振双腿夹住他的腰，桌面上的东西被扫到一边。"; },
+                knee_ride: () => { deltaS = -10; deltaH = -13; deltaEsc = 8+Math.floor(Math.random()*6); return "韩振跪在床上仰头看申惟，从下往上的眼神让申惟喉结一紧，伸手把他拉起来，两人一起摔进枕头里。"; },
+                aftercare: () => { deltaS = -6; deltaH = -7; deltaEsc = 4+Math.floor(Math.random()*4); return "申惟帮韩振擦汗，轻声问他疼不疼。韩振摇头又点头，申惟亲了亲他额头。韩振把脸往申惟掌心蹭了蹭。"; }
             };
             
             if(cmdMap[cmdId]) {
@@ -752,7 +740,7 @@
                     <div class="ending-box">
                         <div style="font-size: 40px;">🔓</div>
                         <h2 style="color:#eebb77; margin: 8px 0; font-size: 18px;">${title}</h2>
-                        <p style="color:#efdbbc; margin: 12px 0; line-height:1.45; font-size: 13px; white-space:pre-line;">${msg}</p>
+                        <p style="color:#efdbbc; margin: 12px 0; line-height:1.45; font-size: 12px;">${msg}</p>
                         <div class="badge-area">
                             <span class="ending-badge">申惟 ${Math.floor(tensionS)}%</span>
                             <span class="ending-badge">韩振 ${Math.floor(tensionH)}%</span>
@@ -768,11 +756,11 @@
                 if(resetBtn) resetBtn.addEventListener('click', resetGame);
                 if(copyBtn) {
                     copyBtn.addEventListener('click', () => {
-                        const shareText = `【小雨披大导演】${directorName}导演 · ${directorStyle}\n结局: ${title}\n${msg.replace(/\n/g, '')}\n申惟${Math.floor(tensionS)}% 韩振${Math.floor(tensionH)}% 指令${cmdCount}次 事故${accidentCount}次`;
+                        const shareText = `【小雨披大导演】${directorName}导演 · ${directorStyle}\n结局: ${title}\n${msg}\n申惟${Math.floor(tensionS)}% 韩振${Math.floor(tensionH)}% 指令${cmdCount}次 事故${accidentCount}次`;
                         navigator.clipboard.writeText(shareText).then(() => {
                             copyBtn.innerText = "✓ 已复制！";
                             setTimeout(() => { if(copyBtn) copyBtn.innerText = "📸 复制结局分享"; }, 2000);
-                        }).catch(() => alert("复制失败，可手动截图"));
+                        }).catch(() => alert("长按屏幕截图分享吧"));
                     });
                 }
             }
@@ -796,7 +784,7 @@
                 consoleDiv.innerHTML = `
                     <div class="director-name-display" id="directorNameDisplay">🎬 ${directorName}导演 · 未定义风格</div>
                     <div class="name-input-area">
-                        <span class="name-label"> 导演署名 </span>
+                        <span class="name-label">🎭 导演署名</span>
                         <input type="text" class="name-input" id="directorNameInput" placeholder="输入你的名字" value="${directorName}">
                         <button class="name-confirm" id="confirmNameBtn">确认</button>
                     </div>
@@ -821,14 +809,13 @@
                 `;
             }
             
-            // 绑定名字确认
             const nameInput = getEl('directorNameInput');
             const confirmBtn = getEl('confirmNameBtn');
             if(confirmBtn && nameInput) {
                 confirmBtn.onclick = () => {
                     let newName = nameInput.value.trim();
                     if(newName) directorName = newName;
-                    else directorName = "小雨披";
+                    else directorName = "雨披";
                     const displayDiv = getEl('directorNameDisplay');
                     if(displayDiv) displayDiv.innerText = `🎬 ${directorName}导演 · ${directorStyle}`;
                     updateDirectorStyleDisplay();
@@ -885,10 +872,8 @@
             updateDirectorStyleDisplay();
         }
         
-        // 启动
         resetGame();
     })();
 </script>
 </body>
 </html>
-
