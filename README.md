@@ -743,4 +743,43 @@
                     let btn = document.createElement('button');
                     btn.className = "cmd-btn";
                     btn.innerText = act.label;
-                    btn.on
+                    btn.onclick = (function(cmd) { return function() { executeCommand(cmd); }; })(act.id);
+                    grid.appendChild(btn);
+                });
+            }
+            
+            const sendBtn = document.getElementById('sendTalkBtn');
+            const talkInput = document.getElementById('directorTalkInput');
+            if(sendBtn && talkInput) {
+                sendBtn.onclick = () => {
+                    let msg = talkInput.value.trim();
+                    if(msg) {
+                        directorSay(msg);
+                        talkInput.value = "";
+                    } else {
+                        directorSay("导演清了清嗓子，没说话。");
+                    }
+                };
+                talkInput.addEventListener('keypress', (e) => {
+                    if(e.key === 'Enter') {
+                        let msg = talkInput.value.trim();
+                        if(msg) {
+                            directorSay(msg);
+                            talkInput.value = "";
+                        }
+                    }
+                });
+            }
+            
+            const resetBtn = document.getElementById('resetGameBtn');
+            if(resetBtn) resetBtn.addEventListener('click', resetGame);
+            
+            addLog("🎬 小雨披导演上线。九号房规则: 必须完成亲密任务才能逃脱。申惟容易红温，韩振推拉但会害羞。用指令导戏，也可以用对讲机喊话。");
+            updateUI();
+        }
+        
+        init();
+    })();
+</script>
+</body>
+</html>
