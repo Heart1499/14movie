@@ -421,9 +421,9 @@
                 <div class="char-card"><div class="char-icon">🐰</div><div><div class="char-name">韩振</div><div class="char-tag">HJ</div></div></div>
             </div>
             <div class="stats-area">
-                <div class="stat-row"><div class="stat-label"><span>🔥 申惟忍耐值</span><span id="tensionS_val">68</span><span>%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill fill-s" id="tensionS_bar" style="width:68%"></div></div></div>
-                <div class="stat-row"><div class="stat-label"><span>💗 韩振羞耻值</span><span id="tensionH_val">65</span><span>%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill fill-h" id="tensionH_bar" style="width:65%"></div></div></div>
-                <div class="stat-row"><div class="stat-label"><span>🔓 逃脱进度</span><span id="escape_val">0</span><span>%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill fill-escape" id="escape_bar" style="width:0%"></div></div></div>
+                <div class="stat-row"><div class="stat-label"><span> 申惟忍耐值</span><span id="tensionS_val">68</span><span>%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill fill-s" id="tensionS_bar" style="width:68%"></div></div></div>
+                <div class="stat-row"><div class="stat-label"><span> 韩振羞耻值</span><span id="tensionH_val">65</span><span>%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill fill-h" id="tensionH_bar" style="width:65%"></div></div></div>
+                <div class="stat-row"><div class="stat-label"><span> 逃脱进度</span><span id="escape_val">0</span><span>%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill fill-escape" id="escape_bar" style="width:0%"></div></div></div>
                 <div class="cmd-count-badge" id="cmdCountDisplay"> 指令: 0  |   事故: 0</div>
             </div>
         </div>
@@ -741,10 +741,10 @@
         function getEndingMessage(){
             let m="";
             switch(finalEndingType){
-                case "perfect": m="房门自动打开了，申惟牵着韩振的手慢慢走出来，韩振眼角有点红，他们的嘴角都是上扬的。后来的舞台上团综里两人会不自觉地对视，食髓知味地想起拍电影的这一天。"; break;
+                case "perfect": m="经过漫长的拉扯，房门在一声轻响后打开。两人都愣住了。申惟先回过神来，把外套披在韩振身上。"; break;
                 case "sweet": m="门开了。申惟帮韩振整理衣服，韩振小声说谢谢哥。两人一前一后走出去，但申惟的手一直往后伸，直到韩振握住，他终于憋不住上扬的嘴角。"; break;
                 case "awkward": m="门终于开了。申惟快步走在前面，韩振跟在后面低着头。回去的路上申惟帮韩振拉了拉口罩，遮住红肿的嘴唇，韩振偷偷笑了。"; break;
-                case "long": m="经过漫长的拉扯，房门在一声轻响后打开。两人都愣住了。申惟先回过神来，把外套披在韩振身上。"; break;
+                case "long": m="房门自动打开了，申惟牵着韩振的手慢慢走出来，韩振眼角有点红，他们的嘴角都是上扬的。后来的舞台上、团综里，两人反而会不自觉地对视，食髓知味地想起拍电影的这一天，和那位从天而降的${directorName}导演。"; break;
                 case "cold": m="门开了。两人沉默着走出去，没有牵手，也没有和今天发生的事有关的任何对话。但晚上wvs直播时韩振又一次提起和申惟的初遇印象，申惟听到后耳朵红了。"; break;
                 case "stuck": m="折腾了半天，房门纹丝不动。两人瘫坐在地上，申惟叹了口气说，这种程度还不够吗。韩振笑了，说或许吧，哥要不要试着多了解我一点。门突然响了一下，是的，也许，我们都还需要一点时间。"; break;
                 default: m="房间解锁。申惟把自己的外套紧紧裹住韩振，两人并排走出去，肩膀偶尔碰到，视线偶尔对上，他们一次都没有再躲开。";
