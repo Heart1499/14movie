@@ -379,46 +379,6 @@
 
         .badge-area {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            margin-top: 6px;
-        }
-
-        .reset-btn {
-            background: #4f3824;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 30px;
-            color: white;
-            cursor: pointer;
-            font-family: monospace;
-            font-size: 12px;
-        }
-
-        .ending-box {
-            background: #221c16e0;
-            backdrop-filter: blur(12px);
-            border-radius: 32px;
-            padding: 22px;
-            text-align: center;
-            margin: 16px 0;
-            border: 1px solid #e5a362;
-        }
-
-        .share-hint {
-            background: #2e241d;
-            border-radius: 28px;
-            padding: 8px 14px;
-            margin-top: 14px;
-            font-size: 10px;
-            color: #b9a78e;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .badge-area {
-            display: flex;
             justify-content: center;
             gap: 8px;
             margin-top: 12px;
@@ -645,10 +605,10 @@
         }
         
         function getDirectorStyleForEnding() {
-            if(styleStats.soft > styleStats.spicy && styleStats.soft > styleStats.chaotic) return "温柔派 · 氛围感导演";
-            else if(styleStats.spicy > styleStats.soft && styleStats.spicy > styleStats.chaotic) return "性感派 · 直球导演";
-            else if(styleStats.chaotic > styleStats.soft && styleStats.chaotic > styleStats.spicy) return "混邪派 · 整活导演";
-            else return "平衡派 · 全能导演";
+            if(styleStats.soft > styleStats.spicy && styleStats.soft > styleStats.chaotic) return "温柔の氛围感导演";
+            else if(styleStats.spicy > styleStats.soft && styleStats.spicy > styleStats.chaotic) return "性感の直球导演";
+            else if(styleStats.chaotic > styleStats.soft && styleStats.chaotic > styleStats.spicy) return "混邪の整活导演";
+            else return "安心の全能导演";
         }
         
         function recordStyle(cmdId) {
@@ -668,7 +628,7 @@
             }
         }
 
-        // 修复事故条件：放宽触发条件，更容易激活
+        // 放宽触发条件
         function checkAccident() {
             if(ended || escape >= 100) return false;
             // 条件1：指令数>4（放宽），进度<35（放宽），紧张值>58（放宽），且事故次数<2
@@ -734,7 +694,7 @@
                     addLog(`【${directorName}导演】送了饮料进去。`);
                     tensionS = Math.max(10, tensionS - 3);
                     tensionH = Math.max(10, tensionH - 2);
-                    addLog(`  默默喝草莓拿铁，气氛缓和。`);
+                    addLog(`  他们拿起草莓拿铁和冰美式，韩振主动和申惟碰了碰杯，气氛缓和。`);
                     styleStats.soft += 2;
                     break;
                 case "snack":
@@ -799,7 +759,7 @@
                 case "long": return "今天也好 明天也罢 一起吧。";
                 case "cold": return "被相反的人吸引的第一千万个理由。";
                 case "stuck": return "期待下一篇章的故事 人生篇章 只有第一步很难而已。";
-                default: return "曾经形单影只的我 爱上了以我们为名。";
+                default: return "曾经形单影只的我 爱上了以「我们」为名。";
             }
         }
 
@@ -1013,7 +973,7 @@
                         <div class="talk-label">🎙️ 导演工具箱</div>
                         <div class="interact-buttons">
                             <button class="interact-btn" id="musicBtn">音乐</button>
-                            <button class="interact-btn" id="lightBtn">调光</button>
+                            <button class="interact-btn" id="lightBtn">灯光</button>
                             <button class="interact-btn" id="coffeeBtn">饮料</button>
                             <button class="interact-btn" id="snackBtn">零食</button>
                         </div>
@@ -1079,6 +1039,12 @@
             if(sendBtn && talkInput) {
                 sendBtn.onclick = () => {
                     let msg = talkInput.value.trim();
+                    if(msg) directorSay(msg);
+                    talkInput.value = "";
+                };
+                talkInput.addEventListener('keypress', (e) => {
+                    if(e.key === 'Enter') {
+                        let msg = talkInput.value.trim();
                         if(msg) directorSay(msg);
                         talkInput.value = "";
                     }
@@ -1089,7 +1055,7 @@
             if(resetBtn) resetBtn.addEventListener('click', resetGame);
             
             const logDiv = document.getElementById('actionLog');
-            if(logDiv) logDiv.innerHTML = " 系统: 房间规则——亲密值达标才能开门。";
+            if(logDiv) logDiv.innerHTML = " 系统: 房间规则——亲密值达标，房间才能开门。";
             logs = [];
             addLog(` 重置房间，${directorName}导演上线。`);
             updateUI();
@@ -1103,4 +1069,3 @@
 </script>
 </body>
 </html>
-                        
