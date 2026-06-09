@@ -33,10 +33,10 @@
             position: relative;
         }
 
-        /* 弹幕区域 */
+        /* 弹幕区域 - 大量快速滚动 */
         .danmaku-area {
             position: relative;
-            height: 80px;
+            height: 100px;
             overflow: hidden;
             background: #050403;
             border-bottom: 1px solid #36281d;
@@ -57,8 +57,9 @@
             text-shadow: 0 0 3px #000;
             opacity: 0.9;
             pointer-events: none;
-            animation: slideDanmaku 8s linear forwards;
+            animation: slideDanmaku 6s linear forwards;
             z-index: 20;
+            font-weight: 500;
         }
         @keyframes slideDanmaku {
             0% { transform: translateX(100%); opacity: 0.8; }
@@ -440,49 +441,70 @@
         let directorName = "雨披";
         let styleStats = { soft: 0, spicy: 0, chaotic: 0 };
         
-        // 拍照冷却
         let lastPhotoTime = 0;
         
-        // 弹幕库 - 针对不同动作
-        const danmakuMessages = {
-            kiss_deep: ["啊啊啊这是在干嘛", "韩振耳朵又红了", "申惟手在发抖。。", "好纯情", "雕蛙不结婚很难收场"],
-            neck_bite: ["喉结？喉结！", "韩振你胆子好大", "我草", "我死了。。", "这能播吗"],
-            lap_grind: ["啊啊啊啊啊", "腰好细", "哦对的对的对的", "这个姿势...", "建议多来点"],
-            thigh_rub: ["大腿蹭大腿", "申惟你抓着干嘛。。", "韩振故意的吧", "好涩", "雕蛙你们玩好大"],
-            belt_remove: ["卧槽", "韩振你在看吗", "继续do不要停", "民政局驾到", "啊啊啊啊啊"],
-            hand_down: ["手往哪放？？？", "你俩谁哼那一声我没听清", "申惟你怎么回事", "腰侧是敏感带吗", "再来一次"],
-            missionary: ["我嘞个豆", "神秘数字1499", "勾脖子好自然", "这个角度...", "建议慢放"],
-            blindfold: [ "触觉放大是吧", "韩振你手在描什么", "申惟嘴唇一直在抖", "好会玩"],
-            aftercare: ["擦汗好温柔", "我屮艸芔茻", "立刻亲嘴", "噢噢噢噢对的对的对的", "这才是事后"],
-            toy_rope: ["这个手...", "这么纯情搞什么字母", "卧槽", "系得好慢在细品吗", "松结也是结"],
-            toy_blindfold: ["锐因你们...", "蒙眼好那个", "我想看更多", "导演我爱你", "1499"],
-            toy_collar: ["项圈prprpr", "好主动呀。。", "就是这个死味。。俩死鬼。。", "两个人都不敢看对方", "好纯"],
-            toy_feather: ["家产调情中哟", "我不上班在家全职研究家产xxoo", "我听到喘了", "好痒吧"],
-            toy_candle: ["午夜场", "碧迪艾斯爱慕也是让你们玩上了", "不做得我满意不许出去", "啊啊啊刚才有人截图了吗回头发我", "开了眼了第一次看到他俩这么红温"],
-            toy_ring: ["11111111", "神威耳朵红了", "哇塞", "导演牛啊", "戴上了啊啊啊啊"],
-            toy_flogger: ["宝宝们这个不是像你们这样温柔地玩的呀", "心痒痒的", "1499", "脸很红啊"],
-            toy_clamps: ["雕蛙很好今天终于看够了", "我去感觉好那个啊啊啊啊爱你老产明天见"],
-            default: ["弹幕大军路过", "锐因是真的", "导演厉害", "这房间出不去了", "kswl"]
-        };
+        // 弹幕固定词库 - 大量重复滚动
+        const danmakuPool = [
+            "1499", "1499", "1499", "锐因是真的", "锐因是真的", "锐因是真的",
+            "雕蛙我爱你们", "雕蛙我爱你们", "雕蛙我爱你们",
+            "啊啊啊啊啊", "kswl", "好涩", "这能播吗", "申惟耳朵红了",
+            "我草难得玩这么大谁录屏了", "不结婚很难收场", "民政局来了", "我死了"
+        ];
         
-        function addDanmaku(actionKey, customText = null) {
-            let msgs = danmakuMessages[actionKey] || danmakuMessages.default;
-            if (customText) msgs = [customText, ...msgs.slice(0, 3)];
-            let msg = msgs[Math.floor(Math.random() * msgs.length)];
-            const track = document.getElementById('danmakuTrack');
-            if (!track) return;
-            const danmaku = document.createElement('div');
-            danmaku.className = 'danmaku';
-            danmaku.innerText = msg;
-            danmaku.style.top = Math.random() * 60 + 'px';
-            danmaku.style.fontSize = (11 + Math.floor(Math.random() * 5)) + 'px';
-            danmaku.style.color = ['#e2bc89', '#f0cfaa', '#d7cdbc', '#c96f5e'][Math.floor(Math.random()*4)];
-            track.appendChild(danmaku);
-            setTimeout(() => { if(danmaku.parentNode) danmaku.remove(); }, 8000);
+        // 持续大量弹幕的定时器
+        let danmakuInterval = null;
+        
+        function startDanmaku() {
+            if (danmakuInterval) clearInterval(danmakuInterval);
+            danmakuInterval = setInterval(() => {
+                // 每次发送3-6条弹幕，制造大量滚动效果
+                const count = 3 + Math.floor(Math.random() * 5);
+                for (let i = 0; i < count; i++) {
+                    setTimeout(() => {
+                        const track = document.getElementById('danmakuTrack');
+                        if (!track) return;
+                        const msg = danmakuPool[Math.floor(Math.random() * danmakuPool.length)];
+                        const danmaku = document.createElement('div');
+                        danmaku.className = 'danmaku';
+                        danmaku.innerText = msg;
+                        danmaku.style.top = (Math.random() * 70 + 10) + 'px';
+                        danmaku.style.fontSize = (10 + Math.floor(Math.random() * 7)) + 'px';
+                        const colors = ['#e2bc89', '#f0cfaa', '#d7cdbc', '#c96f5e', '#e8a87c', '#f3cf9a'];
+                        danmaku.style.color = colors[Math.floor(Math.random() * colors.length)];
+                        track.appendChild(danmaku);
+                        setTimeout(() => { if(danmaku.parentNode) danmaku.remove(); }, 6000);
+                    }, i * 150);
+                }
+            }, 800);
         }
         
-        // 拍照功能
-        function takePhoto(actionDesc) {
+        function stopDanmaku() {
+            if (danmakuInterval) {
+                clearInterval(danmakuInterval);
+                danmakuInterval = null;
+            }
+        }
+        
+        function addDanmakuForAction() {
+            // 动作触发时额外发送几条弹幕
+            const track = document.getElementById('danmakuTrack');
+            if (!track) return;
+            const count = 2 + Math.floor(Math.random() * 4);
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const msg = danmakuPool[Math.floor(Math.random() * danmakuPool.length)];
+                    const danmaku = document.createElement('div');
+                    danmaku.className = 'danmaku';
+                    danmaku.innerText = msg;
+                    danmaku.style.top = (Math.random() * 70 + 10) + 'px';
+                    danmaku.style.fontSize = (10 + Math.floor(Math.random() * 7)) + 'px';
+                    track.appendChild(danmaku);
+                    setTimeout(() => { if(danmaku.parentNode) danmaku.remove(); }, 6000);
+                }, i * 120);
+            }
+        }
+        
+        function takePhoto() {
             if (!gameActive || escape >= 100) {
                 addLog("导演按了快门，但没拍到什么有价值的画面。");
                 return;
@@ -494,7 +516,7 @@
             }
             lastPhotoTime = now;
             addLog(`【${directorName}导演】按下了快门。咔嚓。`);
-            addDanmaku('default', "导演在拍照！");
+            addDanmakuForAction();
             let reactions = [
                 "申惟下意识往旁边偏了一下头，韩振愣了一下没动。",
                 "韩振小声说了句“导演在拍”，申惟耳朵更红了。",
@@ -558,13 +580,13 @@
             { keywords: ["灯光","调暗","暗一点","黑暗"], effect: { ts: -1, th: -3, esc: 1, style: "soft", log: "  昏暗的光线下，两人反而比从前更敢看向对方。" } },
             { keywords: ["躺下","休息","睡觉","地板"], effect: { ts: -1, th: -1, esc: 1, style: "soft", log: "  两人并肩躺在地毯上，安静地看着天花板。" } },
             { keywords: ["草莓","拿铁","蛋糕","咖啡","零食","巧克力","饼干","苹果"], effect: { ts: -1, th: -2, esc: 1, style: "soft", log: "  两人分着吃东西，气氛变得像日常一样放松。" } },
-            { keywords: ["麻辣香锅","海鲜","生食","喜欢吃什么","食物","美食"], effect: { ts: -1, th: -1, esc: 1, style: "soft", log: "  聊到吃的，申惟说喜欢吃海鲜，韩振说喜欢吃麻辣香锅，两个人笑了，韩振说申惟哥在中国可以被称为老吃家。" } },
+            { keywords: ["麻辣香锅","海鲜","生食","喜欢吃什么","食物","美食"], effect: { ts: -1, th: -1, esc: 1, style: "soft", log: "  聊到吃的，申惟说喜欢吃海鲜，滔滔不绝介绍起美食，两个人都笑了。" } },
             { keywords: ["相信我","trust me","信我"], effect: { ts: -2, th: -2, esc: 2, style: "soft", log: "  申惟轻声说“信我”，然后慢慢靠近。" } },
             { keywords: ["再来一次","one more","再一次"], effect: { ts: -2, th: -2, esc: 1, style: "spicy", log: "  刚才的接触意犹未尽，两人又重新试了一次。" } },
             { keywords: ["好配","般配","天生一对","合适"], effect: { ts: -1, th: -1, esc: 2, style: "soft", log: "  两人听到后不约而同看了对方一眼，又迅速移开。" } },
             { keywords: ["心跳","好快","怦怦"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  申惟把手按在自己胸口，又偷偷看了一眼韩振。" } },
             { keywords: ["害羞","脸红","不好意思"], effect: { ts: -1, th: -2, esc: 1, style: "soft", log: "  两个人脸上都泛着红，谁也没先开口说话。" } },
-            { keywords: ["签名","围巾","礼物","手写信"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  韩振摸了摸申惟送的围巾，申惟看到了没说话。" } },
+            { keywords: ["签名","围巾","礼物","手写信"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  韩振主动拥抱了申惟。" } },
             { keywords: ["队长","leader","责任感"], effect: { ts: -1, th: -1, esc: 1, style: "soft", log: "  申惟挺直了背，韩振拍了拍他的肩膀。" } },
             { keywords: ["蹦极","高空","害怕"], effect: { ts: -2, th: -1, esc: 1, style: "soft", log: "  韩振想起申惟关心自己、保护自己的样子，小声说了谢谢。" } }
         ];
@@ -632,9 +654,9 @@
             { id: "toy_collar", label: "细链项圈", desc: "申惟拿起那条细链犹豫了很久，韩振轻轻说了句“想试就试”，红着脸把链子扣好，两个人都不敢看对方。" },
             { id: "toy_feather", label: "羽毛", desc: "申惟用羽毛扫过韩振的脖子和锁骨，韩振死死咬住下唇不让自己出声，手指抓着床单泛白。" },
             { id: "toy_candle", label: "低温蜡烛", desc: "韩振小心翼翼滴了一滴在申惟手背上，申惟没躲，只是呼吸变沉了。韩振问疼不疼，申惟摇头。" },
-            { id: "toy_ring", label: "指环", desc: "韩振拿出一个小银环，申惟看到后耳朵立刻红了。他们艰难地呼吸着，感觉房间内的空气变得稀薄，而他们越来越燥热。" },
+            { id: "toy_ring", label: "指环", desc: "韩振拿出一个小银环，申惟看到后耳朵立刻红了。他们艰难地呼吸着，感觉房间内的空气变得稀薄。" },
             { id: "toy_flogger", label: "散鞭", desc: "韩振拿着散鞭，力度很轻，像在挠痒痒。申惟忍不住说了句“用力点”，说完自己先愣住了，脸烧得通红。" },
-            { id: "toy_clamps", label: "小夹子", desc: "申惟拿起小夹子，韩振还没来得及阻止他就夹上了。伴随着一声闷哼，和小声的“如果是你在这里的话，没事，可以试试。”。" }
+            { id: "toy_clamps", label: "小夹子", desc: "申惟拿起小夹子，韩振还没来得及阻止他就夹上了。伴随着一声闷哼，和一句小声的“如果是你在这里的话，可以试试”。" }
         ];
         
         function useToy(toyId) {
@@ -644,7 +666,7 @@
             tensionS=Math.max(10,Math.min(98,tensionS+deltaS)); tensionH=Math.max(10,Math.min(98,tensionH+deltaH)); escape=Math.min(100,escape+deltaEsc);
             styleStats.spicy+=1;
             addLog(`玩具箱: ${toy.desc} (申惟${deltaS>=0?'+':''}${deltaS}, 韩振${deltaH>=0?'+':''}${deltaH} | +${deltaEsc}%)`);
-            addDanmaku(toyId);
+            addDanmakuForAction();
             lastCommandDesc = toy.desc.substring(0,40);
             updateUI();
             if(cmdCount%4===0&&escape<85&&!ended){ let e=3; escape=Math.min(100,escape+e); addLog(` 默契渐长，房门又松动了一些 +${e}%`); updateUI();}
@@ -659,23 +681,27 @@
                 case "shout": if(customText) processShout(customText); break;
                 case "music": addLog(`【${directorName}导演】播放了抒情歌。`); tensionS=Math.max(10,tensionS-4); tensionH=Math.max(10,tensionH-3); addLog(`  音乐让气氛柔和了一些。`); styleStats.soft+=2; break;
                 case "light": addLog(`【${directorName}导演】把灯光调暗。`); tensionS=Math.max(10,tensionS-2); tensionH=Math.max(10,tensionH-5); addLog(`  昏暗光线下，两人没有先前那么紧绷，甚至多了几分暧昧的氛围。`); styleStats.soft+=1; break;
-                case "coffee": addLog(`【${directorName}导演】送了饮料进去。`); tensionS=Math.max(10,tensionS-3); tensionH=Math.max(10,tensionH-2); addLog(`  默默拿了草莓拿铁好冰美式，韩振主动和申惟碰杯，气氛缓和。`); styleStats.soft+=2; break;
+                case "coffee": addLog(`【${directorName}导演】送了饮料进去。`); tensionS=Math.max(10,tensionS-3); tensionH=Math.max(10,tensionH-2); addLog(`  默默拿了草莓拿铁和冰美式，韩振主动和申惟碰杯，气氛缓和。`); styleStats.soft+=2; break;
                 case "snack": addLog(`【${directorName}导演】送了零食进去。`); tensionH=Math.max(10,tensionH-4); addLog(`  韩振递给申惟一块迪拜巧克力饼干，申惟接了。`); styleStats.soft+=1; break;
             }
             updateUI(); checkAccident(); if(escape>=100&&!ended) checkEnding();
         }
         function directorSay(text){ directorAction("shout",text); }
         function checkEnding(){ if(escape>=100&&!ended){ escape=100; determineEnding(); showEnding(); } }
-        function determineEnding(){
-            if(escape>=100){
-                if(tensionS<=8&&tensionH<=8) finalEndingType="perfect";
-                else if(tensionS<=18&&tensionH<=18) finalEndingType="sweet";
-                else if(tensionS>=72||tensionH>=72) finalEndingType="awkward";
-                else if(cmdCount>=20) finalEndingType="long";
-                else if(tensionS>=58&&tensionH>=58) finalEndingType="cold";
-                else finalEndingType="normal";
-            } else finalEndingType="stuck";
+        
+        function determineEnding() {
+            if(escape >= 100) {
+                if(tensionS <= 20 && tensionH <= 20) finalEndingType = "perfect";
+                else if(tensionS <= 35 && tensionH <= 35) finalEndingType = "sweet";
+                else if(tensionS >= 70 || tensionH >= 70) finalEndingType = "awkward";
+                else if(cmdCount >= 15) finalEndingType = "long";
+                else if(tensionS >= 55 && tensionH >= 55) finalEndingType = "cold";
+                else finalEndingType = "normal";
+            } else {
+                finalEndingType = "stuck";
+            }
         }
+        
         function getEndingMessage(){
             let m="";
             switch(finalEndingType){
@@ -683,11 +709,12 @@
                 case "sweet": m="门开了。申惟帮韩振整理衣服，韩振小声说谢谢哥。两人一前一后走出去，但申惟的手一直往后伸，直到韩振握住，他终于憋不住上扬的嘴角。"; break;
                 case "awkward": m="门终于开了。申惟快步走在前面，韩振跟在后面低着头。回去的路上申惟帮韩振拉了拉口罩，遮住红肿的嘴唇，韩振偷偷笑了。"; break;
                 case "long": m="经过漫长的拉扯，房门在一声轻响后打开。两人都愣住了。申惟先回过神来，把外套披在韩振身上。"; break;
-                case "cold": m="门开了。两人沉默着走出去，没有牵手，也没有和今天发生的事有关的任何对话。但晚上wvs直播时韩振第1499次首谈和申惟的初遇印象，申惟听到后耳朵红了。"; break;
+                case "cold": m="门开了。两人沉默着走出去，没有牵手，也没有和今天发生的事有关的任何对话。但晚上wvs直播时韩振又一次提起和申惟的初遇印象，申惟听到后耳朵红了。"; break;
                 case "stuck": m="折腾了半天，房门纹丝不动。两人瘫坐在地上，申惟叹了口气说，这种程度还不够吗。韩振笑了，说或许吧，哥要不要试着多了解我一点。门突然响了一下，是的，也许，我们都还需要一点时间。"; break;
                 default: m="房间解锁。申惟把自己的外套紧紧裹住韩振，两人并排走出去，肩膀偶尔碰到，视线偶尔对上，他们一次都没有再躲开。";
             } return m + `  (导演${directorName} · ${getDirectorStyle()})`;
         }
+        
         function getEndingTitle(){
             switch(finalEndingType){
                 case "perfect": return "和我一起奔跑是什么心情 在这首歌结束时可以告诉我吗。";
@@ -737,7 +764,7 @@
             }
             tensionS=Math.min(98,Math.max(5,tensionS+deltaS)); tensionH=Math.min(98,Math.max(5,tensionH+deltaH)); escape=Math.min(100,escape+deltaEsc);
             addLog(`${transition} ${flavor} (申惟${deltaS>=0?'+':''}${deltaS}, 韩振${deltaH>=0?'+':''}${deltaH} | +${deltaEsc}%)`);
-            addDanmaku(cmdId);
+            addDanmakuForAction();
             lastCommandDesc=flavor.substring(0,40);
             updateUI();
             if(cmdCount%4===0&&escape<85&&!ended){ let e=3; escape=Math.min(100,escape+e); addLog(` 默契渐长，房门又松动了一些 +${e}%`); updateUI();}
@@ -748,6 +775,7 @@
         
         function showEnding(){
             ended=true; gameActive=false;
+            stopDanmaku();
             const title=getEndingTitle(), msg=getEndingMessage();
             const consoleDiv=document.getElementById('directorConsole');
             if(consoleDiv){
@@ -762,7 +790,7 @@
             tensionS=68; tensionH=65; escape=0; gameActive=true; ended=false; logs=[]; lastCommandDesc=""; cmdCount=0; accidentCount=0; finalEndingType=null; styleStats={soft:0,spicy:0,chaotic:0};
             const consoleDiv=document.getElementById('directorConsole');
             if(consoleDiv){
-                consoleDiv.innerHTML=`<div class="director-name-display" id="directorNameDisplay">🎬 ${directorName}导演 · 未定义风格</div><div class="name-input-area"><span class="name-label">导演署名</span><input type="text" class="name-input" id="directorNameInput" placeholder="输入你的名字" value="${directorName}"><button class="name-confirm" id="confirmNameBtn">确认</button></div><div class="section-title">🎙️ 指令台</div><div class="command-grid" id="commandGrid"></div><div class="toy-section"><div class="toy-title">🎁 玩具箱 · 导演道具</div><div class="toy-grid" id="toyGrid"></div></div><div class="director-interact"><div class="talk-label">🎙️ 导演工具箱</div><div class="interact-buttons"><button class="interact-btn" id="musicBtn">音乐</button><button class="interact-btn" id="lightBtn">调光</button><button class="interact-btn" id="coffeeBtn">饮料</button><button class="interact-btn" id="snackBtn">零食</button><button class="photo-btn" id="photoBtn">📸 拍照</button></div><div class="talk-input-area"><input type="text" class="talk-input" id="directorTalkInput" placeholder="喊话，比如: 再主动一点" autocomplete="off"><button class="send-btn" id="sendTalkBtn">喊话</button></div></div><div class="progress-row"><button class="reset-btn" id="resetGameBtn">🎞️ 重新开拍</button></div>`;
+                consoleDiv.innerHTML=`<div class="director-name-display" id="directorNameDisplay">🎬 ${directorName}导演 · 未定义风格</div><div class="name-input-area"><span class="name-label">导演署名</span><input type="text" class="name-input" id="directorNameInput" placeholder="输入你的名字" value="${directorName}"><button class="name-confirm" id="confirmNameBtn">确认</button></div><div class="section-title">🎙️ 指令台</div><div class="command-grid" id="commandGrid"></div><div class="toy-section"><div class="toy-title">导演道具</div><div class="toy-grid" id="toyGrid"></div></div><div class="director-interact"><div class="talk-label">导演工具箱</div><div class="interact-buttons"><button class="interact-btn" id="musicBtn">音乐</button><button class="interact-btn" id="lightBtn">调光</button><button class="interact-btn" id="coffeeBtn">饮料</button><button class="interact-btn" id="snackBtn">零食</button><button class="photo-btn" id="photoBtn">📸 拍照</button></div><div class="talk-input-area"><input type="text" class="talk-input" id="directorTalkInput" placeholder="喊话，比如: 再主动一点" autocomplete="off"><button class="send-btn" id="sendTalkBtn">喊话</button></div></div><div class="progress-row"><button class="reset-btn" id="resetGameBtn">🎞️ 重新开拍</button></div>`;
             }
             const nameInput=document.getElementById('directorNameInput'), confirmBtn=document.getElementById('confirmNameBtn');
             if(confirmBtn&&nameInput) confirmBtn.onclick=()=>{ let nn=nameInput.value.trim(); if(nn) directorName=nn; else directorName="雨披"; const dd=document.getElementById('directorNameDisplay'); if(dd) dd.innerText=`🎬 ${directorName}导演`; addLog(`「${directorName}」导演已就位。`); };
@@ -778,6 +806,7 @@
             const resetBtn=document.getElementById('resetGameBtn'); if(resetBtn) resetBtn.addEventListener('click',resetGame);
             const logDiv=document.getElementById('actionLog'); if(logDiv) logDiv.innerHTML=" 系统: 房间规则——亲密值达标才能开门。";
             logs=[]; addLog(` 重置房间，${directorName}导演上线。`); updateUI();
+            startDanmaku();
         }
         function init(){ resetGame(); }
         init();
