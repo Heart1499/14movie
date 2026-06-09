@@ -455,7 +455,6 @@
         function startDanmaku() {
             if (danmakuInterval) clearInterval(danmakuInterval);
             danmakuInterval = setInterval(() => {
-                // 每次发送6-10条弹幕，速度更快
                 const count = 6 + Math.floor(Math.random() * 6);
                 for (let i = 0; i < count; i++) {
                     setTimeout(() => {
@@ -597,7 +596,7 @@
             let eff = matched.effect;
             tensionS = Math.max(10, Math.min(98, tensionS + eff.ts));
             tensionH = Math.max(10, Math.min(98, tensionH + eff.th));
-            let escInc = eff.esc + Math.floor(Math.random() * 3);
+            let escInc = eff.esc + Math.floor(Math.random() * 2);
             escape = Math.min(100, escape + escInc);
             addLog(`【${directorName}导演喊话】“${text}”`);
             addLog(matched.log);
@@ -636,10 +635,10 @@
                 tensionS=Math.min(95,tensionS+5); tensionH=Math.min(95,tensionH+4);
                 addLog("💥 "+msgs[Math.floor(Math.random()*msgs.length)]); updateUI(); return true;
             }
-            if(cmdCount>3 && tensionS>72 && Math.random()<0.22 && accidentCount<2) {
+            if(cmdCount>3 && tensionS>72 && Math.random()<0.12 && accidentCount<2) {
                 accidentCount++; addLog("💥 申惟顶不住压力，躲到角落背对着韩振。"); tensionS=Math.min(96,tensionS+3); updateUI(); return true;
             }
-            if(cmdCount>3 && tensionH>72 && Math.random()<0.18 && accidentCount<2) {
+            if(cmdCount>3 && tensionH>72 && Math.random()<0.10 && accidentCount<2) {
                 accidentCount++; addLog("💥 韩振脸红到不敢抬头，小声说了句“哥别看我”，申惟反而更紧张了。"); tensionH=Math.min(96,tensionH+4); updateUI(); return true;
             }
             return false;
@@ -659,15 +658,15 @@
         function useToy(toyId) {
             if(!gameActive||escape>=100) return;
             cmdCount++; let toy=toys.find(t=>t.id===toyId); if(!toy) return;
-            let deltaS = -9 - Math.floor(Math.random()*5), deltaH = -8 - Math.floor(Math.random()*5), deltaEsc = 7 + Math.floor(Math.random()*7);
+            let deltaS = -6 - Math.floor(Math.random()*3), deltaH = -5 - Math.floor(Math.random()*3), deltaEsc = 4 + Math.floor(Math.random()*5);
             tensionS=Math.max(10,Math.min(98,tensionS+deltaS)); tensionH=Math.max(10,Math.min(98,tensionH+deltaH)); escape=Math.min(100,escape+deltaEsc);
             styleStats.spicy+=1;
             addLog(`玩具箱: ${toy.desc} (申惟${deltaS>=0?'+':''}${deltaS}, 韩振${deltaH>=0?'+':''}${deltaH} | +${deltaEsc}%)`);
             addDanmakuForAction();
             lastCommandDesc = toy.desc.substring(0,40);
             updateUI();
-            if(cmdCount%4===0&&escape<85&&!ended){ let e=3; escape=Math.min(100,escape+e); addLog(` 默契渐长，房门又松动了一些 +${e}%`); updateUI();}
-            if(tensionS<30&&tensionH<32&&escape<90&&!ended){ let e=6; escape=Math.min(100,escape+e); addLog(` 两人不约而同看向对方，然后同时笑了。门锁咔哒 +${e}%`); updateUI();}
+            if(cmdCount%4===0&&escape<85&&!ended){ let e=2; escape=Math.min(100,escape+e); addLog(` 默契渐长，房门又松动了一些 +${e}%`); updateUI();}
+            if(tensionS<30&&tensionH<32&&escape<90&&!ended){ let e=4; escape=Math.min(100,escape+e); addLog(` 两人不约而同看向对方，然后同时笑了。门锁咔哒 +${e}%`); updateUI();}
             checkAccident(); if(escape>=100&&!ended){ determineEnding(); showEnding(); }
             updateUI();
         }
@@ -712,15 +711,14 @@
             } return m + `  (导演${directorName} · ${getDirectorStyle()})`;
         }
         
-        // 结局标题改为随机抽取，不再区分类型
         const titlePool = [
-            "和我一起奔跑是什么心情 在这首歌结束时可以告诉我吗。",
+            "曾经形单影只的我 爱上了以我们为名。",
             "要不要和我一起去往这条路的尽头。",
             "因你而改变的季节 为你而倾心的一天 我们在同一个圆里打转。",
             "今天也好 明天也罢 一起吧。",
             "被相反的人吸引的第一千万个理由。",
             "期待下一篇章的故事 人生篇章 只有第一步很难而已。",
-            "曾经形单影只的我 爱上了以我们为名。"
+            "和我一起奔跑是什么心情 在这首歌结束时可以告诉我吗。"
         ];
         
         function getEndingTitle(){
@@ -740,26 +738,26 @@
             cmdCount++; recordStyle(cmdId);
             let deltaS=0, deltaH=0, deltaEsc=0, flavor="", transition=lastCommandDesc?"（接续）":"";
             switch(cmdId){
-                case "kiss_deep": deltaS=-10; deltaH=-9; deltaEsc=6+Math.floor(Math.random()*6); flavor="韩振踮起脚尖，申惟愣了一秒后低头回应。分开时两人都在喘，韩振耳朵红透。"; break;
-                case "neck_bite": deltaS=-12; deltaH=-7; deltaEsc=7+Math.floor(Math.random()*6); flavor="韩振凑过去轻轻咬住申惟喉结，申惟闷哼一声仰起头，手指攥紧了韩振的衣服。"; break;
-                case "lap_grind": deltaS=-14; deltaH=-11; deltaEsc=8+Math.floor(Math.random()*7); flavor="韩振跨坐在申惟腿上，缓慢磨蹭。申惟手扣住韩振的腰，韩振把脸埋进他肩膀。"; break;
-                case "shirt_off": deltaS=-9; deltaH=-13; deltaEsc=7+Math.floor(Math.random()*6); flavor="申惟帮韩振脱掉上衣，指尖碰到皮肤时，韩振轻轻战栗。"; break;
-                case "wall_press": deltaS=-8; deltaH=-10; deltaEsc=6+Math.floor(Math.random()*5); flavor="申惟把韩振按在墙上，韩振拽住他的衣领拉近，呼吸全落在耳侧。"; break;
-                case "ear_whisper_ch": deltaS=-11; deltaH=-8; deltaEsc=6+Math.floor(Math.random()*6); flavor="韩振凑过去轻声说“哥想不想更过分一点”，申惟耳朵瞬间血红。"; break;
-                case "blindfold": deltaS=-15; deltaH=-6; deltaEsc=9+Math.floor(Math.random()*6); flavor="蒙住申惟眼睛，韩振用手指描摹他的脸，指尖划过嘴唇。"; break;
-                case "thigh_rub": deltaS=-16; deltaH=-14; deltaEsc=10+Math.floor(Math.random()*7); flavor="韩振用大腿蹭申惟腿间，申惟抓住他的腿，想阻止，但很显然没有完全用力。"; break;
-                case "back_hug_chest": deltaS=-10; deltaH=-11; deltaEsc=7+Math.floor(Math.random()*5); flavor="申惟从背后抱住韩振，手放在他胸口，韩振按住他的手不让拿开。"; break;
-                case "floor_press": deltaS=-11; deltaH=-10; deltaEsc=8+Math.floor(Math.random()*6); flavor="两人滚到地板上，正对着房间内的镜子。申惟在上方俯视韩振。"; break;
-                case "belt_remove": deltaS=-17; deltaH=-12; deltaEsc=11+Math.floor(Math.random()*7); flavor="韩振解开申惟的皮带，金属扣碰撞的声音格外响，申惟呼吸一滞。"; break;
-                case "hand_down": deltaS=-15; deltaH=-17; deltaEsc=10+Math.floor(Math.random()*7); flavor="申惟的手从韩振腰侧滑进裤腰，韩振轻轻哼了一声。"; break;
-                case "missionary": deltaS=-18; deltaH=-16; deltaEsc=12+Math.floor(Math.random()*7); flavor="申惟把韩振压在床上，膝盖顶开他双腿，韩振勾住他的脖子。"; break;
-                case "spoon": deltaS=-9; deltaH=-8; deltaEsc=5+Math.floor(Math.random()*5); flavor="申惟从背后环住韩振的腰，下巴抵着他后脑勺，安静地抱了很久。"; break;
-                case "teasing_deny": deltaS=-6; deltaH=-5; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振逗申惟但不让他碰，申惟急了，一把拽回来轻声说“珍珍韩振不要走”。"; break;
-                case "praise_kink": deltaS=-8; deltaH=-10; deltaEsc=7+Math.floor(Math.random()*5); flavor="申惟边亲韩振边夸他“做得好”，韩振把脸埋进他胸口。"; break;
-                case "hair_pull": deltaS=-10; deltaH=-7; deltaEsc=7+Math.floor(Math.random()*5); flavor="韩振揪住申惟的头发，申惟吃痛反而吻得更用力。"; break;
-                case "table_edge": deltaS=-12; deltaH=-11; deltaEsc=9+Math.floor(Math.random()*6); flavor="申惟把韩振抱上书桌边缘，韩振双腿夹住他的腰。"; break;
-                case "knee_ride": deltaS=-10; deltaH=-13; deltaEsc=8+Math.floor(Math.random()*6); flavor="韩振跪在床上仰头看申惟，申惟伸手把他拉起来，两人一起摔进枕头里。"; break;
-                case "aftercare": deltaS=-6; deltaH=-7; deltaEsc=4+Math.floor(Math.random()*4); flavor="申惟帮韩振擦汗，轻声问他疼不疼。韩振摇头又点头，申惟亲了亲他额头。"; break;
+                case "kiss_deep": deltaS=-6; deltaH=-5; deltaEsc=3+Math.floor(Math.random()*4); flavor="韩振踮起脚尖，申惟愣了一秒后低头回应。分开时两人都在喘，韩振耳朵红透。"; break;
+                case "neck_bite": deltaS=-7; deltaH=-4; deltaEsc=3+Math.floor(Math.random()*4); flavor="韩振凑过去轻轻咬住申惟喉结，申惟闷哼一声仰起头，手指攥紧了韩振的衣服。"; break;
+                case "lap_grind": deltaS=-8; deltaH=-6; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振跨坐在申惟腿上，缓慢磨蹭。申惟手扣住韩振的腰，韩振把脸埋进他肩膀。"; break;
+                case "shirt_off": deltaS=-5; deltaH=-7; deltaEsc=3+Math.floor(Math.random()*4); flavor="申惟帮韩振脱掉上衣，指尖碰到皮肤时，韩振轻轻战栗。"; break;
+                case "wall_press": deltaS=-5; deltaH=-6; deltaEsc=3+Math.floor(Math.random()*3); flavor="申惟把韩振按在墙上，韩振拽住他的衣领拉近，呼吸全落在耳侧。"; break;
+                case "ear_whisper_ch": deltaS=-6; deltaH=-5; deltaEsc=3+Math.floor(Math.random()*4); flavor="韩振凑过去轻声说“哥想不想更过分一点”，申惟耳朵瞬间血红。"; break;
+                case "blindfold": deltaS=-8; deltaH=-4; deltaEsc=4+Math.floor(Math.random()*4); flavor="蒙住申惟眼睛，韩振用手指描摹他的脸，指尖划过嘴唇。"; break;
+                case "thigh_rub": deltaS=-9; deltaH=-8; deltaEsc=5+Math.floor(Math.random()*4); flavor="韩振用大腿蹭申惟腿间，申惟抓住他的腿，想阻止，但很显然没有完全用力。"; break;
+                case "back_hug_chest": deltaS=-6; deltaH=-6; deltaEsc=3+Math.floor(Math.random()*4); flavor="申惟从背后抱住韩振，手放在他胸口，韩振按住他的手不让拿开。"; break;
+                case "floor_press": deltaS=-6; deltaH=-6; deltaEsc=4+Math.floor(Math.random()*4); flavor="两人滚到地板上，正对着房间内的镜子。申惟在上方俯视韩振。"; break;
+                case "belt_remove": deltaS=-9; deltaH=-7; deltaEsc=5+Math.floor(Math.random()*4); flavor="韩振解开申惟的皮带，金属扣碰撞的声音格外响，申惟呼吸一滞。"; break;
+                case "hand_down": deltaS=-8; deltaH=-9; deltaEsc=5+Math.floor(Math.random()*4); flavor="申惟的手从韩振腰侧滑进裤腰，韩振轻轻哼了一声。"; break;
+                case "missionary": deltaS="-10"; deltaH="-9"; deltaEsc=6+Math.floor(Math.random()*4); flavor="申惟把韩振压在床上，膝盖顶开他双腿，韩振勾住他的脖子。"; break;
+                case "spoon": deltaS="-5"; deltaH="-5"; deltaEsc=3+Math.floor(Math.random()*3); flavor="申惟从背后环住韩振的腰，下巴抵着他后脑勺，安静地抱了很久。"; break;
+                case "teasing_deny": deltaS="-3"; deltaH="-3"; deltaEsc=2+Math.floor(Math.random()*3); flavor="韩振逗申惟但不让他碰，申惟急了，一把拽回来轻声说“珍珍韩振不要走”。"; break;
+                case "praise_kink": deltaS="-5"; deltaH="-6"; deltaEsc=3+Math.floor(Math.random()*4); flavor="申惟边亲韩振边夸他“做得好”，韩振把脸埋进他胸口。"; break;
+                case "hair_pull": deltaS="-6"; deltaH="-4"; deltaEsc=3+Math.floor(Math.random()*4); flavor="韩振揪住申惟的头发，申惟吃痛反而吻得更用力。"; break;
+                case "table_edge": deltaS="-7"; deltaH="-6"; deltaEsc=4+Math.floor(Math.random()*4); flavor="申惟把韩振抱上书桌边缘，韩振双腿夹住他的腰。"; break;
+                case "knee_ride": deltaS="-6"; deltaH="-7"; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振跪在床上仰头看申惟，申惟伸手把他拉起来，两人一起摔进枕头里。"; break;
+                case "aftercare": deltaS="-4"; deltaH="-4"; deltaEsc=2+Math.floor(Math.random()*3); flavor="申惟帮韩振擦汗，轻声问他疼不疼。韩振摇头又点头，申惟亲了亲他额头。"; break;
                 default: return;
             }
             tensionS=Math.min(98,Math.max(5,tensionS+deltaS)); tensionH=Math.min(98,Math.max(5,tensionH+deltaH)); escape=Math.min(100,escape+deltaEsc);
@@ -767,8 +765,8 @@
             addDanmakuForAction();
             lastCommandDesc=flavor.substring(0,40);
             updateUI();
-            if(cmdCount%4===0&&escape<85&&!ended){ let e=3; escape=Math.min(100,escape+e); addLog(` 默契渐长，房门又松动了一些 +${e}%`); updateUI();}
-            if(tensionS<30&&tensionH<32&&escape<90&&!ended){ let e=6; escape=Math.min(100,escape+e); addLog(` 两人不约而同看向对方，然后同时笑了。门锁咔哒 +${e}%`); updateUI();}
+            if(cmdCount%4===0&&escape<85&&!ended){ let e=2; escape=Math.min(100,escape+e); addLog(` 默契渐长，房门又松动了一些 +${e}%`); updateUI();}
+            if(tensionS<30&&tensionH<32&&escape<90&&!ended){ let e=4; escape=Math.min(100,escape+e); addLog(` 两人不约而同看向对方，然后同时笑了。门锁咔哒 +${e}%`); updateUI();}
             checkAccident(); if(escape>=100&&!ended){ determineEnding(); showEnding(); }
             updateUI();
         }
