@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>小雨披大导演 · 锐因 九号房</title>
+    <title>小雨披大导演 · 锐因 不能出去的房间</title>
     <style>
         * {
             margin: 0;
@@ -451,10 +451,141 @@
         
         // 导演信息
         let directorName = "雨披";
-         let directorStyle = "未定义";
+        let directorStyle = "未定义";
         
         // 用于统计风格
         let styleStats = { soft: 0, spicy: 0, chaotic: 0 };
+        
+        // ==================== 逃脱进度递进描述库 ====================
+        const escapePhrases = {
+            veryLow: [
+                "门锁发出细微的咔哒声，好像有什么在松动。",
+                "门缝里透进来一丝微弱的光，又松动了一点。",
+                "空气里有细微的变化，锁芯轻轻转了一下。",
+                "门框发出轻微的吱呀声，两人同时看了一眼房门。"
+            ],
+            low: [
+                "锁芯又转动了一格，离门开更近了。",
+                "门缝比之前宽了一点点，透进的光更多了。",
+                "房门周围的墙皮掉了一小块，进度在往前推。",
+                "申惟的余光扫到门缝，似乎比之前宽了。"
+            ],
+            medium: [
+                "门锁弹开了一道卡扣，两人呼吸都变轻了。",
+                "房间里的压迫感减弱了一些，门已经开始晃动。",
+                "逃脱的希望明显增长了，门板发出沉闷的一声响。",
+                "韩振感觉到门缝吹进来的风，小声说“快了吗”。"
+            ],
+            high: [
+                "门已经半开，外面透进来的光线落在两人身上。",
+                "锁舌完全缩回，只要再轻轻一推就能打开。",
+                "申惟伸手碰了碰门，回头看了韩振一眼。",
+                "门把手上结的霜化了，金属变得温热。"
+            ],
+            almost: [
+                "咔哒一声，门锁彻底弹开！只剩下最后一点合页。",
+                "房门已经摇摇欲坠，只差最后一点点力气。",
+                "两人对视一眼，同时把手放在了门把手上。",
+                "门开了一条手臂宽的缝，外面自由的空气涌了进来。"
+            ]
+        };
+        
+        function getEscapePhrase(progress) {
+            let arr;
+            if (progress < 16) arr = escapePhrases.veryLow;
+            else if (progress < 36) arr = escapePhrases.low;
+            else if (progress < 61) arr = escapePhrases.medium;
+            else if (progress < 86) arr = escapePhrases.high;
+            else arr = escapePhrases.almost;
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+        
+        // ==================== 丰富的喊话触发词库 (60+ 玩家常用语) ====================
+        const triggerWords = [
+            // 亲密/主动类
+            { keywords: ["亲","吻","嘴一个","kiss","亲亲"], effect: { ts: -3, th: -2, esc: 0, style: "spicy", log: "  两人耳尖泛红，气氛开始发烫。" } },
+            { keywords: ["抱","搂","hug","拥抱"], effect: { ts: -2, th: -3, esc: 0, style: "soft", log: "  韩振主动张开手臂，申惟犹豫了一下圈住了他。" } },
+            { keywords: ["牵手","拉手","十指紧扣","握"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  两个人指尖碰到一起，又赶紧分开，最后还是握住了。" } },
+            { keywords: ["对视","看对方","眼神","eye contact"], effect: { ts: -3, th: -3, esc: 2, style: "soft", log: "  四目相对的瞬间，申惟先移开又忍不住看回去。" } },
+            { keywords: ["撒娇","卖萌","可爱","kiyo"], effect: { ts: -1, th: -4, esc: 1, style: "soft", log: "  韩振故意用中文撒娇，申惟耳朵红透了。" } },
+            { keywords: ["告白","表白","喜欢","爱你","撒浪嘿","我爱你"], effect: { ts: -4, th: -5, esc: 3, style: "spicy", log: "  房间里突然安静，申惟低下头耳朵红得像要滴血。" } },
+            { keywords: ["摸头","揉头发","顺毛"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  申惟抬手轻轻揉了揉韩振的头发，韩振眯起眼睛。" } },
+            { keywords: ["搂腰","腰"], effect: { ts: -3, th: -3, esc: 2, style: "spicy", log: "  申惟的手搭在韩振腰侧，没有要拿开的意思。" } },
+            { keywords: ["摸脸","捧脸"], effect: { ts: -3, th: -3, esc: 2, style: "spicy", log: "  韩振捧住申惟的脸，拇指轻轻蹭过他的颧骨。" } },
+            { keywords: ["耳朵","红耳朵"], effect: { ts: -2, th: -1, esc: 1, style: "soft", log: "  韩振盯着申惟发红的耳尖笑了，申惟不自在地别过脸。" } },
+            // 催促/速度类
+            { keywords: ["快","速度","加速","快点","赶紧","抓紧"], effect: { ts: 0, th: 0, esc: 3, style: "chaotic", log: "  导演的催促让两人手忙脚乱，反而碰出了更多火花。" } },
+            { keywords: ["磨蹭","别磨蹭","效率"], effect: { ts: 1, th: 1, esc: 2, style: "chaotic", log: "  两人被催得有点紧张，但肢体接触却更自然了。" } },
+            // 鼓励类
+            { keywords: ["加油","努力","fighting","你可以的"], effect: { ts: -2, th: -1, esc: 2, style: "soft", log: "  导演的鼓励让两人相视一笑，紧张感减少了许多。" } },
+            // 破坏气氛/调侃类
+            { keywords: ["尴尬","好尬","不熟","别扭","奇怪"], effect: { ts: 4, th: 3, esc: 0, style: null, log: "  提到尴尬，两人反而更不自在了，空气凝固了几秒。" } },
+            { keywords: ["躲","别躲","逃避"], effect: { ts: -2, th: 0, esc: 1, style: "spicy", log: "  申惟听到后深吸一口气，强迫自己没往后躲。" } },
+            { keywords: ["推拉","拉扯"], effect: { ts: -1, th: -1, esc: 1, style: "chaotic", log: "  两个人一个进一个退，像跳双人舞一样。" } },
+            // 语言/教学类
+            { keywords: ["韩语","教韩语","中文","说中文","我爱你韩语"], effect: { ts: -2, th: -2, esc: 2, style: "soft", log: "  韩振小声教了一句韩语，申惟跟着念完两人都笑了。" } },
+            { keywords: ["叫名字","申惟","韩振"], effect: { ts: -2, th: -1, esc: 1, style: null, log: "  韩振用中文喊了申惟的全名，申惟愣了一下。" } },
+            { keywords: ["哥哥","欧巴","hiong","弟弟"], effect: { ts: -1, th: -2, esc: 1, style: "soft", log: "  韩振乖巧地喊了一声“hiong”，申惟的耳朵又红了。" } },
+            // 互动/距离类
+            { keywords: ["靠近","再近一点","贴近"], effect: { ts: -3, th: -2, esc: 2, style: "spicy", log: "  两人之间的距离缩短到只剩一拳，呼吸声清晰可闻。" } },
+            { keywords: ["说话","聊聊天","talk"], effect: { ts: -1, th: -1, esc: 1, style: "soft", log: "  申惟先开口问“累不累”，韩振摇摇头。" } },
+            { keywords: ["笑","笑笑","smile"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  韩振弯起眼睛笑了，申惟也不自觉地跟着嘴角上扬。" } },
+            { keywords: ["申惟主动"], effect: { ts: -4, th: -1, esc: 2, style: "spicy", log: "  申惟深呼吸一下，主动握住了韩振的手腕。" } },
+            { keywords: ["韩振主动"], effect: { ts: -1, th: -4, esc: 2, style: "spicy", log: "  韩振踮起脚尖凑近，申惟吓得闭上了眼睛。" } },
+            // 食物/氛围类
+            { keywords: ["草莓","拿铁","咖啡","零食","巧克力","饼干"], effect: { ts: -1, th: -2, esc: 1, style: "soft", log: "  两人分着吃东西，气氛变得像日常一样放松。" } },
+            { keywords: ["音乐","放歌","bgm"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  不知道哪里传来的旋律，两人更放松了一点。" } },
+            { keywords: ["灯光","调暗","暗一点"], effect: { ts: -1, th: -3, esc: 1, style: null, log: "  昏暗的光线下，两人反而比从前更敢看向对方。" } },
+            { keywords: ["躺下","休息","睡觉"], effect: { ts: -1, th: -1, esc: 1, style: "soft", log: "  两人并肩躺在地毯上，安静地看着天花板。" } },
+            // 其他趣味
+            { keywords: ["别紧张","放松","take it easy"], effect: { ts: -3, th: -2, esc: 1, style: "soft", log: "  申惟做了个深呼吸，肩膀松了下来。" } },
+            { keywords: ["相信我","trust me"], effect: { ts: -2, th: -2, esc: 2, style: "soft", log: "  韩振轻声说“信我”，然后慢慢靠近。" } },
+            { keywords: ["再来一次","one more"], effect: { ts: -2, th: -2, esc: 1, style: "spicy", log: "  刚才的接触意犹未尽，两人又重新试了一次。" } },
+            { keywords: ["好配","般配","天生一对"], effect: { ts: -1, th: -1, esc: 2, style: "soft", log: "  两人听到后不约而同看了对方一眼，又迅速移开。" } },
+            { keywords: ["心跳","好快","怦怦"], effect: { ts: -2, th: -2, esc: 1, style: null, log: "  申惟把手按在自己胸口，又偷偷看了一眼韩振。" } },
+            { keywords: ["害羞","脸红"], effect: { ts: -1, th: -2, esc: 1, style: "soft", log: "  两个人脸上都泛着红，谁也没先开口说话。" } }
+        ];
+        
+        function processShout(text) {
+            let lower = text.toLowerCase();
+            let matched = null;
+            for (let w of triggerWords) {
+                for (let kw of w.keywords) {
+                    if (lower.includes(kw.toLowerCase())) {
+                        matched = w;
+                        break;
+                    }
+                }
+                if (matched) break;
+            }
+            if (!matched) {
+                addLog(`【${directorName}导演喊话】“${text}”`);
+                addLog(`  导演的话在房间里回荡，两人沉默了几秒。`);
+                return;
+            }
+            
+            let eff = matched.effect;
+            let oldEscape = escape;
+            tensionS = Math.max(10, Math.min(98, tensionS + eff.ts));
+            tensionH = Math.max(10, Math.min(98, tensionH + eff.th));
+            let escInc = eff.esc + Math.floor(Math.random() * 3);
+            escape = Math.min(100, escape + escInc);
+            
+            addLog(`【${directorName}导演喊话】“${text}”`);
+            addLog(matched.log);
+            if (eff.style && styleStats[eff.style] !== undefined) styleStats[eff.style]++;
+            
+            if (escInc > 0) {
+                let phrase = getEscapePhrase(escape);
+                addLog(`  🔓 ${phrase} (+${escInc}%)`);
+            } else {
+                addLog(`  导演的话在房间里激起一阵微妙的波动。`);
+            }
+            updateUI();
+            checkAccident();
+            if (escape >= 100 && !ended) checkEnding();
+            updateDirectorStyleDisplay();
+        }
         
         function updateUI() {
             document.getElementById('tensionS_val') && (document.getElementById('tensionS_val').innerText = Math.floor(tensionS));
@@ -475,7 +606,6 @@
             }
         }
         
-        // 更新导演风格显示
         function updateDirectorStyleDisplay() {
             const container = document.getElementById('directorNameDisplay');
             if(container) {
@@ -489,7 +619,6 @@
             }
         }
         
-        // 记录风格倾向 (根据指令类型)
         function recordStyle(cmdId) {
             if(cmdId === "aftercare" || cmdId === "spoon" || cmdId === "praise_kink") styleStats.soft++;
             else if(cmdId === "thigh_rub" || cmdId === "hand_down" || cmdId === "belt_remove" || cmdId === "missionary") styleStats.spicy++;
@@ -498,7 +627,6 @@
             updateDirectorStyleDisplay();
         }
 
-        // 事故机制
         function checkAccident() {
             if(ended || escape >= 100) return false;
             if(cmdCount > 6 && escape < 25 && tensionS > 62 && tensionH > 62 && accidentCount < 2) {
@@ -525,7 +653,6 @@
             return false;
         }
 
-        // 导演行动
         function directorAction(actionType, customText = "") {
             if(!gameActive || escape >= 100) {
                 addLog("导演暂时无法干预，游戏已结束或房间已解锁。");
@@ -534,29 +661,7 @@
             switch(actionType) {
                 case "shout":
                     if(!customText) return;
-                    addLog(`【${directorName}导演喊话】“${customText}”`);
-                    if(customText.includes("亲") || customText.includes("吻") || customText.includes("抱")) {
-                        tensionS = Math.max(10, tensionS - 3);
-                        tensionH = Math.max(10, tensionH - 3);
-                        addLog(`  两人心跳加速，紧张值下降。`);
-                        styleStats.spicy++;
-                    } else if(customText.includes("快") || customText.includes("速度")) {
-                        let extra = Math.floor(Math.random() * 5) + 2;
-                        escape = Math.min(100, escape + extra);
-                        addLog(`  导演催进度，房门松动 +${extra}%`);
-                        styleStats.chaotic++;
-                    } else if(customText.includes("尴尬")) {
-                        tensionS = Math.min(95, tensionS + 4);
-                        tensionH = Math.min(95, tensionH + 3);
-                        addLog(`  提到尴尬，两人更不自在了。`);
-                    } else if(customText.includes("加油") || customText.includes("努力")) {
-                        let extra = Math.floor(Math.random() * 4) + 1;
-                        escape = Math.min(100, escape + extra);
-                        addLog(`  导演鼓励，两人重拾动力 +${extra}%`);
-                        styleStats.soft++;
-                    } else {
-                        addLog(`  导演的话在房间里回荡，气氛微妙。`);
-                    }
+                    processShout(customText);
                     break;
                 case "music":
                     addLog(`【${directorName}导演】播放了抒情歌。`);
@@ -619,7 +724,7 @@
         function getEndingMessage() {
             let baseMsg = "";
             switch(finalEndingType) {
-                case "perfect": baseMsg = "房门自动打开。申惟牵着韩振的手走出来，韩振眼角有点红但嘴角是笑着的。之后团综里两人对视不再躲闪。"; break;
+                case "perfect": baseMsg = "房门自动打开了，申惟牵着韩振的手慢慢走出来，韩振眼角有点红，他们的嘴角都是笑着的。后来的舞台上团综里两人会不自觉地对视，食髓知味地想起拍电影的这一天。"; break;
                 case "sweet": baseMsg = "门开了。申惟帮韩振整理衣服，韩振小声说谢谢哥。两人一前一后走出去，但申惟的手一直往后伸，直到韩振握住，他终于憋不住上扬的嘴角。"; break;
                 case "awkward": baseMsg = "门终于开了。申惟快步走在前面，韩振跟在后面低着头。回去的路上申惟帮韩振拉了拉口罩，遮住红肿的嘴唇，韩振偷偷笑了。"; break;
                 case "long": baseMsg = "经过漫长的拉扯，房门在一声轻响后打开。两人都愣住了。申惟先回过神来，把外套披在韩振身上。"; break;
@@ -632,13 +737,13 @@
 
         function getEndingTitle() {
             switch(finalEndingType) {
-                case "perfect": return "天作之合 · 双向奔赴";
-                case "sweet": return "细水长流 · 温柔以待";
-                case "awkward": return "推拉美学 · 暧昧至上";
-                case "long": return "日久生情 · 马拉松式心动";
-                case "cold": return "口是心非 · 暗涌";
-                case "stuck": return "未完待续 · 还需要努力";
-                default: return "破冰之旅 · 新的开始";
+                case "perfect": return "在所有人事已非的景色里，我最喜欢你。";
+                case "sweet": return "我还想和你谈论宇宙和天空。";
+                case "awkward": return "人们传颂勇气，而我可不可以爱你哭泣的心。";
+                case "long": return "春天该很好，你若尚在场。";
+                case "cold": return "在你的盲点里寸步不移。";
+                case "stuck": return "我爱你有种左灯右行的冲突。";
+                default: return "破冰";
             }
         }
 
@@ -671,7 +776,7 @@
                 case "shirt_off":
                     addLog("指令: 脱上衣");
                     deltaS = -9; deltaH = -13; deltaEsc = 7+Math.floor(Math.random()*6);
-                    flavorText = "申惟帮韩振脱掉上衣，指尖碰到皮肤时韩振抖了一下。";
+                    flavorText = "申惟帮韩振脱掉上衣，指尖碰到皮肤时，韩振轻轻战栗。";
                     break;
                 case "wall_press":
                     addLog("指令: 壁咚");
@@ -686,12 +791,12 @@
                 case "blindfold":
                     addLog("指令: 蒙眼描摹");
                     deltaS = -15; deltaH = -6; deltaEsc = 9+Math.floor(Math.random()*6);
-                    flavorText = "蒙住申惟眼睛，韩振用手指描摹他的脸，指尖划过嘴唇时他正轻轻颤抖。";
+                    flavorText = "蒙住申惟眼睛，韩振用手指描摹他的脸，指尖划过嘴唇。";
                     break;
                 case "thigh_rub":
                     addLog("指令: 大腿蹭");
                     deltaS = -16; deltaH = -14; deltaEsc = 10+Math.floor(Math.random()*7);
-                    flavorText = "韩振用大腿蹭申惟腿间，申惟抓住他的腿想阻止但是没有完全用力。";
+                    flavorText = "韩振用大腿蹭申惟腿间，申惟抓住他的腿，想阻止，但是没有完全用力，甚至有些纵容和享受。";
                     break;
                 case "back_hug_chest":
                     addLog("指令: 背后抱胸");
@@ -731,7 +836,7 @@
                 case "praise_kink":
                     addLog("指令: 边亲边夸");
                     deltaS = -8; deltaH = -10; deltaEsc = 7+Math.floor(Math.random()*5);
-                    flavorText = "申惟边亲韩振边夸他“做得真好”，韩振把脸埋进他胸口。";
+                    flavorText = "申惟边亲韩振边夸他“做得好”，韩振把脸埋进他胸口。";
                     break;
                 case "hair_pull":
                     addLog("指令: 揪头发吻");
@@ -842,7 +947,7 @@
                 consoleDiv.innerHTML = `
                     <div class="director-name-display" id="directorNameDisplay">🎬 ${directorName}导演 · 未定义风格</div>
                     <div class="name-input-area">
-                        <span class="name-label">🎭 导演署名</span>
+                        <span class="name-label">导演署名</span>
                         <input type="text" class="name-input" id="directorNameInput" placeholder="输入你的名字" value="${directorName}">
                         <button class="name-confirm" id="confirmNameBtn">确认</button>
                     </div>
@@ -867,7 +972,6 @@
                 `;
             }
             
-            // 绑定导演名字确认
             const nameInput = document.getElementById('directorNameInput');
             const confirmBtn = document.getElementById('confirmNameBtn');
             if(confirmBtn && nameInput) {
@@ -882,7 +986,7 @@
             }
             
             const actions = [
-                { id: "kiss_deep", label: "深吻" }, { id: "neck_bite", label: "喉结咬" },
+                { id: "kiss_deep", label: "深吻" }, { id: "neck_bite", label: "咬喉结" },
                 { id: "lap_grind", label: "腿上磨蹭" }, { id: "shirt_off", label: "脱衣" },
                 { id: "wall_press", label: "壁咚" }, { id: "ear_whisper_ch", label: "耳语" },
                 { id: "blindfold", label: "蒙眼" }, { id: "thigh_rub", label: "大腿蹭" },
@@ -936,7 +1040,7 @@
             if(resetBtn) resetBtn.addEventListener('click', resetGame);
             
             const logDiv = document.getElementById('actionLog');
-            if(logDiv) logDiv.innerHTML = " 系统: 九号房规则——亲密值达标才能开门。";
+            if(logDiv) logDiv.innerHTML = " 系统: 房间规则——亲密值达标才能开门。";
             logs = [];
             addLog(` 重置房间，${directorName}导演上线。`);
             updateUI();
@@ -951,5 +1055,3 @@
 </script>
 </body>
 </html>
-                    
- 
