@@ -574,7 +574,7 @@
             for (let w of triggerWords)
                 for (let kw of w.keywords)
                     if (lower.includes(kw.toLowerCase())) { matched = w; break; }
-            if (!matched) { addLog(`【${directorName}导演喊话】“${text}”`); addLog(`  导演的话在房间里回荡，两人沉默了几秒。`); return; }
+            if (!matched) { addLog(`【${directorName}导演喊话】“${text}”`); addLog(`  导演的话在房间里回荡，两人沉默。`); return; }
             let eff = matched.effect;
             tensionS = Math.max(10, Math.min(98, tensionS + eff.ts));
             tensionH = Math.max(10, Math.min(98, tensionH + eff.th));
@@ -598,10 +598,10 @@
         }
         function addLog(msg) { logs.unshift(msg); if(logs.length > 12) logs.pop(); const logDiv = document.getElementById('actionLog'); if(logDiv) logDiv.innerHTML = logs.map((l,i)=>(i===0?"🎬 ":"&nbsp;&nbsp;")+l).join('<br>'); }
         function getDirectorStyle() {
-            if(styleStats.soft > styleStats.spicy && styleStats.soft > styleStats.chaotic) return "温柔派 · 氛围感导演";
-            if(styleStats.spicy > styleStats.soft && styleStats.spicy > styleStats.chaotic) return "性感派 · 直球导演";
-            if(styleStats.chaotic > styleStats.soft && styleStats.chaotic > styleStats.spicy) return "混邪派 · 整活导演";
-            return "平衡派 · 全能导演";
+            if(styleStats.soft > styleStats.spicy && styleStats.soft > styleStats.chaotic) return "温柔氛围感导演";
+            if(styleStats.spicy > styleStats.soft && styleStats.spicy > styleStats.chaotic) return "性感直球导演";
+            if(styleStats.chaotic > styleStats.soft && styleStats.chaotic > styleStats.spicy) return "混邪整活导演";
+            return "平衡全能导演";
         }
         function recordStyle(cmdId) {
             if(cmdId === "aftercare" || cmdId === "spoon" || cmdId === "praise_kink") styleStats.soft += 2;
