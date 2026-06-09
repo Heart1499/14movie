@@ -453,7 +453,7 @@
         let directorName = "雨披";
         let directorStyle = "未定义";
         
-        // 用于统计风格（只在结局显示）
+        // 用于统计风格（均衡权重）
         let styleStats = { soft: 0, spicy: 0, chaotic: 0 };
         
         // ==================== 逃脱进度递进描述库 ====================
@@ -478,12 +478,12 @@
             ],
             high: [
                 "门已经半开，外面透进来的光线落在两人身上。",
-                "只要再轻轻一推，门就能打开。",
+                "锁舌完全缩回，只要再轻轻一推就能打开。",
                 "申惟伸手碰了碰门，回头看了韩振一眼。",
-                "金属门把手变得温热。"
+                "门把手上结的霜化了，金属变得温热。"
             ],
             almost: [
-                "咔哒一声，门锁彻底弹开！只剩下最后一点。",
+                "咔哒一声，门锁彻底弹开！只剩下最后一点合页。",
                 "房门已经摇摇欲坠，只差最后一点点力气。",
                 "两人对视一眼，同时把手放在了门把手上。",
                 "门开了一条手臂宽的缝，外面自由的空气涌了进来。"
@@ -502,7 +502,7 @@
         
         // ==================== 丰富的喊话触发词库 (基于锐因相处模式扩充至80+条) ====================
         const triggerWords = [
-            // === 亲密/主动类 ===
+            // === 亲密/主动类 (加 spicy，权重降低) ===
             { keywords: ["亲","吻","嘴一个","kiss","亲亲"], effect: { ts: -3, th: -2, esc: 0, style: "spicy", log: "  两人耳尖泛红，气氛开始发烫。" } },
             { keywords: ["抱","搂","hug","拥抱"], effect: { ts: -2, th: -3, esc: 0, style: "soft", log: "  韩振主动张开手臂，申惟犹豫了一下圈住了他。" } },
             { keywords: ["牵手","拉手","十指紧扣","握"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  两个人指尖碰到一起，又赶紧分开，最后还是握住了。" } },
@@ -512,45 +512,46 @@
             { keywords: ["摸头","揉头发","顺毛"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  申惟抬手轻轻揉了揉韩振的头发，韩振眯起眼睛。" } },
             { keywords: ["搂腰","腰"], effect: { ts: -3, th: -3, esc: 2, style: "spicy", log: "  申惟的手搭在韩振腰侧，没有要拿开的意思。" } },
             { keywords: ["摸脸","捧脸"], effect: { ts: -3, th: -3, esc: 2, style: "spicy", log: "  韩振捧住申惟的脸，拇指轻轻蹭过他的颧骨。" } },
-            { keywords: ["耳朵","红耳朵","耳尖"], effect: { ts: -2, th: -1, esc: 1, style: "soft", log: "  韩振盯着申惟发红的耳尖笑了，申惟不自在地别过脸。" } },
-            // === 锐因专属梗（来自帖子）===
-            { keywords: ["躲","躲闪","转头","别躲","逃避","条件反射"], effect: { ts: -3, th: 0, esc: 2, style: "spicy", log: "  申惟听到后深吸一口气，强迫自己没往后躲，韩振愣了一下。" } },
-            { keywords: ["锐化","角雕","小号","匿名","锐化的原因"], effect: { ts: -4, th: -3, esc: 3, style: "soft", log: "  韩振愣住了，申惟一脸懵，气氛反而轻松了。" } },
+            // === 锐因专属梗（柔和类加 soft）===
+            { keywords: ["躲","躲闪","转头","别躲","逃避","条件反射"], effect: { ts: -3, th: 0, esc: 2, style: "chaotic", log: "  申惟听到后深吸一口气，强迫自己没往后躲，韩振愣了一下。" } },
+            { keywords: ["锐化","角雕","小号","匿名","锐化的原因"], effect: { ts: -4, th: -3, esc: 3, style: "soft", log: "  韩振突然提起出道前的事，申惟一脸懵，气氛反而轻松了。" } },
             { keywords: ["济州岛","一起去","旅行","jeju"], effect: { ts: -3, th: -3, esc: 2, style: "soft", log: "  申惟小声说“等出去以后”，韩振眼睛亮了。" } },
-            { keywords: ["鱼","自行车","鱼和自行车"], effect: { ts: -2, th: -2, esc: 2, style: "chaotic", log: "  两人被这个比喻逗笑了，虽然还是有点不自在，但是气氛破冰。" } },
+            { keywords: ["鱼","自行车","鱼和自行车"], effect: { ts: -2, th: -2, esc: 2, style: "chaotic", log: "  两人被这个比喻逗笑了，气氛破冰。" } },
             { keywords: ["信息差","异国","绿卡"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  韩振用中文说了句什么，申惟没听懂但跟着笑了。" } },
-            // === 韩语/中文教学类 ===
+            // === 韩语/中文教学类（加 soft）===
+            { keywords: ["韩语","教韩语","韩文"], effect: { ts: -2, th: -2, esc: 2, style: "soft", log: "  韩振小声教了一句韩语，申惟跟着念完两人都笑了。" } },
             { keywords: ["中文","说中文","普通话"], effect: { ts: -2, th: -2, esc: 2, style: "soft", log: "  申惟用蹩脚的中文说了句“我爱你”，韩振笑弯了腰。" } },
-            { keywords: ["我爱你韩语","사랑해","撒浪嘿"], effect: { ts: -3, th: -3, esc: 2, style: "spicy", log: "  韩振说了一句我爱你，申惟突然安静下来。" } },
+            { keywords: ["我爱你韩语","사랑해","撒浪嘿"], effect: { ts: -3, th: -3, esc: 2, style: "soft", log: "  申惟学着说了一句，韩振突然安静了。" } },
             { keywords: ["老婆","老公","亲爱的"], effect: { ts: -3, th: -4, esc: 2, style: "spicy", log: "  申惟跟着韩振学了这个词，说完两个人都不好意思了。" } },
-            // === 推拉/暧昧类 ===
+            // === 推拉/暧昧类（加 chaotic）===
             { keywords: ["推拉","拉扯","若即若离"], effect: { ts: -2, th: -2, esc: 1, style: "chaotic", log: "  两个人一个进一个退，像跳双人舞一样。" } },
-            { keywords: ["不熟","尴尬","别扭","难亲近"], effect: { ts: 4, th: 3, esc: 0, style: null, log: "  提到这个，两人反而更不自在了，空气凝固了几秒。" } },
-            { keywords: ["前任","旧情","过去"], effect: { ts: 3, th: 2, esc: 0, style: null, log: "  申惟摇摇头，韩振低头笑了笑，没有追问。" } },
+            { keywords: ["不熟","尴尬","别扭","难亲近"], effect: { ts: 4, th: 3, esc: 0, style: "chaotic", log: "  提到这个，两人反而更不自在了，空气凝固了几秒。" } },
+            { keywords: ["前任","旧情","过去"], effect: { ts: 3, th: 2, esc: 0, style: "chaotic", log: "  申惟摇摇头，韩振低头笑了笑，没有追问。" } },
             { keywords: ["纯恨","恨","讨厌"], effect: { ts: 5, th: 4, esc: -1, style: "chaotic", log: "  两人同时否认，但否认得太快反而显得奇怪。" } },
-            // === 催促/进度类 ===
+            // === 催促/进度类（加 chaotic）===
             { keywords: ["快","速度","加速","快点","赶紧","抓紧"], effect: { ts: 0, th: 0, esc: 3, style: "chaotic", log: "  导演的催促让两人手忙脚乱，反而碰出了更多火花。" } },
             { keywords: ["磨蹭","别磨蹭","效率","太慢"], effect: { ts: 1, th: 1, esc: 2, style: "chaotic", log: "  两人被催得有点紧张，但肢体接触却更自然了。" } },
-            // === 鼓励/温柔类 ===
+            // === 鼓励/温柔类（加 soft）===
             { keywords: ["加油","努力","fighting","你可以的"], effect: { ts: -2, th: -1, esc: 2, style: "soft", log: "  导演的鼓励让两人相视一笑，紧张感减少了许多。" } },
             { keywords: ["别紧张","放松","take it easy","没事"], effect: { ts: -3, th: -2, esc: 1, style: "soft", log: "  申惟做了个深呼吸，肩膀松了下来。" } },
-            // === 互动/靠近类 ===
+            // === 互动/靠近类（spicy 和 soft 均衡）===
             { keywords: ["靠近","再近一点","贴近","距离"], effect: { ts: -3, th: -2, esc: 2, style: "spicy", log: "  两人之间的距离缩短到只剩一拳，呼吸声清晰可闻。" } },
-            { keywords: ["叫名字","申惟","韩振","全名"], effect: { ts: -2, th: -1, esc: 1, style: null, log: "  韩振用中文喊了申惟的全名，申惟愣了一下。" } },
+            { keywords: ["叫名字","申惟","韩振","全名"], effect: { ts: -2, th: -1, esc: 1, style: "soft", log: "  韩振用中文喊了申惟的全名，申惟愣了一下。" } },
             { keywords: ["哥哥","欧巴","hiong","弟弟","忙内"], effect: { ts: -1, th: -2, esc: 1, style: "soft", log: "  韩振乖巧地喊了一声“hiong”，申惟的耳朵又红了。" } },
-            // === 氛围/环境类 ===
+            // === 氛围/环境类（加 soft）===
             { keywords: ["音乐","放歌","bgm","旋律"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  不知道哪里传来的旋律，两人更放松了一点。" } },
-            { keywords: ["灯光","调暗","暗一点","黑暗"], effect: { ts: -1, th: -3, esc: 1, style: null, log: "  昏暗的光线下，两人反而比从前更敢看向对方。" } },
+            { keywords: ["灯光","调暗","暗一点","黑暗"], effect: { ts: -1, th: -3, esc: 1, style: "soft", log: "  昏暗的光线下，两人反而比从前更敢看向对方。" } },
             { keywords: ["躺下","休息","睡觉","地板"], effect: { ts: -1, th: -1, esc: 1, style: "soft", log: "  两人并肩躺在地毯上，安静地看着天花板。" } },
-            // === 食物/日常类 ===
+            // === 食物/日常类（加 soft）===
             { keywords: ["草莓","拿铁","咖啡","零食","巧克力","饼干","苹果"], effect: { ts: -1, th: -2, esc: 1, style: "soft", log: "  两人分着吃东西，气氛变得像日常一样放松。" } },
-            { keywords: ["麻辣香锅","海鲜","生食","喜欢吃什么"], effect: { ts: -1, th: -1, esc: 1, style: "soft", log: "  聊到吃的，申惟说喜欢吃海鲜，韩振说喜欢吃麻辣香锅，两个人笑了。韩振说申惟哥在中国可以被称为老吃家。" } },
-            // === 其他趣味 ===
+            { keywords: ["麻辣香锅","海鲜","生食","喜欢吃什么"], effect: { ts: -1, th: -1, esc: 1, style: "soft", log: "  聊到吃的，申惟说喜欢吃海鲜，韩振说喜欢吃麻辣香锅，两个人笑了。" } },
+            // === 其他趣味（均衡分配）===
             { keywords: ["相信我","trust me","信我"], effect: { ts: -2, th: -2, esc: 2, style: "soft", log: "  韩振轻声说“信我”，然后慢慢靠近。" } },
             { keywords: ["再来一次","one more","再一次"], effect: { ts: -2, th: -2, esc: 1, style: "spicy", log: "  刚才的接触意犹未尽，两人又重新试了一次。" } },
             { keywords: ["好配","般配","天生一对","合适"], effect: { ts: -1, th: -1, esc: 2, style: "soft", log: "  两人听到后不约而同看了对方一眼，又迅速移开。" } },
-            { keywords: ["心跳","好快","怦怦"], effect: { ts: -2, th: -2, esc: 1, style: null, log: "  申惟把手按在自己胸口，又偷偷看了一眼韩振。" } },
+            { keywords: ["心跳","好快","怦怦"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  申惟把手按在自己胸口，又偷偷看了一眼韩振。" } },
             { keywords: ["害羞","脸红","不好意思"], effect: { ts: -1, th: -2, esc: 1, style: "soft", log: "  两个人脸上都泛着红，谁也没先开口说话。" } },
+            { keywords: ["签名","围巾","礼物","手写信"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  韩振摸了摸申惟送的围巾，申惟看到了没说话。" } },
             { keywords: ["队长","leader","责任感"], effect: { ts: -1, th: -1, esc: 1, style: "soft", log: "  申惟挺直了背，韩振拍了拍他的肩膀。" } },
             { keywords: ["蹦极","高空","害怕"], effect: { ts: -2, th: -1, esc: 1, style: "soft", log: "  韩振想起申惟在蹦极前保护他的样子，小声说了谢谢。" } }
         ];
@@ -574,7 +575,6 @@
             }
             
             let eff = matched.effect;
-            let oldEscape = escape;
             tensionS = Math.max(10, Math.min(98, tensionS + eff.ts));
             tensionH = Math.max(10, Math.min(98, tensionH + eff.th));
             let escInc = eff.esc + Math.floor(Math.random() * 3);
@@ -624,12 +624,23 @@
             else return "平衡派 · 全能导演";
         }
         
+        // 调整指令的风格权重，让 spicy 不再过度集中
         function recordStyle(cmdId) {
-            if(cmdId === "aftercare" || cmdId === "spoon" || cmdId === "praise_kink") styleStats.soft++;
-            else if(cmdId === "thigh_rub" || cmdId === "hand_down" || cmdId === "belt_remove" || cmdId === "missionary") styleStats.spicy++;
-            else if(cmdId === "teasing_deny" || cmdId === "hair_pull") styleStats.chaotic++;
-            else { styleStats.spicy += 0.5; styleStats.soft += 0.3; }
-            // 注意：不再调用 updateDirectorStyleDisplay，过程中不显示风格
+            if(cmdId === "aftercare" || cmdId === "spoon" || cmdId === "praise_kink") styleStats.soft += 2;
+            else if(cmdId === "teasing_deny" || cmdId === "hair_pull") styleStats.chaotic += 2;
+            else if(cmdId === "kiss_deep" || cmdId === "neck_bite") styleStats.spicy += 1;
+            else if(cmdId === "lap_grind" || cmdId === "thigh_rub") styleStats.spicy += 1;
+            else if(cmdId === "belt_remove" || cmdId === "hand_down" || cmdId === "missionary") styleStats.spicy += 1;
+            else if(cmdId === "ear_whisper_ch" || cmdId === "wall_press" || cmdId === "back_hug_chest") styleStats.spicy += 1;
+            else if(cmdId === "floor_press" || cmdId === "table_edge" || cmdId === "knee_ride") styleStats.spicy += 1;
+            else if(cmdId === "shirt_off" || cmdId === "blindfold") styleStats.spicy += 1;
+            else { 
+                // 其他指令随机分配，使风格更均衡
+                let rand = Math.random();
+                if (rand < 0.4) styleStats.soft += 1;
+                else if (rand < 0.7) styleStats.spicy += 1;
+                else styleStats.chaotic += 1;
+            }
         }
 
         function checkAccident() {
@@ -673,25 +684,27 @@
                     tensionS = Math.max(10, tensionS - 4);
                     tensionH = Math.max(10, tensionH - 3);
                     addLog(`  音乐让气氛柔和了一些。`);
-                    styleStats.soft++;
+                    styleStats.soft += 2;
                     break;
                 case "light":
                     addLog(`【${directorName}导演】把灯光调暗。`);
                     tensionS = Math.max(10, tensionS - 2);
                     tensionH = Math.max(10, tensionH - 5);
                     addLog(`  昏暗光线下，两人没有先前那么紧绷，甚至多了几分暧昧的氛围。`);
+                    styleStats.soft += 1;
                     break;
                 case "coffee":
                     addLog(`【${directorName}导演】送了草莓拿铁进去。`);
                     tensionS = Math.max(10, tensionS - 3);
                     tensionH = Math.max(10, tensionH - 2);
                     addLog(`  默默喝草莓拿铁，气氛缓和。`);
-                    styleStats.soft++;
+                    styleStats.soft += 2;
                     break;
                 case "snack":
                     addLog(`【${directorName}导演】送了零食进去。`);
                     tensionH = Math.max(10, tensionH - 4);
                     addLog(`  韩振递给申惟一块迪拜巧克力饼干，申惟接了。`);
+                    styleStats.soft += 1;
                     break;
                 default: return;
             }
@@ -736,7 +749,6 @@
                 case "stuck": baseMsg = "折腾了半天，房门纹丝不动。两人瘫坐在地上，申惟叹了口气说，这种程度还不够吗。韩振笑了，说或许吧，哥要不要试着多了解我一点。门突然响了一下，是的，也许，我们都还需要一点时间。"; break;
                 default: baseMsg = "房间解锁。申惟把自己的外套紧紧裹住韩振，两人并排走出去，肩膀偶尔碰到，视线偶尔对上，他们一次都没有再躲开。";
             }
-            // 在结局消息中追加导演风格
             const finalStyle = getDirectorStyleForEnding();
             return baseMsg + `  (导演${directorName} · ${finalStyle})`;
         }
@@ -986,8 +998,7 @@
                     else directorName = "雨披";
                     const displayDiv = document.getElementById('directorNameDisplay');
                     if(displayDiv) displayDiv.innerText = `🎬 ${directorName}导演`;
-                    // 改名后添加日志提示
-                    addLog(`🎬 「${directorName}」导演已就位。`);
+                    addLog(`🎬 导演已更名为「${directorName}」`);
                 };
             }
             
@@ -1059,5 +1070,4 @@
     })();
 </script>
 </body>
-</html>
 </html>
