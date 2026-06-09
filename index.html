@@ -872,13 +872,13 @@
             if(cmdCount % 4 === 0 && escape < 85 && !ended) {
                 let extra = 3;
                 escape = Math.min(100, escape + extra);
-                addLog(`✨ 默契渐长，房门又松动了一些 +${extra}%`);
+                addLog(` 默契渐长，房门又松动了一些 +${extra}%`);
                 updateUI();
             }
             if(tensionS < 30 && tensionH < 32 && escape < 90 && !ended) {
                 let extra = 6;
                 escape = Math.min(100, escape + extra);
-                addLog(`💘 两人不约而同看向对方，然后同时笑了。门锁咔哒 +${extra}%`);
+                addLog(` 两人不约而同看向对方，然后同时笑了。门锁咔哒 +${extra}%`);
                 updateUI();
             }
             
@@ -910,7 +910,7 @@
                             <span class="ending-badge">指令 ${cmdCount}</span>
                             <span class="ending-badge">事故 ${accidentCount}</span>
                         </div>
-                        <div class="share-hint" id="copyEndingBtn">点击可复制结果，游戏内容虚构，纯属娱乐。</div>
+                        <div class="share-hint" id="copyEndingBtn">点击可复制结果，游戏内容虚构，纯属娱乐。@JUN </div>
                         <button class="reset-btn" id="resetEndBtn" style="background:#b46f3a; margin-top:14px;">重新开拍</button>
                     </div>
                 `;
@@ -922,7 +922,7 @@
                         const shareText = `【小雨披大导演】${directorName}导演 · ${directorStyle}\n结局: ${title}\n${msg}\n申惟${Math.floor(tensionS)}% 韩振${Math.floor(tensionH)}% 指令${cmdCount}次 事故${accidentCount}次`;
                         navigator.clipboard.writeText(shareText).then(() => {
                             copyBtn.innerText = "✓ 已复制！";
-                            setTimeout(() => { copyBtn.innerText = "点击可复制结果，游戏内容虚构，纯属娱乐。"; }, 2000);
+                            setTimeout(() => { copyBtn.innerText = "点击可复制结果，游戏内容虚构，纯属娱乐。@JUN "; }, 2000);
                         });
                     });
                 }
