@@ -33,7 +33,6 @@
             position: relative;
         }
 
-        /* 弹幕区域 - 大量快速滚动 */
         .danmaku-area {
             position: relative;
             height: 100px;
@@ -51,13 +50,13 @@
         .danmaku {
             position: absolute;
             white-space: nowrap;
-            font-size: 12px;
+            font-size: 13px;
             font-family: monospace;
             color: #e2bc89;
             text-shadow: 0 0 3px #000;
             opacity: 0.9;
             pointer-events: none;
-            animation: slideDanmaku 6s linear forwards;
+            animation: slideDanmaku 3s linear forwards;
             z-index: 20;
             font-weight: 500;
         }
@@ -443,22 +442,21 @@
         
         let lastPhotoTime = 0;
         
-        // 弹幕固定词库 - 大量重复滚动
+        // 弹幕固定词库
         const danmakuPool = [
             "1499", "1499", "1499", "锐因是真的", "锐因是真的", "锐因是真的",
             "雕蛙我爱你们", "雕蛙我爱你们", "雕蛙我爱你们",
             "啊啊啊啊啊", "kswl", "好涩", "这能播吗", "申惟耳朵红了",
-            "我草难得玩这么大谁录屏了", "不结婚很难收场", "民政局来了", "我死了"
+            "韩振你胆子好大", "不结婚很难收场", "民政局来了", "我死了"
         ];
         
-        // 持续大量弹幕的定时器
         let danmakuInterval = null;
         
         function startDanmaku() {
             if (danmakuInterval) clearInterval(danmakuInterval);
             danmakuInterval = setInterval(() => {
-                // 每次发送3-6条弹幕，制造大量滚动效果
-                const count = 3 + Math.floor(Math.random() * 5);
+                // 每次发送6-10条弹幕，速度更快
+                const count = 6 + Math.floor(Math.random() * 6);
                 for (let i = 0; i < count; i++) {
                     setTimeout(() => {
                         const track = document.getElementById('danmakuTrack');
@@ -468,14 +466,14 @@
                         danmaku.className = 'danmaku';
                         danmaku.innerText = msg;
                         danmaku.style.top = (Math.random() * 70 + 10) + 'px';
-                        danmaku.style.fontSize = (10 + Math.floor(Math.random() * 7)) + 'px';
+                        danmaku.style.fontSize = (11 + Math.floor(Math.random() * 7)) + 'px';
                         const colors = ['#e2bc89', '#f0cfaa', '#d7cdbc', '#c96f5e', '#e8a87c', '#f3cf9a'];
                         danmaku.style.color = colors[Math.floor(Math.random() * colors.length)];
                         track.appendChild(danmaku);
-                        setTimeout(() => { if(danmaku.parentNode) danmaku.remove(); }, 6000);
-                    }, i * 150);
+                        setTimeout(() => { if(danmaku.parentNode) danmaku.remove(); }, 3000);
+                    }, i * 80);
                 }
-            }, 800);
+            }, 500);
         }
         
         function stopDanmaku() {
@@ -486,10 +484,9 @@
         }
         
         function addDanmakuForAction() {
-            // 动作触发时额外发送几条弹幕
             const track = document.getElementById('danmakuTrack');
             if (!track) return;
-            const count = 2 + Math.floor(Math.random() * 4);
+            const count = 3 + Math.floor(Math.random() * 5);
             for (let i = 0; i < count; i++) {
                 setTimeout(() => {
                     const msg = danmakuPool[Math.floor(Math.random() * danmakuPool.length)];
@@ -497,10 +494,10 @@
                     danmaku.className = 'danmaku';
                     danmaku.innerText = msg;
                     danmaku.style.top = (Math.random() * 70 + 10) + 'px';
-                    danmaku.style.fontSize = (10 + Math.floor(Math.random() * 7)) + 'px';
+                    danmaku.style.fontSize = (11 + Math.floor(Math.random() * 7)) + 'px';
                     track.appendChild(danmaku);
-                    setTimeout(() => { if(danmaku.parentNode) danmaku.remove(); }, 6000);
-                }, i * 120);
+                    setTimeout(() => { if(danmaku.parentNode) danmaku.remove(); }, 3000);
+                }, i * 100);
             }
         }
         
@@ -573,20 +570,20 @@
             { keywords: ["磨蹭","别磨蹭","效率","太慢"], effect: { ts: 1, th: 1, esc: 2, style: "chaotic", log: "  两人被催得有点紧张，但肢体接触却更自然了。" } },
             { keywords: ["加油","努力","fighting","你可以的"], effect: { ts: -2, th: -1, esc: 2, style: "soft", log: "  导演的鼓励让两人相视一笑，紧张感减少了许多。" } },
             { keywords: ["别紧张","放松","take it easy","没事"], effect: { ts: -3, th: -2, esc: 1, style: "soft", log: "  申惟做了个深呼吸，肩膀松了下来。" } },
-            { keywords: ["靠近","再近一点","贴近","距离"], effect: { ts: -3, th: -2, esc: 2, style: "spicy", log: "  两人之间的距离缩短到只剩一拳，呼吸声清晰可闻。" } },
+            { keywords: ["靠近","再近一点","贴近","距离"], effect: { ts: -3, th: -2, esc: 2, style: "spicy", log: "  两人之间的距离缩短，呼吸声清晰可闻。" } },
             { keywords: ["叫名字","申惟","韩振","全名"], effect: { ts: -2, th: -1, esc: 1, style: "soft", log: "  韩振用中文喊了申惟的全名，申惟愣了一下。" } },
             { keywords: ["哥哥","欧巴","hiong","弟弟"], effect: { ts: -1, th: -2, esc: 1, style: "soft", log: "  韩振乖巧地喊了一声哥，申惟的耳朵又红了。" } },
             { keywords: ["音乐","放歌","bgm","旋律"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  不知道哪里传来的旋律，两人更放松了一点。" } },
             { keywords: ["灯光","调暗","暗一点","黑暗"], effect: { ts: -1, th: -3, esc: 1, style: "soft", log: "  昏暗的光线下，两人反而比从前更敢看向对方。" } },
             { keywords: ["躺下","休息","睡觉","地板"], effect: { ts: -1, th: -1, esc: 1, style: "soft", log: "  两人并肩躺在地毯上，安静地看着天花板。" } },
             { keywords: ["草莓","拿铁","蛋糕","咖啡","零食","巧克力","饼干","苹果"], effect: { ts: -1, th: -2, esc: 1, style: "soft", log: "  两人分着吃东西，气氛变得像日常一样放松。" } },
-            { keywords: ["麻辣香锅","海鲜","生食","喜欢吃什么","食物","美食"], effect: { ts: -1, th: -1, esc: 1, style: "soft", log: "  聊到吃的，申惟说喜欢吃海鲜，滔滔不绝介绍起美食，两个人都笑了。" } },
+            { keywords: ["麻辣香锅","海鲜","生食","喜欢吃什么","食物","美食"], effect: { ts: -1, th: -1, esc: 1, style: "soft", log: "  聊到吃的，申惟说喜欢吃海鲜，放松了很多，开始滔滔不绝介绍自己喜欢的美食，两个人都笑了。" } },
             { keywords: ["相信我","trust me","信我"], effect: { ts: -2, th: -2, esc: 2, style: "soft", log: "  申惟轻声说“信我”，然后慢慢靠近。" } },
             { keywords: ["再来一次","one more","再一次"], effect: { ts: -2, th: -2, esc: 1, style: "spicy", log: "  刚才的接触意犹未尽，两人又重新试了一次。" } },
             { keywords: ["好配","般配","天生一对","合适"], effect: { ts: -1, th: -1, esc: 2, style: "soft", log: "  两人听到后不约而同看了对方一眼，又迅速移开。" } },
             { keywords: ["心跳","好快","怦怦"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  申惟把手按在自己胸口，又偷偷看了一眼韩振。" } },
             { keywords: ["害羞","脸红","不好意思"], effect: { ts: -1, th: -2, esc: 1, style: "soft", log: "  两个人脸上都泛着红，谁也没先开口说话。" } },
-            { keywords: ["签名","围巾","礼物","手写信"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  韩振主动拥抱了申惟。" } },
+            { keywords: ["签名","围巾","礼物","手写信"], effect: { ts: -2, th: -2, esc: 1, style: "soft", log: "  韩振轻轻抱住了申惟，申惟揉了揉他的头。" } },
             { keywords: ["队长","leader","责任感"], effect: { ts: -1, th: -1, esc: 1, style: "soft", log: "  申惟挺直了背，韩振拍了拍他的肩膀。" } },
             { keywords: ["蹦极","高空","害怕"], effect: { ts: -2, th: -1, esc: 1, style: "soft", log: "  韩振想起申惟关心自己、保护自己的样子，小声说了谢谢。" } }
         ];
@@ -715,16 +712,19 @@
             } return m + `  (导演${directorName} · ${getDirectorStyle()})`;
         }
         
+        // 结局标题改为随机抽取，不再区分类型
+        const titlePool = [
+            "和我一起奔跑是什么心情 在这首歌结束时可以告诉我吗。",
+            "要不要和我一起去往这条路的尽头。",
+            "因你而改变的季节 为你而倾心的一天 我们在同一个圆里打转。",
+            "今天也好 明天也罢 一起吧。",
+            "被相反的人吸引的第一千万个理由。",
+            "期待下一篇章的故事 人生篇章 只有第一步很难而已。",
+            "曾经形单影只的我 爱上了以我们为名。"
+        ];
+        
         function getEndingTitle(){
-            switch(finalEndingType){
-                case "perfect": return "和我一起奔跑是什么心情 在这首歌结束时可以告诉我吗。";
-                case "sweet": return "要不要和我一起去往这条路的尽头。";
-                case "awkward": return "因你而改变的季节 为你而倾心的一天 我们在同一个圆里打转。";
-                case "long": return "今天也好 明天也罢 一起吧。";
-                case "cold": return "被相反的人吸引的第一千万个理由。";
-                case "stuck": return "期待下一篇章的故事 人生篇章 只有第一步很难而已。";
-                default: return "曾经形单影只的我 爱上了以我们为名。";
-            }
+            return titlePool[Math.floor(Math.random() * titlePool.length)];
         }
         
         const actionCommands = [
@@ -776,13 +776,20 @@
         function showEnding(){
             ended=true; gameActive=false;
             stopDanmaku();
-            const title=getEndingTitle(), msg=getEndingMessage();
-            const consoleDiv=document.getElementById('directorConsole');
+            const title = getEndingTitle();
+            const msg = getEndingMessage();
+            const consoleDiv = document.getElementById('directorConsole');
             if(consoleDiv){
-                consoleDiv.innerHTML=`<div class="ending-box"><div style="font-size:40px;">🔓</div><h2 style="color:#eebb77;margin:8px 0;font-size:18px;">${title}</h2><p style="color:#efdbbc;margin:12px 0;line-height:1.45;font-size:13px;">${msg}</p><div class="badge-area"><span class="ending-badge">申惟 ${Math.floor(tensionS)}%</span><span class="ending-badge">韩振 ${Math.floor(tensionH)}%</span><span class="ending-badge">指令 ${cmdCount}</span><span class="ending-badge">事故 ${accidentCount}</span></div><div class="share-hint" id="copyEndingBtn">点击可复制结果，游戏内容虚构，纯属娱乐。@JUN</div><button class="reset-btn" id="resetEndBtn" style="background:#b46f3a;margin-top:14px;">重新开拍</button></div>`;
-                const resetBtn=document.getElementById('resetEndBtn'), copyBtn=document.getElementById('copyEndingBtn');
-                if(resetBtn) resetBtn.addEventListener('click',resetGame);
-                if(copyBtn) copyBtn.addEventListener('click',()=>{ navigator.clipboard.writeText(`【小雨披大导演】${directorName}导演 · ${getDirectorStyle()}\n结局: ${title}\n${msg}\n申惟${Math.floor(tensionS)}% 韩振${Math.floor(tensionH)}% 指令${cmdCount}次 事故${accidentCount}次`).then(()=>{ copyBtn.innerText="✓ 已复制！"; setTimeout(()=>{ copyBtn.innerText="点击可复制结果，游戏内容虚构，纯属娱乐。@JUN"; },2000); }); });
+                consoleDiv.innerHTML = `<div class="ending-box"><div style="font-size:40px;">🔓</div><h2 style="color:#eebb77;margin:8px 0;font-size:18px;">${title}</h2><p style="color:#efdbbc;margin:12px 0;line-height:1.45;font-size:13px;">${msg}</p><div class="badge-area"><span class="ending-badge">申惟 ${Math.floor(tensionS)}%</span><span class="ending-badge">韩振 ${Math.floor(tensionH)}%</span><span class="ending-badge">指令 ${cmdCount}</span><span class="ending-badge">事故 ${accidentCount}</span></div><div class="share-hint" id="copyEndingBtn">点击可复制结果，游戏内容虚构，纯属娱乐。@JUN</div><button class="reset-btn" id="resetEndBtn" style="background:#b46f3a;margin-top:14px;">重新开拍</button></div>`;
+                const resetBtn = document.getElementById('resetEndBtn');
+                const copyBtn = document.getElementById('copyEndingBtn');
+                if(resetBtn) resetBtn.addEventListener('click', resetGame);
+                if(copyBtn) copyBtn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(`【小雨披大导演】${directorName}导演 · ${getDirectorStyle()}\n结局: ${title}\n${msg}\n申惟${Math.floor(tensionS)}% 韩振${Math.floor(tensionH)}% 指令${cmdCount}次 事故${accidentCount}次`).then(() => {
+                        copyBtn.innerText = "✓ 已复制！";
+                        setTimeout(() => { copyBtn.innerText = "点击可复制结果，游戏内容虚构，纯属娱乐。@JUN"; }, 2000);
+                    });
+                });
             }
         }
         
@@ -790,7 +797,7 @@
             tensionS=68; tensionH=65; escape=0; gameActive=true; ended=false; logs=[]; lastCommandDesc=""; cmdCount=0; accidentCount=0; finalEndingType=null; styleStats={soft:0,spicy:0,chaotic:0};
             const consoleDiv=document.getElementById('directorConsole');
             if(consoleDiv){
-                consoleDiv.innerHTML=`<div class="director-name-display" id="directorNameDisplay">🎬 ${directorName}导演 · 未定义风格</div><div class="name-input-area"><span class="name-label">导演署名</span><input type="text" class="name-input" id="directorNameInput" placeholder="输入你的名字" value="${directorName}"><button class="name-confirm" id="confirmNameBtn">确认</button></div><div class="section-title">🎙️ 指令台</div><div class="command-grid" id="commandGrid"></div><div class="toy-section"><div class="toy-title">导演道具</div><div class="toy-grid" id="toyGrid"></div></div><div class="director-interact"><div class="talk-label">导演工具箱</div><div class="interact-buttons"><button class="interact-btn" id="musicBtn">音乐</button><button class="interact-btn" id="lightBtn">调光</button><button class="interact-btn" id="coffeeBtn">饮料</button><button class="interact-btn" id="snackBtn">零食</button><button class="photo-btn" id="photoBtn">📸 拍照</button></div><div class="talk-input-area"><input type="text" class="talk-input" id="directorTalkInput" placeholder="喊话，比如: 再主动一点" autocomplete="off"><button class="send-btn" id="sendTalkBtn">喊话</button></div></div><div class="progress-row"><button class="reset-btn" id="resetGameBtn">🎞️ 重新开拍</button></div>`;
+                consoleDiv.innerHTML=`<div class="director-name-display" id="directorNameDisplay">🎬 ${directorName}导演 · 未定义风格</div><div class="name-input-area"><span class="name-label">导演署名</span><input type="text" class="name-input" id="directorNameInput" placeholder="输入你的名字" value="${directorName}"><button class="name-confirm" id="confirmNameBtn">确认</button></div><div class="section-title">🎙️ 指令台</div><div class="command-grid" id="commandGrid"></div><div class="toy-section"><div class="toy-title">导演道具</div><div class="toy-grid" id="toyGrid"></div></div><div class="director-interact"><div class="talk-label">🎙️ 导演工具箱</div><div class="interact-buttons"><button class="interact-btn" id="musicBtn">音乐</button><button class="interact-btn" id="lightBtn">调光</button><button class="interact-btn" id="coffeeBtn">饮料</button><button class="interact-btn" id="snackBtn">零食</button><button class="photo-btn" id="photoBtn">📸 拍照</button></div><div class="talk-input-area"><input type="text" class="talk-input" id="directorTalkInput" placeholder="喊话，比如: 再主动一点" autocomplete="off"><button class="send-btn" id="sendTalkBtn">喊话</button></div></div><div class="progress-row"><button class="reset-btn" id="resetGameBtn">🎞️ 重新开拍</button></div>`;
             }
             const nameInput=document.getElementById('directorNameInput'), confirmBtn=document.getElementById('confirmNameBtn');
             if(confirmBtn&&nameInput) confirmBtn.onclick=()=>{ let nn=nameInput.value.trim(); if(nn) directorName=nn; else directorName="雨披"; const dd=document.getElementById('directorNameDisplay'); if(dd) dd.innerText=`🎬 ${directorName}导演`; addLog(`「${directorName}」导演已就位。`); };
