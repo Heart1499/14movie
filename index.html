@@ -232,7 +232,12 @@
         }
 
         .cmd-btn {
-            background: #2c221b;monospace;
+            background: #2c221b;
+            border: 1px solid #745d45;
+            color: #ffefdb;
+            padding: 6px 10px;
+            border-radius: 40px;
+            font-family: monospace;
             font-weight: bold;
             font-size: 10px;
             cursor: pointer;
@@ -441,16 +446,11 @@
         const danmakuPool = [
             "1499", "1499", "1499", "锐因是真的", "锐因是真的", "锐因是真的",
             "雕蛙我爱你们", "雕蛙我爱你们", "雕蛙我爱你们",
-            "啊啊啊啊啊", "kswl", "好涩好涩", "这能播吗", "大哥哥脸直接红成礼山苹果",
-            "珍珍害羞了呀", "不结婚很难收场", "你以为你在看谁的直播 你在看六产颜一的直播", "有谁录屏了我很需要啊"
+            "啊啊啊啊啊", "kswl", "好涩好涩对的对的就是这样", "这能播吗导演导演我们喜欢你", "大哥哥耳朵红了",
+            "珍珍害羞啦哈哈哈", "不结婚很难收场", "你以为你看的是谁的直播 你看的是六产颜一的直播", "谁录屏了快点发我急急急"
         ];
         
-        let danmakuInterval =
-            border: 1px solid #745d45;
-            color: #ffefdb;
-            padding: 6px 10px;
-            border-radius: 40px;
-            font-family: null;
+        let danmakuInterval = null;
         
         function startDanmaku() {
             if (danmakuInterval) clearInterval(danmakuInterval);
@@ -718,7 +718,7 @@
         function directorSay(text){ directorAction("shout",text); }
         function checkEnding(){ if(escape>=100&&!ended){ escape=100; determineEnding(); showEnding(); } }
         
-        // 修复结局判定：让所有结局都有机会出现，不只有"long"
+        // 修复结局判定：让所有结局都有机会出现
         function determineEnding() {
             if(escape >= 100) {
                 // perfect：极低忍耐值（双向奔赴）
@@ -727,8 +727,8 @@
                 else if(tensionS <= 35 && tensionH <= 35) finalEndingType = "sweet";
                 // awkward：任一值很高（暧昧暗涌）
                 else if(tensionS >= 70 || tensionH >= 70) finalEndingType = "awkward";
-                // long：指令数很多，需要25次以上才触发（爱情马拉松）
-                else if(cmdCount >= 25) finalEndingType = "long";
+                // long：指令数较多（爱情马拉松）- 降低阈值让玩家能触发
+                else if(cmdCount >= 18) finalEndingType = "long";
                 // cold：忍耐值和羞耻值都比较高（口是心非）
                 else if(tensionS >= 55 && tensionH >= 55) finalEndingType = "cold";
                 // normal：其他情况（破冰之旅）
@@ -848,7 +848,20 @@
             if(musicBtn) musicBtn.onclick=()=>directorAction('music'); if(lightBtn) lightBtn.onclick=()=>directorAction('light'); if(coffeeBtn) coffeeBtn.onclick=()=>directorAction('coffee'); if(snackBtn) snackBtn.onclick=()=>directorAction('snack');
             if(photoBtn) photoBtn.onclick=()=>takePhoto();
             const sendBtn=document.getElementById('sendTalkBtn'), talkInput=document.getElementById('directorTalkInput');
-            if(sendBtn&&talkInput){ sendBtn.onclick=()=>{ let msg=talkInput.value.trim(); if(msg) directorSay(msg); talkInput.value=""; }; talkInput.addEventListener('keypress',(e)=>{ if(e.key==='Enter'){ let msg=talkInput.value.trim(); if(msg) directorSay(msg); talkInput.value=""; } }); }
+            if(sendBtn&&talkInput){ 
+                sendBtn.onclick=()=>{ 
+                    let msg=talkInput.value.trim(); 
+                    if(msg) directorSay(msg); 
+                    talkInput.value=""; 
+                }; 
+                talkInput.addEventListener('keypress',(e)=>{ 
+                    if(e.key==='Enter'){ 
+                        let msg=talkInput.value.trim(); 
+                        if(msg) directorSay(msg); 
+                        talkInput.value=""; 
+                    } 
+                }); 
+            }
             const resetBtn=document.getElementById('resetGameBtn'); if(resetBtn) resetBtn.addEventListener('click',resetGame);
             const logDiv=document.getElementById('actionLog'); if(logDiv) logDiv.innerHTML=" 系统: 房间规则——亲密值达标才能开门。";
             logs=[]; addLog(` 重置房间，${directorName}导演上线。`); updateUI();
