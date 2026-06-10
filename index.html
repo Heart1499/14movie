@@ -687,15 +687,15 @@
             if (boardMessages.length > 100) boardMessages = boardMessages.slice(-100);
             localStorage.setItem('ruinBoardMessages', JSON.stringify(boardMessages));
             renderBoard();
-            addLog(` 导演「${name}」在留言板写下了：${text.substring(0, 30)}${text.length>30?'...':''}`);
+            addLog(` 导演「${name}」在记录册写下了：${text.substring(0, 30)}${text.length>30?'...':''}`);
         }
         
         function clearBoard() {
-            if (confirm('确定要清空所有留言吗？')) {
+            if (confirm('确定要清空所有记录吗？')) {
                 boardMessages = [];
                 localStorage.setItem('ruinBoardMessages', JSON.stringify(boardMessages));
                 renderBoard();
-                addLog(' 留言板已被清空');
+                addLog(' 记录册已被清空');
             }
         }
         
@@ -1258,7 +1258,7 @@
                 <div id="tabMain" class="tab-content active"><div class="section-title">🎙️ 指令台</div><div class="command-grid" id="commandGrid"></div><div class="toy-section"><div class="toy-title">导演道具</div><div class="toy-grid" id="toyGrid"></div></div><div class="director-interact"><div class="talk-label">🎙️ 导演工具箱</div><div class="interact-buttons"><button class="interact-btn" id="musicBtn">音乐</button><button class="interact-btn" id="lightBtn">调光</button><button class="interact-btn" id="coffeeBtn">饮料</button><button class="interact-btn" id="snackBtn">零食</button><button class="photo-btn" id="photoBtn"> 拍照</button></div><div class="talk-input-area"><input type="text" class="talk-input" id="directorTalkInput" placeholder="喊话，比如: 再主动一点" autocomplete="off"><button class="send-btn" id="sendTalkBtn">喊话</button></div></div><div class="progress-row"><button class="reset-btn" id="resetGameBtn">🎞️ 重新开拍</button></div></div>
                 <div id="tabGallery" class="tab-content"><div class="section-title"> 结局图鉴</div><div id="galleryInner"></div></div>
                 <div id="tabNote" class="tab-content"><div class="section-title"> 导演手记</div><div id="noteInner"></div></div>
-                <div id="tabBoard" class="tab-content"><div class="section-title"> 公屏留言板</div><div class="message-board"><div class="board-title"> 所有导演的足迹</div><div class="board-messages" id="boardMessages"></div><div class="board-input-area"><input type="text" class="board-input" id="boardInput" placeholder="留下你的话，其他导演也能看到..." maxlength="100"><button class="board-send" id="boardSendBtn">留言</button><button class="board-clear" id="boardClearBtn">清空</button></div></div></div>
+                <div id="tabBoard" class="tab-content"><div class="section-title"> 备用记录册</div><div class="message-board"><div class="board-title"> 备用记录簿</div><div class="board-messages" id="boardMessages"></div><div class="board-input-area"><input type="text" class="board-input" id="boardInput" placeholder="随便写点什么..." maxlength="100"><button class="board-send" id="boardSendBtn">记录</button><button class="board-clear" id="boardClearBtn">清空</button></div></div></div>
             `;
             window.switchTab = function(tab) {
                 document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
