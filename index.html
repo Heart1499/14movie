@@ -727,9 +727,9 @@
         // 隐藏彩蛋检查
         function checkHiddenEasterEgg(text) {
             let lower = text.toLowerCase();
-            if ((lower.includes('锐化') || lower.includes('角雕') || lower.includes('小号')) && !hiddenTriggers.sharp) {
+            if ((lower.includes('锐化') || lower.includes('韩振你在看吗') || lower.includes('韩振，你在看吗')) && !hiddenTriggers.sharp) {
                 hiddenTriggers.sharp = true;
-                addLog(` 隐藏彩蛋：韩振愣了一下，小声说“那个小号…是我”。申惟转过头看他，没说话，耳朵红了。`);
+                addLog(` 隐藏彩蛋：韩振愣了一下，小声叫了“哥…”。申惟转过头看他，“嗯”，耳朵红了。`);
                 tensionS = Math.max(10, tensionS - 6);
                 tensionH = Math.max(10, tensionH - 4);
                 escape = Math.min(100, escape + 4);
@@ -749,7 +749,7 @@
             }
             if (lower.includes('1499') && !hiddenTriggers.num1499) {
                 hiddenTriggers.num1499 = true;
-                addLog(` 隐藏彩蛋：弹幕刷过一排1499，申惟低头假装没看见，韩振抿着嘴笑了。`);
+                addLog(` 隐藏彩蛋：弹幕刷过一排1499，申惟撇头假装没看见，韩振抿着嘴笑了。`);
                 tensionS = Math.max(10, tensionS - 3);
                 tensionH = Math.max(10, tensionH - 4);
                 escape = Math.min(100, escape + 3);
@@ -869,9 +869,9 @@
                 "申惟低下头假装在看地板，韩振抿了抿嘴没接话。",
                 "韩振摸了摸后颈，申惟把脸偏向一边，假装没听见。",
                 "两人对视了一秒，又同时移开目光。什么都没说，但空气变了。",
-                "申惟清了清嗓子，韩振低头笑了一下。还是没开口。",
+                "申惟摸摸下巴，韩振低头笑了一下。还是没开口。",
                 "韩振轻轻碰了碰申惟的手背，又缩了回去。没说话，但意思到了。",
-                "申惟这次没有躲，只是耳朵红了。韩振看了他一眼，也没说话。",
+                "申惟这次没有躲开。韩振惊讶地看了他一眼，也没说话。",
                 "两人安静了几秒，然后韩振突然笑出声，申惟也跟着笑了。"
             ];
             return reactionList[Math.min(callCount, reactionList.length - 1)];
@@ -879,9 +879,9 @@
 
         const triggerWords = [
             { keywords: ["亲","吻","嘴一个","kiss","亲亲"], effect: { ts: -3, th: -2, esc: 2, style: "spicy", log: "  两人闻言耳尖泛红，气氛开始发烫。" } },
-            { keywords: ["抱","搂","hug","拥抱"], effect: { ts: -2, th: -3, esc: 2, style: "soft", log: "  韩振主动张开手臂，申惟犹豫了一下圈住了他。" } },
+            { keywords: ["抱","搂","hug","拥抱"], effect: { ts: -2, th: -3, esc: 2, style: "soft", log: "  韩振主动张开手臂，申惟犹豫了一下，圈住了他。" } },
             { keywords: ["牵手","拉手","十指紧扣","握"], effect: { ts: -2, th: -2, esc: 3, style: "soft", log: "  两个人指尖碰到一起，又赶紧分开，最后还是握住了。" } },
-            { keywords: ["对视","眼神","eye contact"], effect: { ts: -3, th: -3, esc: 2, style: "soft", log: "  四目相对的瞬间，申惟先移开又忍不住看回去。" } },
+            { keywords: ["对视","眼神","eye contact"], effect: { ts: -3, th: -3, esc: 2, style: "soft", log: "  四目相对的瞬间，申惟先移开，又忍不住看回去。" } },
             { keywords: ["撒娇","可爱","kiyo"], effect: { ts: -1, th: -4, esc: 2, style: "soft", log: "  韩振故意用中文撒娇，申惟耳朵红透了。" } },
             { keywords: ["告白","表白","喜欢","爱你","撒浪嘿"], effect: { ts: -4, th: -5, esc: 3, style: "spicy", log: "  房间里突然安静，申惟低下头耳朵红得像要滴血。" } },
             { keywords: ["摸头","揉头发"], effect: { ts: -2, th: -2, esc: 2, style: "soft", log: "  申惟抬手轻轻揉了揉韩振的头发，韩振眯起眼睛。" } },
@@ -932,7 +932,7 @@
             if (ended || escape >= 100) return false;
             if (cmdCount > 2 && Math.random() < 0.25 && accidentCount < 2) {
                 accidentCount++;
-                let msgs = ["申惟太紧张撞到了桌角，气氛更僵了 (忍耐值+5)","韩振想靠近结果绊了一下，两人摔倒在地，贴在了一起。","房间灯突然闪烁，好不容易缓和的气氛又变冷了","韩振不小心把水打翻在申惟身上"];
+                let msgs = ["申惟太紧张撞到了桌角，气氛更僵了 (忍耐值+5)","韩振想靠近，结果绊了一下，两人摔倒在地，贴在了一起，偶像剧一般的场景。","房间灯突然闪烁，好不容易缓和的气氛又变冷了","韩振不小心摔在申惟身上，申惟迅速扶住了他"];
                 let delta = 5;
                 tensionS = clampValue(tensionS + delta, 5, 98);
                 tensionH = clampValue(tensionH + 4, 5, 98);
@@ -949,7 +949,7 @@
             }
             if (cmdCount > 2 && tensionH > 68 && Math.random() < 0.15 && accidentCount < 2) {
                 accidentCount++; 
-                addLog("💥 韩振脸红到不敢抬头，小声说了句“哥别看我”，申惟反而更紧张了。"); 
+                addLog("💥 韩振脸红到不敢抬头，小声说了句“哥别看我”，申惟吞了吞口水，有点紧张。"); 
                 tensionH = clampValue(tensionH + 4, 5, 98);
                 updateUI(); 
                 return true;
@@ -1012,14 +1012,14 @@
         }
 
         const toys = [
-            { id: "toy_rope", label: "丝绸绳", desc: "申惟拿起丝绸绳，犹豫了一下，韩振把手腕递了过去。申惟轻轻系了个松结，韩振别过脸去不看镜子里的倒影。" },
+            { id: "toy_rope", label: "丝绸绳", desc: "申惟拿起丝绸绳，犹豫了一下，韩振把手腕递了过去。申惟轻轻系了个松结，韩振别过脸去，不看镜子里自己的倒影。" },
             { id: "toy_blindfold", label: "丝带眼罩", desc: "韩振用丝带蒙住申惟的眼睛，申惟看不见之后其他感官被放大，韩振手指滑过他手臂的时候他轻轻颤了一下。" },
             { id: "toy_collar", label: "细链项圈", desc: "申惟拿起那条细链犹豫了很久，韩振轻轻说了句“想试就试”，红着脸把链子扣好，两个人都不敢看对方。" },
-            { id: "toy_feather", label: "羽毛", desc: "申惟用羽毛扫过韩振的脖子和锁骨，韩振死死咬住下唇不让自己出声，手指抓着床单泛白。" },
-            { id: "toy_ring", label: "指环", desc: "韩振拿出一个小银环，申惟看到后耳朵立刻红了。他们艰难地呼吸着，感觉房间内的空气变得稀薄。" },
-            { id: "toy_flogger", label: "散鞭", desc: "韩振拿着散鞭，力度很轻，像在挠痒痒。申惟忍不住说了句“用力点”，说完自己先愣住了，脸烧得通红。" },
+            { id: "toy_feather", label: "羽毛", desc: "申惟用羽毛扫过韩振的脖子和锁骨，韩振死死咬住下唇不让自己出声，手指紧紧抓着床单。" },
+            { id: "toy_ring", label: "指环", desc: "韩振拿出一个小银环，申惟看到后脸立刻红了。他们艰难地呼吸着，感觉房间内的空气变得稀薄。" },
+            { id: "toy_flogger", label: "散鞭", desc: "韩振拿着散鞭，力度很轻，像在挠痒痒。申惟忍不住说了句“用力点”，说完自己先愣住了，很想捂脸，这一切怎么会变成这样。" },
             { id: "toy_clamps", label: "小夹子", desc: "申惟拿起小夹子，韩振还没来得及阻止他就夹上了。伴随着一声闷哼，和一句小声的“如果是你在这里的话，可以试试”。" },
-            { id: "toy_candle", label: "香薰蜡烛", desc: "韩振点燃蜡烛，房间里弥漫着淡淡的香味。申惟吸了吸鼻子，说这怎么闻起来很好吃的样子。" }
+            { id: "toy_candle", label: "香薰蜡烛", desc: "韩振点燃蜡烛，房间里弥漫着淡淡的香味。申惟吸了吸鼻子，说这味道怎么闻起来很好吃的样子。" }
         ];
         
         function useToy(toyId) {
@@ -1074,7 +1074,7 @@
             let deltaS = 0, deltaH = 0, deltaEsc = 0, flavor = "", transition = lastCommandDesc ? "（接续）" : "";
             
             switch(cmdId) {
-                case "kiss_deep": deltaS=-2; deltaH=-1; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振踮起脚尖，申惟愣了一秒后低头回应。分开时两人都在喘，韩振耳朵红透。"; break;
+                case "kiss_deep": deltaS=-2; deltaH=-1; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振踮起脚尖，申惟愣了一秒后低头回应。分开时两个人都在喘。"; break;
                 case "neck_bite": deltaS=-3; deltaH=-1; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振凑过去轻轻咬住申惟喉结，申惟闷哼一声仰起头，手指攥紧了韩振的衣服。"; break;
                 case "lap_grind": deltaS=-3; deltaH=-2; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振跨坐在申惟腿上，缓慢磨蹭。申惟手扣住韩振的腰，韩振把脸埋进他肩膀。"; break;
                 case "shirt_off": deltaS=-1; deltaH=-3; deltaEsc=4+Math.floor(Math.random()*4); flavor="申惟帮韩振脱掉上衣，指尖碰到皮肤时，韩振轻轻战栗。"; break;
@@ -1082,7 +1082,7 @@
                 case "ear_whisper_ch": deltaS=-2; deltaH=-1; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振凑过去轻声说“哥想不想更过分一点”，申惟耳朵瞬间血红。"; break;
                 case "blindfold": deltaS=-4; deltaH=-1; deltaEsc=4+Math.floor(Math.random()*4); flavor="蒙住申惟眼睛，韩振用手指描摹他的脸，指尖划过嘴唇。"; break;
                 case "thigh_rub": deltaS=-5; deltaH=-3; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振用大腿蹭申惟腿间，申惟抓住他的腿，想阻止，但很显然没有完全用力。"; break;
-                case "back_hug_chest": deltaS=-2; deltaH=-2; deltaEsc=4+Math.floor(Math.random()*4); flavor="申惟从背后抱住韩振，手放在他胸口，韩振按住他的手不让拿开。"; break;
+                case "back_hug_chest": deltaS=-2; deltaH=-2; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振从背后抱住申惟，手放在他胸口，申惟紧紧握住韩振的手，韩振没能挣脱。"; break;
                 case "floor_press": deltaS=-2; deltaH=-2; deltaEsc=4+Math.floor(Math.random()*4); flavor="两人滚到地板上，正对着房间内的镜子。申惟在上方俯视韩振。"; break;
                 case "belt_remove": deltaS=-5; deltaH=-3; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振解开申惟的皮带，金属扣碰撞的声音格外响，申惟呼吸一滞。"; break;
                 case "hand_down": deltaS=-4; deltaH=-5; deltaEsc=4+Math.floor(Math.random()*4); flavor="申惟的手从韩振腰侧滑进裤腰，韩振轻轻哼了一声。"; break;
@@ -1090,9 +1090,9 @@
                 case "spoon": deltaS=-1; deltaH=-1; deltaEsc=3+Math.floor(Math.random()*3); flavor="申惟从背后环住韩振的腰，下巴抵着他后脑勺，安静地抱了很久。"; break;
                 case "teasing_deny": deltaS=-1; deltaH=-1; deltaEsc=2+Math.floor(Math.random()*3); flavor="韩振逗申惟但不让他碰，申惟急了，一把拽回来轻声说“珍珍韩振不要走”。"; break;
                 case "praise_kink": deltaS=-1; deltaH=-2; deltaEsc=4+Math.floor(Math.random()*4); flavor="申惟边亲韩振边夸他“做得好”，韩振把脸埋进他胸口。"; break;
-                case "hair_pull": deltaS=-2; deltaH=-1; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振揪住申惟的头发，申惟吃痛反而吻得更用力。"; break;
+                case "hair_pull": deltaS=-2; deltaH=-1; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振揪住申惟的头发，申惟吃痛，吻得更加用力。"; break;
                 case "table_edge": deltaS=-3; deltaH=-2; deltaEsc=4+Math.floor(Math.random()*4); flavor="申惟把韩振抱上书桌边缘，韩振双腿夹住他的腰。"; break;
-                case "knee_ride": deltaS=-2; deltaH=-3; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振跪在床上仰头看申惟，申惟伸手把他拉起来，两人一起摔进枕头里。"; break;
+                case "knee_ride": deltaS=-2; deltaH=-3; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振跪在床上仰头看申惟，申惟伸手想把他拉起来，两人一起摔进枕头里。"; break;
                 case "aftercare": deltaS=-1; deltaH=-1; deltaEsc=2+Math.floor(Math.random()*3); flavor="申惟帮韩振擦汗，轻声问他疼不疼。韩振摇头又点头，申惟亲了亲他额头。"; break;
                 default: return;
             }
