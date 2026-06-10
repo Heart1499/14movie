@@ -103,6 +103,7 @@
             border-radius: 28px;
             padding: 14px;
             border: 1px solid #36281d;
+            transition: background 0.3s ease;
         }
 
         .characters-area {
@@ -122,7 +123,9 @@
             gap: 10px;
             box-shadow: 0 4px 0 #0b0805;
             border-bottom: 2px solid #d6955a;
+            transition: all 0.2s;
         }
+        .char-card.redden { border-bottom-color: #e8a87c; background: #2c2018; }
 
         .char-icon {
             width: 40px;
@@ -133,7 +136,9 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
+            transition: all 0.2s;
         }
+        .char-icon.blush { background: #8b5e3c; }
 
         .char-name {
             color: #f3cf9a;
@@ -149,25 +154,25 @@
         .stats-area {
             background: #1f1914;
             border-radius: 24px;
-            padding: 10px 14px;
+            padding: 6px 12px;
             margin-top: 10px;
         }
 
         .stat-row {
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
 
         .stat-label {
             display: flex;
             justify-content: space-between;
-            font-size: 10px;
+            font-size: 9px;
             color: #e2bc89;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
 
         .stat-bar-bg {
             background: #2a241f;
-            height: 6px;
+            height: 5px;
             border-radius: 10px;
             overflow: hidden;
         }
@@ -185,24 +190,25 @@
         .cmd-count-badge {
             background: #2c241e;
             display: inline-block;
-            padding: 3px 10px;
+            padding: 2px 8px;
             border-radius: 30px;
-            font-size: 9px;
-            margin-top: 5px;
+            font-size: 8px;
+            margin-top: 4px;
         }
 
         .action-log {
             background: #0d0b09;
             margin: 12px 14px 14px 14px;
             border-radius: 20px;
-            padding: 10px 12px;
+            padding: 12px 14px;
             color: #d7cdbc;
-            font-size: 10px;
+            font-size: 13px;
             font-family: monospace;
             border-left: 4px solid #d78c45;
-            min-height: 110px;
-            max-height: 140px;
+            min-height: 120px;
+            max-height: 150px;
             overflow-y: auto;
+            line-height: 1.4;
         }
 
         .director-console {
@@ -227,7 +233,7 @@
             flex-wrap: wrap;
             gap: 6px;
             margin-bottom: 12px;
-            max-height: 200px;
+            max-height: 240px;
             overflow-y: auto;
         }
 
@@ -403,6 +409,100 @@
         }
         .badge-area { display: flex; justify-content: center; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
         .ending-badge { background: #3d2c1f; padding: 3px 8px; border-radius: 30px; font-size: 9px; }
+
+        .tab-bar {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #36281d;
+            padding-bottom: 8px;
+        }
+        .tab-btn {
+            background: #2c221b;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 30px;
+            color: #b49470;
+            font-size: 10px;
+            cursor: pointer;
+        }
+        .tab-btn.active {
+            background: #5a3f2a;
+            color: #f3cf9a;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 公屏留言板 */
+        .message-board {
+            background: #1f1914;
+            border-radius: 20px;
+            padding: 10px;
+            margin-bottom: 14px;
+            border: 1px solid #36281d;
+        }
+        .board-title {
+            font-size: 10px;
+            color: #e2bc89;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .board-messages {
+            max-height: 100px;
+            overflow-y: auto;
+            font-size: 9px;
+            color: #b49470;
+            background: #0d0b09;
+            border-radius: 16px;
+            padding: 6px 8px;
+            margin-bottom: 8px;
+        }
+        .board-message {
+            padding: 3px 0;
+            border-bottom: 1px solid #2a241f;
+            word-break: break-all;
+        }
+        .board-message:last-child { border-bottom: none; }
+        .board-message span { color: #f3cf9a; }
+        .board-input-area {
+            display: flex;
+            gap: 6px;
+        }
+        .board-input {
+            flex: 1;
+            background: #0f0d0b;
+            border: 1px solid #6a5642;
+            border-radius: 30px;
+            padding: 5px 8px;
+            color: #f0e2d0;
+            font-size: 10px;
+            outline: none;
+        }
+        .board-send {
+            background: #4f3824;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 30px;
+            color: white;
+            cursor: pointer;
+            font-size: 10px;
+        }
+        .board-clear {
+            background: #3d2c1f;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 30px;
+            color: #b49470;
+            cursor: pointer;
+            font-size: 9px;
+            margin-left: 4px;
+        }
     </style>
 </head>
 <body>
@@ -415,10 +515,16 @@
         <div class="danmaku-area" id="danmakuArea">
             <div class="danmaku-track" id="danmakuTrack"></div>
         </div>
-        <div class="room-preview">
+        <div class="room-preview" id="roomPreview">
             <div class="characters-area">
-                <div class="char-card"><div class="char-icon">🦒</div><div><div class="char-name">申惟</div><div class="char-tag">SY</div></div></div>
-                <div class="char-card"><div class="char-icon">🐰</div><div><div class="char-name">韩振</div><div class="char-tag">HJ</div></div></div>
+                <div class="char-card" id="cardS">
+                    <div class="char-icon" id="iconS">🦒</div>
+                    <div><div class="char-name">申惟</div><div class="char-tag">SY</div></div>
+                </div>
+                <div class="char-card" id="cardH">
+                    <div class="char-icon" id="iconH">🐰</div>
+                    <div><div class="char-name">韩振</div><div class="char-tag">HJ</div></div>
+                </div>
             </div>
             <div class="stats-area">
                 <div class="stat-row"><div class="stat-label"><span> 申惟忍耐值</span><span id="tensionS_val">68</span><span>%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill fill-s" id="tensionS_bar" style="width:68%"></div></div></div>
@@ -434,30 +540,210 @@
 
 <script>
     (function() {
-        // ---------- 状态变量 ----------
-        let tensionS = 68;       // 申惟忍耐值 (范围0~100)
-        let tensionH = 65;       // 韩振羞耻值
-        let escape = 0;          // 逃脱进度%
-        let gameActive = true;
-        let ended = false;
-        let logs = [];
-        let cmdCount = 0;
-        let accidentCount = 0;
-        let finalEndingType = null;
+        // 状态变量
+        let tensionS = 68, tensionH = 65, escape = 0, gameActive = true, ended = false;
+        let logs = [], lastCommandDesc = "", cmdCount = 0, accidentCount = 0, finalEndingType = null;
         let directorName = "雨披";
         let styleStats = { soft: 0, spicy: 0, chaotic: 0 };
         let lastPhotoTime = 0;
         let shoutCallCount = 0;
-
-        // 工具函数：确保数值是有效数字且在 0-100 之间 (修复 NaN 问题的核心)
+        let photoCount = 0;
+        let toysUsed = new Set();
+        
+        // 隐藏彩蛋触发记录
+        let hiddenTriggers = { sharp: false, jeju: false, num1499: false };
+        
+        // 结局图鉴存储
+        let endingsUnlocked = JSON.parse(localStorage.getItem('ruinEndings') || '[]');
+        
+        // 公屏留言板存储
+        let boardMessages = JSON.parse(localStorage.getItem('ruinBoardMessages') || '[]');
+        
+        // 结局标题池
+        const titlePool = [
+            "和我一起奔跑是什么心情 在这首歌结束时可以告诉我吗。",
+            "要不要和我一起去往这条路的尽头。",
+            "因你而改变的季节 为你而倾心的一天 我们在同一个圆里打转。",
+            "今天也好 明天也罢 一起吧。",
+            "被相反的人吸引的第一千万个理由。",
+            "期待下一篇章的故事 人生篇章 只有第一步很难而已。",
+            "曾经形单影只的我 爱上了以我们为名。"
+        ];
+        
+        function getRandomTitle() {
+            return titlePool[Math.floor(Math.random() * titlePool.length)];
+        }
+        
+        function unlockEnding(type, displayName) {
+            if (!endingsUnlocked.includes(type)) {
+                endingsUnlocked.push(type);
+                localStorage.setItem('ruinEndings', JSON.stringify(endingsUnlocked));
+                addLog(`🏆 图鉴解锁：${displayName}`);
+            }
+        }
+        
+        function getEndingDisplayName(type) {
+            const names = {
+                perfect: "天作之合",
+                sweet: "细水长流",
+                awkward: "推拉美学",
+                long: "爱情马拉松",
+                cold: "口是心非",
+                stuck: "未完待续",
+                normal: "破冰之旅"
+            };
+            return names[type] || "未知结局";
+        }
+        
+        function buildGalleryHTML() {
+            const endings = [
+                { id: "perfect", name: "天作之合", desc: "双向奔赴" },
+                { id: "sweet", name: "细水长流", desc: "温柔以待" },
+                { id: "awkward", name: "推拉美学", desc: "暧昧暗涌" },
+                { id: "long", name: "爱情马拉松", desc: "日久生情" },
+                { id: "cold", name: "口是心非", desc: "暗涌" },
+                { id: "stuck", name: "未完待续", desc: "还需要努力" },
+                { id: "normal", name: "破冰之旅", desc: "新的开始" }
+            ];
+            let html = `<div style="display:flex;flex-direction:column;gap:8px;">`;
+            endings.forEach(e => {
+                let unlocked = endingsUnlocked.includes(e.id);
+                let sampleTitle = unlocked ? titlePool[Math.floor(Math.random() * titlePool.length)] : "？？？";
+                html += `<div style="background:#2c221b;border-radius:20px;padding:10px;border-left:3px solid ${unlocked ? '#d6955a' : '#4a3828'};">`;
+                html += `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">`;
+                html += `<span style="color:#e2bc89;">${unlocked ? '🔓' : '🔒'}</span>`;
+                html += `<span style="color:#f3cf9a;font-weight:bold;">${e.name}</span>`;
+                html += `<span style="color:#b49470;font-size:10px;">${e.desc}</span>`;
+                if (!unlocked) html += `<span style="color:#7a6856;font-size:9px;">(未解锁)</span>`;
+                html += `</div>`;
+                html += `<div style="color:#bfa98e;font-size:11px;margin-top:6px;font-style:italic;">“${sampleTitle}”</div>`;
+                html += `</div>`;
+            });
+            html += `</div>`;
+            return html;
+        }
+        
+        function buildNoteHTML() {
+            let style = getDirectorStyle();
+            return `<pre style="white-space:pre-wrap;font-family:monospace;font-size:10px;color:#d7cdbc;line-height:1.6;">
+📋 导演手记
+━━━━━━━━━━━━━━━━
+ 导演: ${directorName}
+ 导演风格: ${style}
+ 拍照次数: ${photoCount}
+ 喊话次数: ${shoutCallCount}
+ 玩具使用: ${toysUsed.size}/8
+ 事故触发: ${accidentCount} 次
+ 已解锁图鉴: ${endingsUnlocked.length}/7
+✨ 隐藏彩蛋: ${Object.values(hiddenTriggers).filter(v=>v).length}/3
+━━━━━━━━━━━━━━━━
+            </pre>`;
+        }
+        
+        // 公屏留言板
+        function renderBoard() {
+            const boardDiv = document.getElementById('boardMessages');
+            if (!boardDiv) return;
+            if (boardMessages.length === 0) {
+                boardDiv.innerHTML = '<div style="color:#7a6856;text-align:center;padding:10px;">暂无留言，留下你的足迹吧~</div>';
+                return;
+            }
+            let html = '';
+            boardMessages.slice(-15).reverse().forEach(msg => {
+                html += `<div class="board-message"><span>📢 ${msg.name}</span>：${msg.text}</div>`;
+            });
+            boardDiv.innerHTML = html;
+        }
+        
+        function addBoardMessage(name, text) {
+            if (!text.trim()) return;
+            boardMessages.push({
+                name: name.substring(0, 20),
+                text: text.substring(0, 100),
+                time: Date.now()
+            });
+            if (boardMessages.length > 100) boardMessages = boardMessages.slice(-100);
+            localStorage.setItem('ruinBoardMessages', JSON.stringify(boardMessages));
+            renderBoard();
+            addLog(` 导演「${name}」在留言板写下了：${text.substring(0, 30)}${text.length>30?'...':''}`);
+        }
+        
+        function clearBoard() {
+            if (confirm('确定要清空所有留言吗？')) {
+                boardMessages = [];
+                localStorage.setItem('ruinBoardMessages', JSON.stringify(boardMessages));
+                renderBoard();
+                addLog(' 留言板已被清空');
+            }
+        }
+        
+        // 氛围动态效果
+        function updateAtmosphere() {
+            const preview = document.getElementById('roomPreview');
+            if (preview) {
+                let brightness = 0.3 + (escape / 100) * 0.5;
+                preview.style.background = `rgba(12, 10, 8, ${0.6 + escape/200})`;
+                preview.style.border = `1px solid ${escape > 50 ? '#d6955a' : '#36281d'}`;
+            }
+            const cardS = document.getElementById('cardS');
+            const cardH = document.getElementById('cardH');
+            const iconS = document.getElementById('iconS');
+            const iconH = document.getElementById('iconH');
+            if (tensionS > 70) cardS?.classList.add('redden');
+            else cardS?.classList.remove('redden');
+            if (tensionH > 70) cardH?.classList.add('redden');
+            else cardH?.classList.remove('redden');
+            if (tensionS < 35) iconS?.classList.add('blush');
+            else iconS?.classList.remove('blush');
+            if (tensionH < 35) iconH?.classList.add('blush');
+            else iconH?.classList.remove('blush');
+        }
+        
+        // 隐藏彩蛋检查
+        function checkHiddenEasterEgg(text) {
+            let lower = text.toLowerCase();
+            // 锐化彩蛋
+            if ((lower.includes('锐化') || lower.includes('角雕') || lower.includes('小号')) && !hiddenTriggers.sharp) {
+                hiddenTriggers.sharp = true;
+                addLog(`💎 隐藏彩蛋：韩振愣了一下，小声说“那个小号…是我”。申惟转过头看他，没说话，耳朵红了。`);
+                tensionS = Math.max(10, tensionS - 6);
+                tensionH = Math.max(10, tensionH - 4);
+                escape = Math.min(100, escape + 4);
+                updateUI();
+                addDanmakuForAction();
+                return true;
+            }
+            // 济州岛彩蛋
+            if ((lower.includes('济州岛') || lower.includes('jeju') || lower.includes('一起去旅行')) && !hiddenTriggers.jeju) {
+                hiddenTriggers.jeju = true;
+                addLog(`💎 隐藏彩蛋：申惟小声说“等出去以后，一起去吧”。韩振低着头没说话，但嘴角翘了一下。`);
+                tensionS = Math.max(10, tensionS - 5);
+                tensionH = Math.max(10, tensionH - 5);
+                escape = Math.min(100, escape + 5);
+                updateUI();
+                addDanmakuForAction();
+                return true;
+            }
+            // 1499彩蛋
+            if (lower.includes('1499') && !hiddenTriggers.num1499) {
+                hiddenTriggers.num1499 = true;
+                addLog(`💎 隐藏彩蛋：弹幕刷过一排1499，申惟低头假装没看见，韩振抿着嘴笑了。`);
+                tensionS = Math.max(10, tensionS - 3);
+                tensionH = Math.max(10, tensionH - 4);
+                escape = Math.min(100, escape + 3);
+                updateUI();
+                addDanmakuForAction();
+                return true;
+            }
+            return false;
+        }
+        
         function clampValue(value, min = 0, max = 100) {
-            if (isNaN(value)) return min;       // 如果出现 NaN 或 undefined，重置为最小值
+            if (isNaN(value)) return min;
             return Math.min(max, Math.max(min, Math.floor(value)));
         }
 
-        // 更新所有 UI 显示 (并使用 clamp 保证显示正常)
         function updateUI() {
-            // 再次确保内存中的数值有效 (防止之前的运算产生残留 NaN)
             tensionS = clampValue(tensionS, 5, 98);
             tensionH = clampValue(tensionH, 5, 98);
             escape = clampValue(escape, 0, 100);
@@ -477,9 +763,9 @@
             if (thBar) thBar.style.width = tensionH + '%';
             if (escBar) escBar.style.width = escape + '%';
             if (countSpan) countSpan.innerText = ` 指令: ${cmdCount}  |   事故: ${accidentCount}`;
+            updateAtmosphere();
         }
 
-        // 增加日志 (保留最近12条)
         function addLog(msg) {
             logs.unshift(msg);
             if (logs.length > 12) logs.pop();
@@ -487,7 +773,7 @@
             if (logDiv) logDiv.innerHTML = logs.map((l, idx) => (idx === 0 ? "🎬 " : "&nbsp;&nbsp;") + l).join('<br>');
         }
 
-        // 随机弹幕 (默认高频)
+        // 弹幕词库
         const danmakuPool = [
             "1499", "1499", "1499", "锐因是真的", "锐因是真的", "锐因是真的",
             "雕蛙我爱你们", "雕蛙我爱你们", "雕蛙我爱你们",
@@ -545,7 +831,6 @@
             }
         }
 
-        // 逃脱进度推进时的气氛语
         function getEscapePhrase(progress) {
             let arr;
             if (progress < 16) arr = ["门锁发出细微的咔哒声，好像有什么在松动。","门缝里透进来一丝微弱的光，又松动了一点。","空气里有细微的变化，锁芯轻轻转了一下。"];
@@ -556,7 +841,6 @@
             return arr[Math.floor(Math.random() * arr.length)];
         }
 
-        // 喊话反应库
         function getShoutReaction(callCount) {
             const reactionList = [
                 "导演的话在房间里回荡，两人都愣了一下，不知道该说什么。",
@@ -571,7 +855,6 @@
             return reactionList[Math.min(callCount, reactionList.length - 1)];
         }
 
-        // ----- 喊话关键词处理 (修复掉可能导致NaN的异常)-----
         const triggerWords = [
             { keywords: ["亲","吻","嘴一个","kiss","亲亲"], effect: { ts: -3, th: -2, esc: 2, style: "spicy", log: "  两人闻言耳尖泛红，气氛开始发烫。" } },
             { keywords: ["抱","搂","hug","拥抱"], effect: { ts: -2, th: -3, esc: 2, style: "soft", log: "  韩振主动张开手臂，申惟犹豫了一下圈住了他。" } },
@@ -590,6 +873,9 @@
         function processShout(text) {
             if (!gameActive || escape >= 100) return;
             let lower = text.toLowerCase();
+            // 先检查隐藏彩蛋
+            checkHiddenEasterEgg(text);
+            
             let matched = null;
             for (let w of triggerWords) {
                 for (let kw of w.keywords) {
@@ -605,7 +891,6 @@
                 return;
             }
             let eff = matched.effect;
-            // 安全增减，防止NaN
             let newS = tensionS + eff.ts;
             let newH = tensionH + eff.th;
             tensionS = clampValue(newS, 5, 98);
@@ -622,7 +907,6 @@
             if (escape >= 100 && !ended) checkEnding();
         }
 
-        // 事故系统 (避免修改出NaN)
         function checkAccident() {
             if (ended || escape >= 100) return false;
             if (cmdCount > 2 && Math.random() < 0.25 && accidentCount < 2) {
@@ -652,7 +936,6 @@
             return false;
         }
 
-        // 拍照功能
         function takePhoto() {
             if (!gameActive || escape >= 100) {
                 addLog("导演按了快门，但房间已经解锁。");
@@ -664,6 +947,7 @@
                 return;
             }
             lastPhotoTime = now;
+            photoCount++;
             addLog(`【${directorName}导演】按下了快门。咔嚓。`);
             addDanmakuForAction();
             let reactions = [
@@ -677,7 +961,6 @@
             updateUI();
         }
 
-        // 导演通用动作 (音乐，灯光，饮料等)
         function directorAction(actionType, customText = "") {
             if (!gameActive || escape >= 100) return;
             switch (actionType) {
@@ -707,17 +990,21 @@
             if (escape >= 100 && !ended) checkEnding();
         }
 
-        // 玩具库 (预先定义)
         const toys = [
             { id: "toy_rope", label: "丝绸绳", desc: "申惟拿起丝绸绳，犹豫了一下，韩振把手腕递了过去。申惟轻轻系了个松结，韩振别过脸去不看镜子里的倒影。" },
             { id: "toy_blindfold", label: "丝带眼罩", desc: "韩振用丝带蒙住申惟的眼睛，申惟看不见之后其他感官被放大，韩振手指滑过他手臂的时候他轻轻颤了一下。" },
             { id: "toy_collar", label: "细链项圈", desc: "申惟拿起那条细链犹豫了很久，韩振轻轻说了句“想试就试”，红着脸把链子扣好，两个人都不敢看对方。" },
             { id: "toy_feather", label: "羽毛", desc: "申惟用羽毛扫过韩振的脖子和锁骨，韩振死死咬住下唇不让自己出声，手指抓着床单泛白。" },
-            { id: "toy_ring", label: "指环", desc: "韩振拿出一个小银环，申惟看到后耳朵立刻红了。他们艰难地呼吸着，感觉房间内的空气变得稀薄。" }
+            { id: "toy_ring", label: "指环", desc: "韩振拿出一个小银环，申惟看到后耳朵立刻红了。他们艰难地呼吸着，感觉房间内的空气变得稀薄。" },
+            { id: "toy_flogger", label: "散鞭", desc: "韩振拿着散鞭，力度很轻，像在挠痒痒。申惟忍不住说了句“用力点”，说完自己先愣住了，脸烧得通红。" },
+            { id: "toy_clamps", label: "小夹子", desc: "申惟拿起小夹子，韩振还没来得及阻止他就夹上了。伴随着一声闷哼，和一句小声的“如果是你在这里的话，可以试试”。" },
+            { id: "toy_candle", label: "香薰蜡烛", desc: "韩振点燃蜡烛，房间里弥漫着淡淡的香味。申惟吸了吸鼻子，说还挺好闻的。" }
         ];
+        
         function useToy(toyId) {
             if (!gameActive || escape >= 100) return;
             cmdCount++;
+            toysUsed.add(toyId);
             let toy = toys.find(t => t.id === toyId);
             if (!toy) return;
             let deltaS = -3 - Math.floor(Math.random() * 2);
@@ -746,84 +1033,148 @@
             if (escape >= 100 && !ended) checkEnding();
         }
 
-        // 指令动作 (亲亲，搂抱等)
+        // 完整20个指令动作
         const actionCommands = [
-            { id: "kiss_deep", label: "深吻" }, { id: "neck_bite", label: "咬喉结" }, { id: "wall_press", label: "壁咚" },
-            { id: "back_hug_chest", label: "背后抱" }, { id: "praise_kink", label: "边亲边夸" }, { id: "aftercare", label: "安抚" }
+            { id: "kiss_deep", label: "深吻" }, { id: "neck_bite", label: "咬喉结" },
+            { id: "lap_grind", label: "腿上磨蹭" }, { id: "shirt_off", label: "脱衣" },
+            { id: "wall_press", label: "壁咚" }, { id: "ear_whisper_ch", label: "耳语" },
+            { id: "blindfold", label: "蒙眼" }, { id: "thigh_rub", label: "大腿蹭" },
+            { id: "back_hug_chest", label: "背后抱" }, { id: "floor_press", label: "地板压制" },
+            { id: "belt_remove", label: "解皮带" }, { id: "hand_down", label: "手探裤腰" },
+            { id: "missionary", label: "传教士" }, { id: "spoon", label: "汤匙抱" },
+            { id: "teasing_deny", label: "逗弄" }, { id: "praise_kink", label: "边亲边夸" },
+            { id: "hair_pull", label: "揪头发" }, { id: "table_edge", label: "桌边" },
+            { id: "knee_ride", label: "跪姿" }, { id: "aftercare", label: "安抚" }
         ];
+        
         function executeCommand(cmdId) {
             if (!gameActive || escape >= 100) return;
             cmdCount++;
-            let deltaS = -2, deltaH = -2, deltaEsc = 3;
-            let flavor = "";
-            switch (cmdId) {
-                case "kiss_deep": deltaS = -2; deltaH = -1; deltaEsc = 4; flavor = "韩振踮起脚尖，申惟愣了一秒后低头回应。分开时两人都在喘，韩振耳朵红透。"; break;
-                case "neck_bite": deltaS = -3; deltaH = -1; deltaEsc = 4; flavor = "韩振凑过去轻轻咬住申惟喉结，申惟闷哼一声仰起头。"; break;
-                case "wall_press": deltaS = -1; deltaH = -2; deltaEsc = 3; flavor = "申惟把韩振按在墙上，韩振拽住他的衣领拉近。"; break;
-                case "back_hug_chest": deltaS = -2; deltaH = -2; deltaEsc = 4; flavor = "申惟从背后抱住韩振，手放在他胸口，韩振按住他的手不让拿开。"; break;
-                case "praise_kink": deltaS = -1; deltaH = -2; deltaEsc = 4; flavor = "申惟边亲韩振边夸他“做得好”，韩振把脸埋进他胸口。"; break;
-                case "aftercare": deltaS = -1; deltaH = -1; deltaEsc = 2; flavor = "申惟帮韩振擦汗，轻声问他疼不疼。韩振摇头又点头，申惟亲了亲他额头。"; break;
+            let deltaS = 0, deltaH = 0, deltaEsc = 0, flavor = "", transition = lastCommandDesc ? "（接续）" : "";
+            
+            switch(cmdId) {
+                case "kiss_deep": deltaS=-2; deltaH=-1; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振踮起脚尖，申惟愣了一秒后低头回应。分开时两人都在喘，韩振耳朵红透。"; break;
+                case "neck_bite": deltaS=-3; deltaH=-1; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振凑过去轻轻咬住申惟喉结，申惟闷哼一声仰起头，手指攥紧了韩振的衣服。"; break;
+                case "lap_grind": deltaS=-3; deltaH=-2; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振跨坐在申惟腿上，缓慢磨蹭。申惟手扣住韩振的腰，韩振把脸埋进他肩膀。"; break;
+                case "shirt_off": deltaS=-1; deltaH=-3; deltaEsc=4+Math.floor(Math.random()*4); flavor="申惟帮韩振脱掉上衣，指尖碰到皮肤时，韩振轻轻战栗。"; break;
+                case "wall_press": deltaS=-1; deltaH=-2; deltaEsc=3+Math.floor(Math.random()*3); flavor="申惟把韩振按在墙上，韩振拽住他的衣领拉近，呼吸全落在耳侧。"; break;
+                case "ear_whisper_ch": deltaS=-2; deltaH=-1; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振凑过去轻声说“哥想不想更过分一点”，申惟耳朵瞬间血红。"; break;
+                case "blindfold": deltaS=-4; deltaH=-1; deltaEsc=4+Math.floor(Math.random()*4); flavor="蒙住申惟眼睛，韩振用手指描摹他的脸，指尖划过嘴唇。"; break;
+                case "thigh_rub": deltaS=-5; deltaH=-3; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振用大腿蹭申惟腿间，申惟抓住他的腿，想阻止，但很显然没有完全用力。"; break;
+                case "back_hug_chest": deltaS=-2; deltaH=-2; deltaEsc=4+Math.floor(Math.random()*4); flavor="申惟从背后抱住韩振，手放在他胸口，韩振按住他的手不让拿开。"; break;
+                case "floor_press": deltaS=-2; deltaH=-2; deltaEsc=4+Math.floor(Math.random()*4); flavor="两人滚到地板上，正对着房间内的镜子。申惟在上方俯视韩振。"; break;
+                case "belt_remove": deltaS=-5; deltaH=-3; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振解开申惟的皮带，金属扣碰撞的声音格外响，申惟呼吸一滞。"; break;
+                case "hand_down": deltaS=-4; deltaH=-5; deltaEsc=4+Math.floor(Math.random()*4); flavor="申惟的手从韩振腰侧滑进裤腰，韩振轻轻哼了一声。"; break;
+                case "missionary": deltaS=-6; deltaH=-5; deltaEsc=5+Math.floor(Math.random()*4); flavor="申惟把韩振压在床上，膝盖顶开他双腿，韩振勾住他的脖子。"; break;
+                case "spoon": deltaS=-1; deltaH=-1; deltaEsc=3+Math.floor(Math.random()*3); flavor="申惟从背后环住韩振的腰，下巴抵着他后脑勺，安静地抱了很久。"; break;
+                case "teasing_deny": deltaS=-1; deltaH=-1; deltaEsc=2+Math.floor(Math.random()*3); flavor="韩振逗申惟但不让他碰，申惟急了，一把拽回来轻声说“珍珍韩振不要走”。"; break;
+                case "praise_kink": deltaS=-1; deltaH=-2; deltaEsc=4+Math.floor(Math.random()*4); flavor="申惟边亲韩振边夸他“做得好”，韩振把脸埋进他胸口。"; break;
+                case "hair_pull": deltaS=-2; deltaH=-1; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振揪住申惟的头发，申惟吃痛反而吻得更用力。"; break;
+                case "table_edge": deltaS=-3; deltaH=-2; deltaEsc=4+Math.floor(Math.random()*4); flavor="申惟把韩振抱上书桌边缘，韩振双腿夹住他的腰。"; break;
+                case "knee_ride": deltaS=-2; deltaH=-3; deltaEsc=4+Math.floor(Math.random()*4); flavor="韩振跪在床上仰头看申惟，申惟伸手把他拉起来，两人一起摔进枕头里。"; break;
+                case "aftercare": deltaS=-1; deltaH=-1; deltaEsc=2+Math.floor(Math.random()*3); flavor="申惟帮韩振擦汗，轻声问他疼不疼。韩振摇头又点头，申惟亲了亲他额头。"; break;
                 default: return;
             }
+            
             tensionS = clampValue(tensionS + deltaS, 5, 98);
             tensionH = clampValue(tensionH + deltaH, 5, 98);
             escape = clampValue(escape + deltaEsc, 0, 100);
-            addLog(`${flavor} (申惟${deltaS}, 韩振${deltaH} | +${deltaEsc}%)`);
+            
+            addLog(`${transition} ${flavor} (申惟${deltaS>=0?'+':''}${deltaS}, 韩振${deltaH>=0?'+':''}${deltaH} | +${deltaEsc}%)`);
             addDanmakuForAction();
+            lastCommandDesc = flavor.substring(0, 40);
             updateUI();
-            if (cmdCount % 4 === 0 && escape < 85 && !ended) { escape = clampValue(escape + 2, 0, 100); addLog(` 默契渐长，房门又松动了一些 +2%`); updateUI();}
-            if (tensionS < 30 && tensionH < 32 && escape < 90 && !ended) { escape = clampValue(escape + 2, 0, 100); addLog(` 两人相视一笑，门锁咔哒 +2%`); updateUI();}
+            
+            if (cmdCount % 4 === 0 && escape < 85 && !ended) {
+                let e = 2;
+                escape = clampValue(escape + e, 0, 100);
+                addLog(` 默契渐长，房门又松动了一些 +${e}%`);
+                updateUI();
+            }
+            if (tensionS < 30 && tensionH < 32 && escape < 90 && !ended) {
+                let e = 2;
+                escape = clampValue(escape + e, 0, 100);
+                addLog(` 两人不约而同看向对方，然后同时笑了。门锁咔哒 +${e}%`);
+                updateUI();
+            }
+            
             checkAccident();
             if (escape >= 100 && !ended) checkEnding();
+            updateUI();
         }
 
-        // 结局判定
+        // 平衡性调整：让7种结局更容易均衡出现
         function determineEnding() {
             if (escape >= 100) {
-                if (tensionS <= 20 && tensionH <= 20) finalEndingType = "perfect";
-                else if (tensionS <= 35 && tensionH <= 35) finalEndingType = "sweet";
-                else if (tensionS >= 70 || tensionH >= 70) finalEndingType = "awkward";
-                else if (cmdCount >= 18) finalEndingType = "long";
+                // perfect：非常低（双向奔赴）
+                if (tensionS <= 18 && tensionH <= 18) finalEndingType = "perfect";
+                // sweet：较低（细水长流）
+                else if (tensionS <= 32 && tensionH <= 32) finalEndingType = "sweet";
+                // awkward：很高（暧昧暗涌）
+                else if (tensionS >= 72 || tensionH >= 72) finalEndingType = "awkward";
+                // long：指令数较多（爱情马拉松）
+                else if (cmdCount >= 22) finalEndingType = "long";
+                // cold：中等偏高（口是心非）
                 else if (tensionS >= 55 && tensionH >= 55) finalEndingType = "cold";
+                // stuck：已经单独处理，这里放normal兜底
                 else finalEndingType = "normal";
-            } else finalEndingType = "stuck";
+            } else {
+                finalEndingType = "stuck";
+            }
+            
+            unlockEnding(finalEndingType, getEndingDisplayName(finalEndingType));
         }
+        
         function getEndingMessage() {
             let msgMap = {
                 perfect: "房门自动打开了，申惟牵着韩振的手慢慢走出来，韩振眼角有点红，他们的嘴角都是上扬的。后来的舞台上、团综里，两人反而会不自觉地对视，食髓知味地想起拍电影的这一天，和那位从天而降的导演。",
                 sweet: "门开了。申惟帮韩振整理衣服，韩振小声说谢谢哥。两人一前一后走出去，但申惟的手一直往后伸，直到韩振握住，他终于憋不住上扬的嘴角。",
                 awkward: "门终于开了。申惟快步走在前面，韩振跟在后面低着头。回去的路上申惟帮韩振拉了拉口罩，遮住红肿的嘴唇，韩振偷偷笑了。",
-                long: "门开了。两人沉默着走出去，没有牵手，也没有和今天发生的事有关的任何对话。但晚上wvs直播时韩振又一次提起和申惟的初遇印象，申惟听到后耳朵红了。",
-                cold: "经过漫长的拉扯，房门在一声轻响后打开。两人都愣住了。申惟先回过神来，把外套披在韩振身上。",
+                long: "经过漫长的拉扯，房门在一声轻响后打开。两人都愣住了。申惟先回过神来，把外套披在韩振身上。",
+                cold: "门开了。两人沉默着走出去，没有牵手，也没有和今天发生的事有关的任何对话。但晚上wvs直播时韩振又一次提起和申惟的初遇印象，申惟听到后耳朵红了。",
                 stuck: "折腾了半天，房门纹丝不动。两人瘫坐在地上，申惟叹了口气说，这种程度还不够吗。韩振笑了，说或许吧，哥要不要试着多了解我一点。门突然响了一下，是的，也许，我们都还需要一点时间。",
                 normal: "房间解锁。申惟把自己的外套紧紧裹住韩振，两人并排走出去，肩膀偶尔碰到，视线偶尔对上，他们一次都没有再躲开。"
             };
             return (msgMap[finalEndingType] || msgMap.normal) + `  (导演${directorName} · ${getDirectorStyle()})`;
         }
+        
         function getDirectorStyle() {
             if (styleStats.soft > styleStats.spicy && styleStats.soft > styleStats.chaotic) return "温柔氛围感导演";
             if (styleStats.spicy > styleStats.soft && styleStats.spicy > styleStats.chaotic) return "性感直球导演";
+            if (styleStats.chaotic > styleStats.soft && styleStats.chaotic > styleStats.spicy) return "混邪整活导演";
             return "平衡全能导演";
         }
+        
         function checkEnding() { if (escape >= 100 && !ended) { determineEnding(); showEnding(); } }
         
         function showEnding() {
             ended = true; gameActive = false; stopDanmaku();
+            const endingTitle = getRandomTitle();
             const endingMsg = getEndingMessage();
             const consoleDiv = document.getElementById('directorConsole');
             if (consoleDiv) {
-                consoleDiv.innerHTML = `<div class="ending-box"><div style="font-size:40px;">🔓</div><h2 style="color:#eebb77;margin:8px 0;font-size:18px;">${["和我一起奔跑是什么心情 在这首歌结束时可以告诉我吗。","因你而改变的季节 为你而倾心的一天"][Math.floor(Math.random()*2)]}</h2><p style="color:#efdbbc;margin:12px 0;line-height:1.45;font-size:13px;">${endingMsg}</p><div class="badge-area"><span class="ending-badge">申惟 ${Math.floor(tensionS)}%</span><span class="ending-badge">韩振 ${Math.floor(tensionH)}%</span><span class="ending-badge">指令 ${cmdCount}</span></div><button class="reset-btn" id="resetEndBtn" style="background:#b46f3a;margin-top:14px;">重新开拍</button></div>`;
+                consoleDiv.innerHTML = `<div class="ending-box"><div style="font-size:40px;">🔓</div><h2 style="color:#eebb77;margin:8px 0;font-size:18px;">${endingTitle}</h2><p style="color:#efdbbc;margin:12px 0;line-height:1.45;font-size:13px;">${endingMsg}</p><div class="badge-area"><span class="ending-badge">申惟 ${Math.floor(tensionS)}%</span><span class="ending-badge">韩振 ${Math.floor(tensionH)}%</span><span class="ending-badge">指令 ${cmdCount}</span><span class="ending-badge">事故 ${accidentCount}</span></div><div class="share-hint" id="copyEndingBtn">点击可复制结果，游戏内容虚构，纯属娱乐。@JUN</div><button class="reset-btn" id="resetEndBtn" style="background:#b46f3a;margin-top:14px;">重新开拍</button></div>`;
                 const resetBtn = document.getElementById('resetEndBtn');
+                const copyBtn = document.getElementById('copyEndingBtn');
                 if (resetBtn) resetBtn.addEventListener('click', resetGame);
+                if (copyBtn) {
+                    copyBtn.addEventListener('click', () => {
+                        navigator.clipboard.writeText(`【小雨披大导演】${directorName}导演 · ${getDirectorStyle()}\n结局: ${endingTitle}\n${endingMsg}\n申惟${Math.floor(tensionS)}% 韩振${Math.floor(tensionH)}% 指令${cmdCount}次 事故${accidentCount}次`).then(() => {
+                            copyBtn.innerText = "✓ 已复制！";
+                            setTimeout(() => { copyBtn.innerText = "点击可复制结果，游戏内容虚构，纯属娱乐。@JUN"; }, 2000);
+                        });
+                    });
+                }
             }
         }
         
-        // 重置全部
         function resetGame() {
             tensionS = 68; tensionH = 65; escape = 0; gameActive = true; ended = false;
-            logs = []; cmdCount = 0; accidentCount = 0; finalEndingType = null;
+            logs = []; lastCommandDesc = ""; cmdCount = 0; accidentCount = 0; finalEndingType = null;
             styleStats = { soft: 0, spicy: 0, chaotic: 0 };
-            shoutCallCount = 0; lastPhotoTime = 0;
+            shoutCallCount = 0; lastPhotoTime = 0; photoCount = 0; toysUsed.clear();
+            // 重置隐藏彩蛋记录（不重置已解锁图鉴，保留成就）
+            hiddenTriggers = { sharp: false, jeju: false, num1499: false };
             stopDanmaku();
             rebuildConsole();
             updateUI();
@@ -834,8 +1185,38 @@
         function rebuildConsole() {
             const consoleDiv = document.getElementById('directorConsole');
             if (!consoleDiv) return;
-            consoleDiv.innerHTML = `<div class="director-name-display" id="directorNameDisplay">🎬 ${directorName}导演</div><div class="name-input-area"><span class="name-label">导演署名</span><input type="text" class="name-input" id="directorNameInput" placeholder="输入你的名字" value="${directorName}"><button class="name-confirm" id="confirmNameBtn">确认</button></div><div class="section-title">🎙️ 指令台</div><div class="command-grid" id="commandGrid"></div><div class="toy-section"><div class="toy-title">导演道具</div><div class="toy-grid" id="toyGrid"></div></div><div class="director-interact"><div class="talk-label">🎙️ 导演工具箱</div><div class="interact-buttons"><button class="interact-btn" id="musicBtn">音乐</button><button class="interact-btn" id="lightBtn">调光</button><button class="interact-btn" id="coffeeBtn">饮料</button><button class="interact-btn" id="snackBtn">零食</button><button class="photo-btn" id="photoBtn">📸 拍照</button></div><div class="talk-input-area"><input type="text" class="talk-input" id="directorTalkInput" placeholder="喊话，比如: 再主动一点" autocomplete="off"><button class="send-btn" id="sendTalkBtn">喊话</button></div></div><div class="progress-row"><button class="reset-btn" id="resetGameBtn">🎞️ 重新开拍</button></div>`;
-            // 绑定事件
+            consoleDiv.innerHTML = `
+                <div class="director-name-display" id="directorNameDisplay">🎬 ${directorName}导演</div>
+                <div class="name-input-area"><span class="name-label">导演署名</span><input type="text" class="name-input" id="directorNameInput" placeholder="输入你的名字" value="${directorName}"><button class="name-confirm" id="confirmNameBtn">确认</button></div>
+                <div class="tab-bar"><button class="tab-btn active" data-tab="main" onclick="switchTab('main')"> 游戏</button><button class="tab-btn" data-tab="gallery" onclick="switchTab('gallery')">📖 图鉴</button><button class="tab-btn" data-tab="note" onclick="switchTab('note')">📝 手记</button><button class="tab-btn" data-tab="board" onclick="switchTab('board')">📢 留言板</button></div>
+                <div id="tabMain" class="tab-content active"><div class="section-title">🎙️ 指令台</div><div class="command-grid" id="commandGrid"></div><div class="toy-section"><div class="toy-title">导演道具</div><div class="toy-grid" id="toyGrid"></div></div><div class="director-interact"><div class="talk-label">🎙️ 导演工具箱</div><div class="interact-buttons"><button class="interact-btn" id="musicBtn">音乐</button><button class="interact-btn" id="lightBtn">调光</button><button class="interact-btn" id="coffeeBtn">饮料</button><button class="interact-btn" id="snackBtn">零食</button><button class="photo-btn" id="photoBtn">📸 拍照</button></div><div class="talk-input-area"><input type="text" class="talk-input" id="directorTalkInput" placeholder="喊话，比如: 再主动一点" autocomplete="off"><button class="send-btn" id="sendTalkBtn">喊话</button></div></div><div class="progress-row"><button class="reset-btn" id="resetGameBtn">🎞️ 重新开拍</button></div></div>
+                <div id="tabGallery" class="tab-content"><div class="section-title"> 结局图鉴</div><div id="galleryInner"></div></div>
+                <div id="tabNote" class="tab-content"><div class="section-title"> 导演手记</div><div id="noteInner"></div></div>
+                <div id="tabBoard" class="tab-content"><div class="section-title"> 公屏留言板</div><div class="message-board"><div class="board-title">💬 所有导演的足迹</div><div class="board-messages" id="boardMessages"></div><div class="board-input-area"><input type="text" class="board-input" id="boardInput" placeholder="留下你的话，其他导演也能看到..." maxlength="100"><button class="board-send" id="boardSendBtn">留言</button><button class="board-clear" id="boardClearBtn">清空</button></div></div></div>
+            `;
+            window.switchTab = function(tab) {
+                document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+                if (tab === 'main') {
+                    document.getElementById('tabMain')?.classList.add('active');
+                    document.querySelector('.tab-btn[data-tab="main"]')?.classList.add('active');
+                } else if (tab === 'gallery') {
+                    document.getElementById('tabGallery')?.classList.add('active');
+                    document.querySelector('.tab-btn[data-tab="gallery"]')?.classList.add('active');
+                    const galleryDiv = document.getElementById('galleryInner');
+                    if (galleryDiv) galleryDiv.innerHTML = buildGalleryHTML();
+                } else if (tab === 'note') {
+                    document.getElementById('tabNote')?.classList.add('active');
+                    document.querySelector('.tab-btn[data-tab="note"]')?.classList.add('active');
+                    const noteDiv = document.getElementById('noteInner');
+                    if (noteDiv) noteDiv.innerHTML = buildNoteHTML();
+                } else if (tab === 'board') {
+                    document.getElementById('tabBoard')?.classList.add('active');
+                    document.querySelector('.tab-btn[data-tab="board"]')?.classList.add('active');
+                    renderBoard();
+                }
+            };
+            
             document.getElementById('confirmNameBtn')?.addEventListener('click', () => {
                 let nn = document.getElementById('directorNameInput')?.value.trim();
                 if (nn) directorName = nn;
@@ -843,6 +1224,7 @@
                 if (dd) dd.innerText = `🎬 ${directorName}导演`;
                 addLog(`「${directorName}」导演已就位。`);
             });
+            
             const grid = document.getElementById('commandGrid');
             if (grid) {
                 grid.innerHTML = "";
@@ -854,6 +1236,7 @@
                     grid.appendChild(btn);
                 });
             }
+            
             const toyGrid = document.getElementById('toyGrid');
             if (toyGrid) {
                 toyGrid.innerHTML = "";
@@ -865,11 +1248,13 @@
                     toyGrid.appendChild(btn);
                 });
             }
+            
             document.getElementById('musicBtn')?.addEventListener('click', () => directorAction('music'));
             document.getElementById('lightBtn')?.addEventListener('click', () => directorAction('light'));
             document.getElementById('coffeeBtn')?.addEventListener('click', () => directorAction('coffee'));
             document.getElementById('snackBtn')?.addEventListener('click', () => directorAction('snack'));
             document.getElementById('photoBtn')?.addEventListener('click', takePhoto);
+            
             const sendBtn = document.getElementById('sendTalkBtn');
             const talkInp = document.getElementById('directorTalkInput');
             if (sendBtn && talkInp) {
@@ -877,6 +1262,28 @@
                 talkInp.addEventListener('keypress', (e) => { if (e.key === 'Enter') { if (talkInp.value.trim()) directorAction('shout', talkInp.value.trim()); talkInp.value = ''; } });
             }
             document.getElementById('resetGameBtn')?.addEventListener('click', resetGame);
+            
+            // 留言板事件
+            const boardInput = document.getElementById('boardInput');
+            const boardSendBtn = document.getElementById('boardSendBtn');
+            const boardClearBtn = document.getElementById('boardClearBtn');
+            if (boardSendBtn && boardInput) {
+                boardSendBtn.onclick = () => {
+                    let msg = boardInput.value.trim();
+                    if (msg) {
+                        addBoardMessage(directorName, msg);
+                        boardInput.value = '';
+                    }
+                };
+                boardInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { let msg = boardInput.value.trim(); if (msg) { addBoardMessage(directorName, msg); boardInput.value = ''; } } });
+            }
+            if (boardClearBtn) boardClearBtn.onclick = () => clearBoard();
+            
+            const galleryDiv = document.getElementById('galleryInner');
+            if (galleryDiv) galleryDiv.innerHTML = buildGalleryHTML();
+            const noteDiv = document.getElementById('noteInner');
+            if (noteDiv) noteDiv.innerHTML = buildNoteHTML();
+            renderBoard();
         }
         
         function init() {
