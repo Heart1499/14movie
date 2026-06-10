@@ -98,12 +98,24 @@
             100% { opacity: 1; transform: scale(1);}
         }
 
+        /* 增强对比度的房间预览 */
         .room-preview {
             background: #0c0a08;
             border-radius: 28px;
             padding: 14px;
-            border: 1px solid #36281d;
-            transition: background 0.3s ease;
+            border: 2px solid #36281d;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        /* 逃脱进度越高，边框越亮越暖 */
+        .room-preview.high-escape {
+            border-color: #d6955a;
+            box-shadow: 0 0 15px rgba(214, 149, 90, 0.3);
+        }
+        .room-preview.full-escape {
+            border-color: #e8a87c;
+            background: #1a1511;
+            box-shadow: 0 0 20px rgba(232, 168, 124, 0.4);
         }
 
         .characters-area {
@@ -250,9 +262,12 @@
             flex: 1 0 auto;
             min-width: 65px;
             text-align: center;
+            transition: all 0.05s linear;
         }
-
-        .cmd-btn:active { background: #4e3725; transform: scale(0.96); }
+        .cmd-btn:active {
+            background: #4e3725;
+            transform: scale(0.96);
+        }
 
         .toy-section {
             background: #2a221c;
@@ -277,8 +292,12 @@
             color: #f0cfaa;
             font-size: 10px;
             cursor: pointer;
+            transition: all 0.05s linear;
         }
-        .toy-btn:active { background: #5e402c; }
+        .toy-btn:active {
+            background: #5e402c;
+            transform: scale(0.96);
+        }
 
         .director-interact {
             background: #2a221c;
@@ -308,6 +327,10 @@
             color: #f0cfaa;
             font-size: 10px;
             cursor: pointer;
+            transition: all 0.05s linear;
+        }
+        .interact-btn:active, .photo-btn:active {
+            transform: scale(0.96);
         }
         .photo-btn { background: #5a3f2a; color: #ffefdb; }
         .talk-input-area {
@@ -533,7 +556,7 @@
                 <div class="cmd-count-badge" id="cmdCountDisplay"> 指令: 0  |   事故: 0</div>
             </div>
         </div>
-        <div class="action-log" id="actionLog">📼 系统就绪。房间规则——亲密值达标才能开门。</div>
+        <div class="action-log" id="actionLog"> 系统就绪。房间规则——亲密值达标才能开门。</div>
     </div>
     <div class="director-console" id="directorConsole"></div>
 </div>
@@ -578,7 +601,7 @@
             if (!endingsUnlocked.includes(type)) {
                 endingsUnlocked.push(type);
                 localStorage.setItem('ruinEndings', JSON.stringify(endingsUnlocked));
-                addLog(`🏆 图鉴解锁：${displayName}`);
+                addLog(` 图鉴解锁：${displayName}`);
             }
         }
         
@@ -635,9 +658,54 @@
  玩具使用: ${toysUsed.size}/8
  事故触发: ${accidentCount} 次
  已解锁图鉴: ${endingsUnlocked.length}/7
-✨ 隐藏彩蛋: ${Object.values(hiddenTriggers).filter(v=>v).length}/3
+ 隐藏彩蛋: ${Object.values(hiddenTriggers).filter(v=>v).length}/3
 ━━━━━━━━━━━━━━━━
             </pre>`;
+        }
+        
+        // 生成导演名片（可自定义作品名）
+        function generateDirectorCard(workTitle = "") {
+            const style = getDirectorStyle();
+            const endingTitle = getRandomTitle();
+            const endingMsg = getEndingMessageShort();
+            const cardHtml = `
+                <div style="background: linear-gradient(135deg, #1a1511, #0c0a08); border-radius: 24px; padding: 20px; border: 1px solid #d6955a; text-align: center; font-family: monospace; width: 100%; max-width: 320px; margin: 0 auto;">
+                    <div style="font-size: 28px; margin-bottom: 8px;">🎬</div>
+                    <div style="font-size: 16px; font-weight: bold; color: #eebb77; margin-bottom: 4px;">小雨披大导演</div>
+                    <div style="font-size: 12px; color: #b49470; margin-bottom: 12px;">「锐因 不能出去的房间」</div>
+                    <div style="border-top: 1px solid #36281d; margin: 8px 0;"></div>
+                    <div style="font-size: 13px; color: #f3cf9a;"><span style="color: #d6955a;"> 作品名</span><br><span id="cardWorkTitle" style="font-weight: bold;">${workTitle || "——"}</span></div>
+                    <div style="border-top: 1px solid #36281d; margin: 8px 0;"></div>
+                    <div style="display: flex; justify-content: center; gap: 20px; margin: 8px 0;">
+                        <div><span style="color: #d6955a;">🦒</span><br><span style="font-size: 12px; color: #f3cf9a;">申惟</span></div>
+                        <div><span style="color: #d6955a;">🐰</span><br><span style="font-size: 12px; color: #f3cf9a;">韩振</span></div>
+                    </div>
+                    <div style="border-top: 1px solid #36281d; margin: 8px 0;"></div>
+                    <div style="font-size: 11px; text-align: left; padding: 4px 8px;">
+                        <div><span style="color: #e2bc89;"> 导演</span>　${directorName}</div>
+                        <div><span style="color: #e2bc89;"> 风格</span>　${style}</div>
+                        <div><span style="color: #e2bc89;"> 结局</span>　${endingTitle.substring(0, 20)}${endingTitle.length > 20 ? '…' : ''}</div>
+                        <div><span style="color: #e2bc89;"> 数据</span>　申惟${Math.floor(tensionS)}% 韩振${Math.floor(tensionH)}%</div>
+                        <div><span style="color: #e2bc89;"> 指令</span>　${cmdCount}次　拍照${photoCount}次</div>
+                    </div>
+                    <div style="border-top: 1px solid #36281d; margin: 8px 0;"></div>
+                    <div style="font-size: 9px; color: #7a6856;">小雨披导演工作室 · 锐因观察室</div>
+                </div>
+            `;
+            return cardHtml;
+        }
+        
+        function getEndingMessageShort() {
+            let msgMap = {
+                perfect: "房门自动打开了，申惟牵着韩振的手慢慢走出来，韩振眼角有点红，他们的嘴角都是上扬的。",
+                sweet: "门开了。申惟帮韩振整理衣服，韩振小声说谢谢哥。两人一前一后走出去，但申惟的手一直往后伸，直到韩振握住。",
+                awkward: "门终于开了。申惟快步走在前面，韩振跟在后面低着头。回去的路上申惟帮韩振拉了拉口罩，韩振偷偷笑了。",
+                long: "经过漫长的拉扯，房门在一声轻响后打开。两人都愣住了。申惟先回过神来，把外套披在韩振身上。",
+                cold: "门开了。两人沉默着走出去，没有牵手。但晚上wvs直播时韩振又一次提起和申惟的初遇印象。",
+                stuck: "折腾了半天，房门纹丝不动。两人瘫坐在地上，申惟叹了口气说，这种程度还不够吗。",
+                normal: "房间解锁。申惟把自己的外套紧紧裹住韩振，两人并排走出去，肩膀偶尔碰到，他们一次都没有再躲开。"
+            };
+            return msgMap[finalEndingType] || msgMap.normal;
         }
         
         // 公屏留言板
@@ -677,13 +745,16 @@
             }
         }
         
-        // 氛围动态效果
+        // 氛围动态效果增强
         function updateAtmosphere() {
             const preview = document.getElementById('roomPreview');
             if (preview) {
-                let brightness = 0.3 + (escape / 100) * 0.5;
-                preview.style.background = `rgba(12, 10, 8, ${0.6 + escape/200})`;
-                preview.style.border = `1px solid ${escape > 50 ? '#d6955a' : '#36281d'}`;
+                preview.classList.remove('high-escape', 'full-escape');
+                if (escape >= 85) {
+                    preview.classList.add('full-escape');
+                } else if (escape >= 50) {
+                    preview.classList.add('high-escape');
+                }
             }
             const cardS = document.getElementById('cardS');
             const cardH = document.getElementById('cardH');
@@ -702,10 +773,9 @@
         // 隐藏彩蛋检查
         function checkHiddenEasterEgg(text) {
             let lower = text.toLowerCase();
-            // 锐化彩蛋
             if ((lower.includes('锐化') || lower.includes('角雕') || lower.includes('小号')) && !hiddenTriggers.sharp) {
                 hiddenTriggers.sharp = true;
-                addLog(`💎 隐藏彩蛋：韩振愣了一下，小声说“那个小号…是我”。申惟转过头看他，没说话，耳朵红了。`);
+                addLog(` 隐藏彩蛋：韩振愣了一下，小声说“那个小号…是我”。申惟转过头看他，没说话，耳朵红了。`);
                 tensionS = Math.max(10, tensionS - 6);
                 tensionH = Math.max(10, tensionH - 4);
                 escape = Math.min(100, escape + 4);
@@ -713,10 +783,9 @@
                 addDanmakuForAction();
                 return true;
             }
-            // 济州岛彩蛋
             if ((lower.includes('济州岛') || lower.includes('jeju') || lower.includes('一起去旅行')) && !hiddenTriggers.jeju) {
                 hiddenTriggers.jeju = true;
-                addLog(`💎 隐藏彩蛋：申惟小声说“等出去以后，一起去吧”。韩振低着头没说话，但嘴角翘了一下。`);
+                addLog(` 隐藏彩蛋：申惟小声说“等出去以后，一起去吧”。韩振低着头没说话，但嘴角翘了一下。`);
                 tensionS = Math.max(10, tensionS - 5);
                 tensionH = Math.max(10, tensionH - 5);
                 escape = Math.min(100, escape + 5);
@@ -724,10 +793,9 @@
                 addDanmakuForAction();
                 return true;
             }
-            // 1499彩蛋
             if (lower.includes('1499') && !hiddenTriggers.num1499) {
                 hiddenTriggers.num1499 = true;
-                addLog(`💎 隐藏彩蛋：弹幕刷过一排1499，申惟低头假装没看见，韩振抿着嘴笑了。`);
+                addLog(` 隐藏彩蛋：弹幕刷过一排1499，申惟低头假装没看见，韩振抿着嘴笑了。`);
                 tensionS = Math.max(10, tensionS - 3);
                 tensionH = Math.max(10, tensionH - 4);
                 escape = Math.min(100, escape + 3);
@@ -873,7 +941,6 @@
         function processShout(text) {
             if (!gameActive || escape >= 100) return;
             let lower = text.toLowerCase();
-            // 先检查隐藏彩蛋
             checkHiddenEasterEgg(text);
             
             let matched = null;
@@ -1103,35 +1170,26 @@
             updateUI();
         }
 
-        // 平衡性调整：让7种结局更容易均衡出现
         function determineEnding() {
             if (escape >= 100) {
-                // perfect：非常低（双向奔赴）
                 if (tensionS <= 18 && tensionH <= 18) finalEndingType = "perfect";
-                // sweet：较低（细水长流）
                 else if (tensionS <= 32 && tensionH <= 32) finalEndingType = "sweet";
-                // awkward：很高（暧昧暗涌）
                 else if (tensionS >= 72 || tensionH >= 72) finalEndingType = "awkward";
-                // long：指令数较多（爱情马拉松）
                 else if (cmdCount >= 22) finalEndingType = "long";
-                // cold：中等偏高（口是心非）
                 else if (tensionS >= 55 && tensionH >= 55) finalEndingType = "cold";
-                // stuck：已经单独处理，这里放normal兜底
                 else finalEndingType = "normal";
             } else {
                 finalEndingType = "stuck";
             }
-            
             unlockEnding(finalEndingType, getEndingDisplayName(finalEndingType));
         }
         
-        // 修复：perfect和sweet的结局描述正确对应图鉴
         function getEndingMessage() {
             let msgMap = {
-                perfect: "房门自动打开了，申惟牵着韩振的手慢慢走出来，韩振眼角有点红，他们都是笑着的。后来的舞台上、团综里，两人反而会不自觉地对视，食髓知味地想起拍电影的这一天，和那位从天而降的导演。",
-                sweet: "门开了。申惟帮韩振整理衣服，韩振小声说谢谢哥。两人一前一后走出去，但申惟的手一直往后伸，直到韩振握住，他终于憋不住上扬的嘴角。原来和你牵手，是这样的感觉。",
+                perfect: "房门自动打开了，申惟牵着韩振的手慢慢走出来，韩振眼角有点红，他们的嘴角都是上扬的。后来的舞台上、团综里，两人反而会不自觉地对视，食髓知味地想起拍电影的这一天，和那位从天而降的导演。",
+                sweet: "门开了。申惟帮韩振整理衣服，韩振小声说谢谢哥。两人一前一后走出去，但申惟的手一直往后伸，直到韩振握住，他终于憋不住上扬的嘴角。",
                 awkward: "门终于开了。申惟快步走在前面，韩振跟在后面低着头。回去的路上申惟帮韩振拉了拉口罩，遮住红肿的嘴唇，韩振偷偷笑了。",
-                long: "经过漫长的拉扯，房门在一声轻响后打开。两人都愣住了。申惟先回过神来，把外套披在韩振身上，好像这样就可以裹住他和韩振全部越界的秘密和心事。",
+                long: "经过漫长的拉扯，房门在一声轻响后打开。两人都愣住了。申惟先回过神来，把外套披在韩振身上。",
                 cold: "门开了。两人沉默着走出去，没有牵手，也没有和今天发生的事有关的任何对话。但晚上wvs直播时韩振又一次提起和申惟的初遇印象，申惟听到后耳朵红了。",
                 stuck: "折腾了半天，房门纹丝不动。两人瘫坐在地上，申惟叹了口气说，这种程度还不够吗。韩振笑了，说或许吧，哥要不要试着多了解我一点。门突然响了一下，是的，也许，我们都还需要一点时间。",
                 normal: "房间解锁。申惟把自己的外套紧紧裹住韩振，两人并排走出去，肩膀偶尔碰到，视线偶尔对上，他们一次都没有再躲开。"
@@ -1174,7 +1232,6 @@
             logs = []; lastCommandDesc = ""; cmdCount = 0; accidentCount = 0; finalEndingType = null;
             styleStats = { soft: 0, spicy: 0, chaotic: 0 };
             shoutCallCount = 0; lastPhotoTime = 0; photoCount = 0; toysUsed.clear();
-            // 重置隐藏彩蛋记录（不重置已解锁图鉴，保留成就）
             hiddenTriggers = { sharp: false, jeju: false, num1499: false };
             stopDanmaku();
             rebuildConsole();
@@ -1189,11 +1246,12 @@
             consoleDiv.innerHTML = `
                 <div class="director-name-display" id="directorNameDisplay">🎬 ${directorName}导演</div>
                 <div class="name-input-area"><span class="name-label">导演署名</span><input type="text" class="name-input" id="directorNameInput" placeholder="输入你的名字" value="${directorName}"><button class="name-confirm" id="confirmNameBtn">确认</button></div>
-                <div class="tab-bar"><button class="tab-btn active" data-tab="main" onclick="switchTab('main')"> 游戏</button><button class="tab-btn" data-tab="gallery" onclick="switchTab('gallery')"> 图鉴</button><button class="tab-btn" data-tab="note" onclick="switchTab('note')"> 手记</button><button class="tab-btn" data-tab="board" onclick="switchTab('board')"> 留言板</button></div>
+                <div class="tab-bar"><button class="tab-btn active" data-tab="main" onclick="switchTab('main')"> 游戏</button><button class="tab-btn" data-tab="gallery" onclick="switchTab('gallery')"> 图鉴</button><button class="tab-btn" data-tab="note" onclick="switchTab('note')"> 手记</button><button class="tab-btn" data-tab="board" onclick="switchTab('board')"> 留言板</button><button class="tab-btn" data-tab="card" onclick="switchTab('card')"> 名片</button></div>
                 <div id="tabMain" class="tab-content active"><div class="section-title">🎙️ 指令台</div><div class="command-grid" id="commandGrid"></div><div class="toy-section"><div class="toy-title">导演道具</div><div class="toy-grid" id="toyGrid"></div></div><div class="director-interact"><div class="talk-label">🎙️ 导演工具箱</div><div class="interact-buttons"><button class="interact-btn" id="musicBtn">音乐</button><button class="interact-btn" id="lightBtn">调光</button><button class="interact-btn" id="coffeeBtn">饮料</button><button class="interact-btn" id="snackBtn">零食</button><button class="photo-btn" id="photoBtn">📸 拍照</button></div><div class="talk-input-area"><input type="text" class="talk-input" id="directorTalkInput" placeholder="喊话，比如: 再主动一点" autocomplete="off"><button class="send-btn" id="sendTalkBtn">喊话</button></div></div><div class="progress-row"><button class="reset-btn" id="resetGameBtn">🎞️ 重新开拍</button></div></div>
                 <div id="tabGallery" class="tab-content"><div class="section-title"> 结局图鉴</div><div id="galleryInner"></div></div>
                 <div id="tabNote" class="tab-content"><div class="section-title"> 导演手记</div><div id="noteInner"></div></div>
                 <div id="tabBoard" class="tab-content"><div class="section-title"> 公屏留言板</div><div class="message-board"><div class="board-title"> 所有导演的足迹</div><div class="board-messages" id="boardMessages"></div><div class="board-input-area"><input type="text" class="board-input" id="boardInput" placeholder="留下你的话，其他导演也能看到..." maxlength="100"><button class="board-send" id="boardSendBtn">留言</button><button class="board-clear" id="boardClearBtn">清空</button></div></div></div>
+                <div id="tabCard" class="tab-content"><div class="section-title"> 导演名片</div><div class="message-board" style="margin-bottom:0;"><div class="board-title"> 自定义作品名</div><div class="board-input-area" style="margin-bottom:12px;"><input type="text" class="board-input" id="workTitleInput" placeholder="输入你的作品名" maxlength="30"><button class="board-send" id="generateCardBtn">生成名片</button></div><div id="directorCardContainer"></div><div class="share-hint" id="copyCardBtn" style="margin-top:10px;">📸 复制名片文字版</div></div></div>
             `;
             window.switchTab = function(tab) {
                 document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -1215,6 +1273,16 @@
                     document.getElementById('tabBoard')?.classList.add('active');
                     document.querySelector('.tab-btn[data-tab="board"]')?.classList.add('active');
                     renderBoard();
+                } else if (tab === 'card') {
+                    document.getElementById('tabCard')?.classList.add('active');
+                    document.querySelector('.tab-btn[data-tab="card"]')?.classList.add('active');
+                    const container = document.getElementById('directorCardContainer');
+                    if (container && finalEndingType) {
+                        let workTitle = document.getElementById('workTitleInput')?.value || "";
+                        container.innerHTML = generateDirectorCard(workTitle);
+                    } else if (container) {
+                        container.innerHTML = '<div style="color:#7a6856;text-align:center;padding:20px;">完成一局游戏后，在这里生成你的导演名片~</div>';
+                    }
                 }
             };
             
@@ -1279,6 +1347,42 @@
                 boardInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { let msg = boardInput.value.trim(); if (msg) { addBoardMessage(directorName, msg); boardInput.value = ''; } } });
             }
             if (boardClearBtn) boardClearBtn.onclick = () => clearBoard();
+            
+            // 名片生成事件
+            const generateBtn = document.getElementById('generateCardBtn');
+            const copyCardBtn = document.getElementById('copyCardBtn');
+            if (generateBtn) {
+                generateBtn.onclick = () => {
+                    const container = document.getElementById('directorCardContainer');
+                    const workTitle = document.getElementById('workTitleInput')?.value || "";
+                    if (finalEndingType) {
+                        container.innerHTML = generateDirectorCard(workTitle);
+                        // 更新可编辑的作品名显示
+                        const titleSpan = document.getElementById('cardWorkTitle');
+                        if (titleSpan) titleSpan.innerText = workTitle || "——";
+                    } else {
+                        container.innerHTML = '<div style="color:#7a6856;text-align:center;padding:20px;">完成一局游戏后，在这里生成你的导演名片~</div>';
+                    }
+                };
+            }
+            if (copyCardBtn) {
+                copyCardBtn.onclick = () => {
+                    const container = document.getElementById('directorCardContainer');
+                    if (container && finalEndingType) {
+                        const workTitle = document.getElementById('workTitleInput')?.value || "";
+                        const style = getDirectorStyle();
+                        const endingTitle = getRandomTitle();
+                        const cardText = `【小雨披大导演】\n作品名：${workTitle || "——"}\n导演：${directorName}\n风格：${style}\n主演：申惟 · 韩振\n结局：${endingTitle}\n数据：申惟${Math.floor(tensionS)}% 韩振${Math.floor(tensionH)}%\n指令${cmdCount}次 · 拍照${photoCount}次\n#锐因 #小雨披大导演`;
+                        navigator.clipboard.writeText(cardText).then(() => {
+                            copyCardBtn.innerText = "✓ 已复制名片！";
+                            setTimeout(() => { copyCardBtn.innerText = "复制名片文字版"; }, 2000);
+                        });
+                    } else {
+                        copyCardBtn.innerText = "请先完成一局游戏";
+                        setTimeout(() => { copyCardBtn.innerText = "复制名片文字版"; }, 1500);
+                    }
+                };
+            }
             
             const galleryDiv = document.getElementById('galleryInner');
             if (galleryDiv) galleryDiv.innerHTML = buildGalleryHTML();
