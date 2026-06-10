@@ -1127,8 +1127,8 @@
         
         function getEndingMessage() {
             let msgMap = {
-                perfect: "房门自动打开了，申惟牵着韩振的手慢慢走出来，韩振眼角有点红，他们的嘴角都是上扬的。后来的舞台上、团综里，两人反而会不自觉地对视，食髓知味地想起拍电影的这一天，和那位从天而降的导演。",
-                sweet: "门开了。申惟帮韩振整理衣服，韩振小声说谢谢哥。两人一前一后走出去，但申惟的手一直往后伸，直到韩振握住，他终于憋不住上扬的嘴角。",
+                perfect: "门开了。申惟帮韩振整理衣服，韩振小声说谢谢哥。两人一前一后走出去，但申惟的手一直往后伸，直到韩振握住，他终于憋不住上扬的嘴角。",
+                sweet: "房门自动打开了，申惟牵着韩振的手慢慢走出来，韩振眼角有点红，他们都是笑着的。后来的舞台上、团综里，两人反而会不自觉地对视，食髓知味地想起拍电影的这一天，和那位从天而降的导演。",
                 awkward: "门终于开了。申惟快步走在前面，韩振跟在后面低着头。回去的路上申惟帮韩振拉了拉口罩，遮住红肿的嘴唇，韩振偷偷笑了。",
                 long: "经过漫长的拉扯，房门在一声轻响后打开。两人都愣住了。申惟先回过神来，把外套披在韩振身上。",
                 cold: "门开了。两人沉默着走出去，没有牵手，也没有和今天发生的事有关的任何对话。但晚上wvs直播时韩振又一次提起和申惟的初遇印象，申惟听到后耳朵红了。",
@@ -1188,11 +1188,11 @@
             consoleDiv.innerHTML = `
                 <div class="director-name-display" id="directorNameDisplay">🎬 ${directorName}导演</div>
                 <div class="name-input-area"><span class="name-label">导演署名</span><input type="text" class="name-input" id="directorNameInput" placeholder="输入你的名字" value="${directorName}"><button class="name-confirm" id="confirmNameBtn">确认</button></div>
-                <div class="tab-bar"><button class="tab-btn active" data-tab="main" onclick="switchTab('main')"> 游戏</button><button class="tab-btn" data-tab="gallery" onclick="switchTab('gallery')">📖 图鉴</button><button class="tab-btn" data-tab="note" onclick="switchTab('note')">📝 手记</button><button class="tab-btn" data-tab="board" onclick="switchTab('board')">📢 留言板</button></div>
+                <div class="tab-bar"><button class="tab-btn active" data-tab="main" onclick="switchTab('main')"> 游戏</button><button class="tab-btn" data-tab="gallery" onclick="switchTab('gallery')"> 图鉴</button><button class="tab-btn" data-tab="note" onclick="switchTab('note')"> 手记</button><button class="tab-btn" data-tab="board" onclick="switchTab('board')"> 留言板</button></div>
                 <div id="tabMain" class="tab-content active"><div class="section-title">🎙️ 指令台</div><div class="command-grid" id="commandGrid"></div><div class="toy-section"><div class="toy-title">导演道具</div><div class="toy-grid" id="toyGrid"></div></div><div class="director-interact"><div class="talk-label">🎙️ 导演工具箱</div><div class="interact-buttons"><button class="interact-btn" id="musicBtn">音乐</button><button class="interact-btn" id="lightBtn">调光</button><button class="interact-btn" id="coffeeBtn">饮料</button><button class="interact-btn" id="snackBtn">零食</button><button class="photo-btn" id="photoBtn">📸 拍照</button></div><div class="talk-input-area"><input type="text" class="talk-input" id="directorTalkInput" placeholder="喊话，比如: 再主动一点" autocomplete="off"><button class="send-btn" id="sendTalkBtn">喊话</button></div></div><div class="progress-row"><button class="reset-btn" id="resetGameBtn">🎞️ 重新开拍</button></div></div>
                 <div id="tabGallery" class="tab-content"><div class="section-title"> 结局图鉴</div><div id="galleryInner"></div></div>
                 <div id="tabNote" class="tab-content"><div class="section-title"> 导演手记</div><div id="noteInner"></div></div>
-                <div id="tabBoard" class="tab-content"><div class="section-title"> 公屏留言板</div><div class="message-board"><div class="board-title">💬 所有导演的足迹</div><div class="board-messages" id="boardMessages"></div><div class="board-input-area"><input type="text" class="board-input" id="boardInput" placeholder="留下你的话，其他导演也能看到..." maxlength="100"><button class="board-send" id="boardSendBtn">留言</button><button class="board-clear" id="boardClearBtn">清空</button></div></div></div>
+                <div id="tabBoard" class="tab-content"><div class="section-title"> 公屏留言板</div><div class="message-board"><div class="board-title"> 所有导演的足迹</div><div class="board-messages" id="boardMessages"></div><div class="board-input-area"><input type="text" class="board-input" id="boardInput" placeholder="留下你的话，其他导演也能看到..." maxlength="100"><button class="board-send" id="boardSendBtn">留言</button><button class="board-clear" id="boardClearBtn">清空</button></div></div></div>
             `;
             window.switchTab = function(tab) {
                 document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
